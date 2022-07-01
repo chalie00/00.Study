@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     29/Jun/2022  18:05:44 #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     01/Jul/2022  17:10:05 #
 # Copyright 1999-2011 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -660,382 +660,408 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
     623          //		TIM_ITConfig(TIM3, TIM_FLAG_Update, ENABLE);
     624          //		TIM_Cmd(TIM3, ENABLE);
     625          
-    626          	TIM_TimeBaseStructure.TIM_Period = 3600-1;
-    627          	TIM_TimeBaseStructure.TIM_Prescaler = 60000-1;
-    628          	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-    629          	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-    630          	//TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
-    631          	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
-    632          
-    633          	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Disable;
-    634          	TIM_OC1Init(TIM4, &TIM_OCInitStructure);
-    635          	TIM_OC2Init(TIM4, &TIM_OCInitStructure);
-    636          	TIM_OC3Init(TIM4, &TIM_OCInitStructure);
-    637          
-    638          	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-    639          	TIM_OCInitStructure.TIM_Pulse = 1;
-    640          	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-    641          	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
-    642          	TIM_OC4Init(TIM4, &TIM_OCInitStructure);
-    643          
-    644          
-    645          	
-    646          	//TIM_PrescalerConfig(TIM4, PrescalerValue, TIM_PSCReloadMode_Immediate);
-    647          	//TIM_ClearFlag(TIM4, TIM_FLAG_Update);
-    648          	//TIM_ITConfig(TIM4, TIM_FLAG_Update, ENABLE);
-    649          	TIM_Cmd(TIM4, ENABLE);	
-    650          
-    651          	
-    652          
-    653          }
-    654          
-    655          /*******************************************************************************
-    656          * Function : RCC_Configuration
-    657          *******************************************************************************/
-    658          void RCC_Configuration(void)
-    659          {
-    660          	SystemInit();
-    661          
-    662          	/* GPIOx clock enable */
-    663          	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA |RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_AFIO, ENABLE);
+    626          	
+    627          
+    628          
+    629          	//TIM4 (CH3): GPIOB 8 LED Green
+    630          	//TIM4 (CH4): GPIOB 9 LED Red
+    631          	
+    632          	TIM_TimeBaseStructure.TIM_Period = 3600-1;
+    633          	TIM_TimeBaseStructure.TIM_Prescaler = 60000-1;
+    634          	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+    635          	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    636          	//TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
+    637          	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
+    638          
+    639          	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Disable;
+    640          	TIM_OC1Init(TIM4, &TIM_OCInitStructure);
+    641          	TIM_OC2Init(TIM4, &TIM_OCInitStructure);
+    642          
+    643          	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    644          	TIM_OCInitStructure.TIM_Pulse = 1;
+    645          	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+    646          	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
+    647          	TIM_OC3Init(TIM4, &TIM_OCInitStructure);
+    648          	TIM_Cmd(TIM4, ENABLE);
+    649          	
+    650          	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    651          	TIM_OCInitStructure.TIM_Pulse = 1;
+    652          	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
+    653          	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
+    654          	TIM_OC4Init(TIM4, &TIM_OCInitStructure);
+    655          	TIM_Cmd(TIM4, ENABLE);	
+    656          
+    657          
+    658          	
+    659          	//TIM_PrescalerConfig(TIM4, PrescalerValue, TIM_PSCReloadMode_Immediate);
+    660          	//TIM_ClearFlag(TIM4, TIM_FLAG_Update); //s
+    661          	//TIM_ITConfig(TIM4, TIM_FLAG_Update, ENABLE);
+    662          
+    663          	
     664          
-    665          	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
-    666          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
-    667          	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
-    668          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART4, ENABLE);
-    669          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART5, ENABLE);	
-    670          
-    671          	/* I2C1,2 Periph clock enable */
-    672          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
-    673          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);	
-    674          	
-    675          	 /* Enable DMA1 clock */
-    676          	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
-    677          
-    678          	/* ENABLE ADC1 and GPIO clock */
-    679          	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
-    680          
-    681          	/* TIM clock enable */
-    682          	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
-    683          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);	
-    684          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
-    685          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);	
-    686          
-    687          	
-    688          }
+    665          }
+    666          
+    667          /*******************************************************************************
+    668          * Function : RCC_Configuration
+    669          *******************************************************************************/
+    670          void RCC_Configuration(void)
+    671          {
+    672          	SystemInit();
+    673          
+    674          	/* GPIOx clock enable */
+    675          	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA |RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_AFIO, ENABLE);
+    676          
+    677          	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
+    678          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+    679          	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+    680          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART4, ENABLE);
+    681          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART5, ENABLE);	
+    682          
+    683          	/* I2C1,2 Periph clock enable */
+    684          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
+    685          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);	
+    686          	
+    687          	 /* Enable DMA1 clock */
+    688          	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
     689          
-    690          /*******************************************************************************
-    691          * Function : NVIC_Configuration
-    692          *******************************************************************************/
-    693          void NVIC_Configuration(void)
-    694          { 
-    695          
-    696          	//  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
-    697          
-    698          	NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
-    699          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;  
-    700          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;
-    701          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    702          	NVIC_Init(&NVIC_InitStructure);
-    703          
-    704          	NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
-    705          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;  
-    706          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
-    707          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    708          	NVIC_Init(&NVIC_InitStructure);
+    690          	/* ENABLE ADC1 and GPIO clock */
+    691          	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+    692          
+    693          	/* TIM clock enable */
+    694          	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
+    695          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);	
+    696          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
+    697          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);	
+    698          
+    699          	
+    700          }
+    701          
+    702          /*******************************************************************************
+    703          * Function : NVIC_Configuration
+    704          *******************************************************************************/
+    705          void NVIC_Configuration(void)
+    706          { 
+    707          
+    708          	//  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
     709          
-    710          	/*
-    711          	NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
-    712          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 4;
-    713          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;
-    714          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    715          	NVIC_Init(&NVIC_InitStructure);  
-    716          	*/
-    717          	
-    718          	NVIC_InitStructure.NVIC_IRQChannel = UART4_IRQn;
-    719          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 4;
-    720          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;
-    721          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    722          	NVIC_Init(&NVIC_InitStructure);
-    723          
-    724          	NVIC_InitStructure.NVIC_IRQChannel = UART5_IRQn;
-    725          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 5;  
-    726          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 5;
-    727          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    728          	NVIC_Init(&NVIC_InitStructure);	
-    729          
-    730          	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
-    731          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-    732          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    710          	NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+    711          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;  
+    712          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;
+    713          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    714          	NVIC_Init(&NVIC_InitStructure);
+    715          
+    716          	NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
+    717          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;  
+    718          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
+    719          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    720          	NVIC_Init(&NVIC_InitStructure);
+    721          
+    722          	/*
+    723          	NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
+    724          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 4;
+    725          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;
+    726          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    727          	NVIC_Init(&NVIC_InitStructure);  
+    728          	*/
+    729          	
+    730          	NVIC_InitStructure.NVIC_IRQChannel = UART4_IRQn;
+    731          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 4;
+    732          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;
     733          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     734          	NVIC_Init(&NVIC_InitStructure);
     735          
-    736          	NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
-    737          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
-    738          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+    736          	NVIC_InitStructure.NVIC_IRQChannel = UART5_IRQn;
+    737          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 5;  
+    738          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 5;
     739          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    740          	NVIC_Init(&NVIC_InitStructure);  
+    740          	NVIC_Init(&NVIC_InitStructure);	
     741          
-    742          	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;
-    743          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 6;
-    744          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 6;
+    742          	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
+    743          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    744          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
     745          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    746          	NVIC_Init(&NVIC_InitStructure);  
-    747          	
-    748          
-    749          	//RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
-    750          }
-    751          
-    752          /*******************************************************************************
-    753          * Function : GPIO_Configuration
-    754          *******************************************************************************/
-    755          void GPIO_Configuration(void)
-    756          {
-    757          	// ========== GPIO A ===============================================
-    758          	// GPIO_Pin_0 : TEMPERATURE_ADC (IN)
-    759          	// GPIO_Pin_1 : MDIN_I550_INT
-    760          	// GPIO_Pin_2 : MDIN_I550_RX
-    761          	// GPIO_Pin_3 : MDIN_I550_TX
-    762          	// GPIO_Pin_4 : NC
-    763          	// GPIO_Pin_5 : NC
-    764          	// GPIO_Pin_6 : NC
-    765          	// GPIO_Pin_7 : NC
-    766          	// GPIO_Pin_8 : NC
-    767          	// GPIO_Pin_9 : USART1_Tx (OUT) : MAIN
-    768          	// GPIO_Pin_10 : USART1_Rx (IN) : MAIN
-    769          	// GPIO_Pin_11 : PWM (OUT)
-    770          	// GPIO_Pin_12 : NC
-    771          	// GPIO_Pin_13 : SWDIO
-    772          	// GPIO_Pin_14 : SWCLK
-    773          	// GPIO_Pin_15 : NC
-    774          	// ===============================================================
-    775          
-    776          	// ----- Configure the INPUT-PIN --------------------
-    777          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
-    778          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
-    779          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-    780          //		GPIO_Init(GPIOA, &GPIO_InitStructure);
-    781          //		
-    782          //		// ----- Configure the INPUT-PIN --------------------
-    783          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10|GPIO_Pin_3|GPIO_Pin_1;
-    784          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    785          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    786          //		GPIO_Init(GPIOA, &GPIO_InitStructure);
-    787          //		
-    788          //		// ----- Configure the OUTPUT-PIN -------------------
-    789          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9|GPIO_Pin_11|GPIO_Pin_2;
-    790          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    791          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    746          	NVIC_Init(&NVIC_InitStructure);
+    747          
+    748          	NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
+    749          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+    750          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+    751          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    752          	NVIC_Init(&NVIC_InitStructure);  
+    753          
+    754          	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;
+    755          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 6;
+    756          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 6;
+    757          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    758          	NVIC_Init(&NVIC_InitStructure);  
+    759          	
+    760          
+    761          	//RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+    762          }
+    763          
+    764          /*******************************************************************************
+    765          * Function : GPIO_Configuration
+    766          *******************************************************************************/
+    767          void GPIO_Configuration(void)
+    768          {
+    769          	// ========== GPIO A ===============================================
+    770          	// GPIO_Pin_0 : TEMPERATURE_ADC (IN)
+    771          	// GPIO_Pin_1 : MDIN_I550_INT
+    772          	// GPIO_Pin_2 : MDIN_I550_RX
+    773          	// GPIO_Pin_3 : MDIN_I550_TX
+    774          	// GPIO_Pin_4 : NC
+    775          	// GPIO_Pin_5 : NC
+    776          	// GPIO_Pin_6 : NC
+    777          	// GPIO_Pin_7 : NC
+    778          	// GPIO_Pin_8 : NC
+    779          	// GPIO_Pin_9 : USART1_Tx (OUT) : MAIN
+    780          	// GPIO_Pin_10 : USART1_Rx (IN) : MAIN
+    781          	// GPIO_Pin_11 : PWM (OUT)
+    782          	// GPIO_Pin_12 : NC
+    783          	// GPIO_Pin_13 : SWDIO
+    784          	// GPIO_Pin_14 : SWCLK
+    785          	// GPIO_Pin_15 : NC
+    786          	// ===============================================================
+    787          
+    788          	// ----- Configure the INPUT-PIN --------------------
+    789          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+    790          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
+    791          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
     792          //		GPIO_Init(GPIOA, &GPIO_InitStructure);
-    793          
-    794          	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
-    795          	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
-    796          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-    797          	GPIO_Init(GPIOA, &GPIO_InitStructure);
-    798          
-    799          	// ========== GPIO B ===============================================
-    800          	// GPIO_Pin_0 : NC
-    801          	// GPIO_Pin_1 : NC
-    802          	// GPIO_Pin_2 : MDIN_I550_RSTN
-    803          	// GPIO_Pin_3 : NC
-    804          	// GPIO_Pin_4 : NC
-    805          	// GPIO_Pin_5 : NC
-    806          	// GPIO_Pin_6 : TW9900_SCL
-    807          	// GPIO_Pin_7 : TW9900_SDA
-    808          	// GPIO_Pin_8 : NC
-    809          	// GPIO_Pin_9 : NC
-    810          	// GPIO_Pin_10 : AT24C256C_SCL
-    811          	// GPIO_Pin_11 : AT24C256C_SDA
-    812          	// GPIO_Pin_12 : MODE1 (IN)
-    813          	// GPIO_Pin_13 : MODE2 (IN)
-    814          	// GPIO_Pin_14 : 12V_EN
-    815          	// GPIO_Pin_15 : NC
-    816          	// ===============================================================
-    817          
-    818          	// ----- Configure the INPUT-PIN --------------------
-    819          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_14|GPIO_Pin_15;
-    820          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    821          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    822          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
-    823          //	
-    824          //		// ----- Configure the OUTPUT-PIN -------------------
-    825          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
-    826          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
-    827          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    828          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
-    829          //	
-    830          //		// ----- Configure the OUTPUT-PIN -------------------
-    831          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;// | GPIO_Pin_10 | GPIO_Pin_11;
-    832          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
-    833          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    834          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
-    835          //		
-    836          //		// ----- Configure the OUTPUT-PIN -------------------
-    837          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2|GPIO_Pin_11;//|GPIO_Pin_7|GPIO_Pin_11;
-    838          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    839          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    840          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
-    841          
-    842          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9|GPIO_Pin_8|GPIO_Pin_5;
-    843          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    844          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-    845          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
-    846          
-    847          	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
-    848          	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    849          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-    850          	GPIO_Init(GPIOB, &GPIO_InitStructure);
-    851          	
-    852          	
-    853          	// ========== GPIO C ===============================================
-    854          	// GPIO_Pin_0 : WIPER1 SENSOR (IN)
-    855          	// GPIO_Pin_1 : WIPER2 SENSOR (IN)
-    856          	// GPIO_Pin_2 : NC
-    857          	// GPIO_Pin_3 : LED1 (OUT)
-    858          	// GPIO_Pin_4 : TW9900_IRQ
-    859          	// GPIO_Pin_5 : TW9900_RST
-    860          	// GPIO_Pin_6 : MOTOR START (OUT)
-    861          	// GPIO_Pin_7 : MOTOR FG (IN)
-    862          	// GPIO_Pin_8 : MOTOR CW/CCW (OUT)
-    863          	// GPIO_Pin_9 : NC
-    864          	// GPIO_Pin_10 : UART4_Tx (OUT) : CAMERA
-    865          	// GPIO_Pin_11 : UART4_Rx (IN) : CAMERA
-    866          	// GPIO_Pin_12 : UART5_Tx (OUT) : IP BOARD
-    867          	// GPIO_Pin_13 : HEATER (OUT)
-    868          	// GPIO_Pin_14 : NC
-    869          	// GPIO_Pin_15 : FAN (OUT)
-    870          	// ===============================================================
-    871          
-    872          	// ----- Configure the INPUT-PIN --------------------
-    873          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_4|GPIO_Pin_7|GPIO_Pin_11;
-    874          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    875          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    876          //		GPIO_Init(GPIOC, &GPIO_InitStructure);
+    793          //		
+    794          //		// ----- Configure the INPUT-PIN --------------------
+    795          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10|GPIO_Pin_3|GPIO_Pin_1;
+    796          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    797          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    798          //		GPIO_Init(GPIOA, &GPIO_InitStructure);
+    799          //		
+    800          //		// ----- Configure the OUTPUT-PIN -------------------
+    801          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9|GPIO_Pin_11|GPIO_Pin_2;
+    802          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    803          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    804          //		GPIO_Init(GPIOA, &GPIO_InitStructure);
+    805          
+    806          
+    807          
+    808          
+    809          	    //GPIOA Pin 0: Set The WKUP SW Of Mango B'd
+    810          		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+    811          		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
+    812          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+    813          		GPIO_Init(GPIOA, &GPIO_InitStructure);
+    814          		
+    815          	    //GPIOA Pin 1: Set The UserKey SW Of Mango B'd
+    816          		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
+    817          		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
+    818          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+    819          		GPIO_Init(GPIOA, &GPIO_InitStructure);
+    820          
+    821          
+    822          
+    823          
+    824          	// ========== GPIO B ===============================================
+    825          	// GPIO_Pin_0 : NC
+    826          	// GPIO_Pin_1 : NC
+    827          	// GPIO_Pin_2 : MDIN_I550_RSTN
+    828          	// GPIO_Pin_3 : NC
+    829          	// GPIO_Pin_4 : NC
+    830          	// GPIO_Pin_5 : NC
+    831          	// GPIO_Pin_6 : TW9900_SCL
+    832          	// GPIO_Pin_7 : TW9900_SDA
+    833          	// GPIO_Pin_8 : NC
+    834          	// GPIO_Pin_9 : NC
+    835          	// GPIO_Pin_10 : AT24C256C_SCL
+    836          	// GPIO_Pin_11 : AT24C256C_SDA
+    837          	// GPIO_Pin_12 : MODE1 (IN)
+    838          	// GPIO_Pin_13 : MODE2 (IN)
+    839          	// GPIO_Pin_14 : 12V_EN
+    840          	// GPIO_Pin_15 : NC
+    841          	// ===============================================================
+    842          
+    843          	// ----- Configure the INPUT-PIN --------------------
+    844          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_14|GPIO_Pin_15;
+    845          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    846          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    847          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
+    848          //	
+    849          //		// ----- Configure the OUTPUT-PIN -------------------
+    850          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
+    851          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
+    852          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    853          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
+    854          //	
+    855          //		// ----- Configure the OUTPUT-PIN -------------------
+    856          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;// | GPIO_Pin_10 | GPIO_Pin_11;
+    857          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+    858          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    859          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
+    860          //		
+    861          //		// ----- Configure the OUTPUT-PIN -------------------
+    862          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2|GPIO_Pin_11;//|GPIO_Pin_7|GPIO_Pin_11;
+    863          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    864          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    865          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
+    866          
+    867          
+    868          
+    869          
+    870          			//GPIOB Pin5: Yellow, Pin8: Green, Pin9: Red
+    871          			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_8 | GPIO_Pin_5;
+    872          			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+    873          			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+    874          			GPIO_Init(GPIOB, &GPIO_InitStructure);
+    875          
+    876          
     877          
-    878          	// ----- Configure the OUTPUT-PIN -------------------
-    879          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_8|GPIO_Pin_13|GPIO_Pin_15; 
-    880          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    881          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    882          //		GPIO_Init(GPIOC, &GPIO_InitStructure);
-    883          
-    884          	// ----- Configure the OUTPUT-PIN -------------------
-    885          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10|GPIO_Pin_12;
-    886          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    887          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    888          //		GPIO_Init(GPIOC, &GPIO_InitStructure);
-    889          	
-    890          	// ========== GPIO D ===============================================
-    891          	// GPIO_Pin_0 : OSCI
-    892          	// GPIO_Pin_1 : OSCO
-    893          	// GPIO_Pin_2 : UART5_Rx (IN) : IP BOARD
-    894          	// ===============================================================
-    895          	// ----- Configure the INPUT-PIN --------------------
-    896          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
-    897          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    898          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    899          //		GPIO_Init(GPIOD, &GPIO_InitStructure);
-    900          }
-    901          
-    902          /*******************************************************************************
-    903          * Function : DMA_Configuration
-    904          *******************************************************************************/
-    905          void DMA_Configuration(void)
-    906          {
-    907          	DMA_DeInit(DMA1_Channel1);
-    908          	DMA_InitStructure.DMA_PeripheralBaseAddr = ADC1_DR_Address;
-    909          	DMA_InitStructure.DMA_MemoryBaseAddr = (u32)&stADC.DMA1_ADC_VALUE;
-    910          	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
-    911          	DMA_InitStructure.DMA_BufferSize = 2;
-    912          	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-    913          	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
-    914          	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Word;
-    915          	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Word;
-    916          	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
-    917          	DMA_InitStructure.DMA_Priority = DMA_Priority_High;
-    918          	DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
-    919          	DMA_Init(DMA1_Channel1, &DMA_InitStructure);
-    920          
-    921          	DMA_Cmd(DMA1_Channel1, ENABLE);
-    922          }
-    923          
-    924          /*******************************************************************************
-    925          * Function : ADC_Configuration
-    926          *******************************************************************************/
-    927          void ADC_Configuration(void)
-    928          {
-    929          	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
-    930          	ADC_InitStructure.ADC_ScanConvMode = ENABLE;
-    931          	ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
-    932          	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
-    933          	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
-    934          	ADC_InitStructure.ADC_NbrOfChannel = 2;
-    935          	ADC_Init(ADC1, &ADC_InitStructure);
-    936          	ADC_TempSensorVrefintCmd(ENABLE);
-    937          	
-    938          	// PA0, CH0, TEMP
-    939          	ADC_RegularChannelConfig(ADC1, ADC_Channel_0, 1, ADC_SampleTime_28Cycles5);
-    940          
-    941          	// PA4, CH4, CDS
-    942          	ADC_RegularChannelConfig(ADC1, ADC_Channel_4, 2, ADC_SampleTime_28Cycles5);
-    943          
-    944          	ADC_Cmd(ADC1, ENABLE);
-    945          	ADC_DMACmd(ADC1, ENABLE);
+    878          
+    879          	// ========== GPIO C ===============================================
+    880          	// GPIO_Pin_0 : WIPER1 SENSOR (IN)
+    881          	// GPIO_Pin_1 : WIPER2 SENSOR (IN)
+    882          	// GPIO_Pin_2 : NC
+    883          	// GPIO_Pin_3 : LED1 (OUT)
+    884          	// GPIO_Pin_4 : TW9900_IRQ
+    885          	// GPIO_Pin_5 : TW9900_RST
+    886          	// GPIO_Pin_6 : MOTOR START (OUT)
+    887          	// GPIO_Pin_7 : MOTOR FG (IN)
+    888          	// GPIO_Pin_8 : MOTOR CW/CCW (OUT)
+    889          	// GPIO_Pin_9 : NC
+    890          	// GPIO_Pin_10 : UART4_Tx (OUT) : CAMERA
+    891          	// GPIO_Pin_11 : UART4_Rx (IN) : CAMERA
+    892          	// GPIO_Pin_12 : UART5_Tx (OUT) : IP BOARD
+    893          	// GPIO_Pin_13 : HEATER (OUT)
+    894          	// GPIO_Pin_14 : NC
+    895          	// GPIO_Pin_15 : FAN (OUT)
+    896          	// ===============================================================
+    897          
+    898          	// ----- Configure the INPUT-PIN --------------------
+    899          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_4|GPIO_Pin_7|GPIO_Pin_11;
+    900          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    901          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    902          //		GPIO_Init(GPIOC, &GPIO_InitStructure);
+    903          
+    904          	// ----- Configure the OUTPUT-PIN -------------------
+    905          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_8|GPIO_Pin_13|GPIO_Pin_15; 
+    906          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    907          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    908          //		GPIO_Init(GPIOC, &GPIO_InitStructure);
+    909          
+    910          	// ----- Configure the OUTPUT-PIN -------------------
+    911          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10|GPIO_Pin_12;
+    912          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    913          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    914          //		GPIO_Init(GPIOC, &GPIO_InitStructure);
+    915          	
+    916          	// ========== GPIO D ===============================================
+    917          	// GPIO_Pin_0 : OSCI
+    918          	// GPIO_Pin_1 : OSCO
+    919          	// GPIO_Pin_2 : UART5_Rx (IN) : IP BOARD
+    920          	// ===============================================================
+    921          	// ----- Configure the INPUT-PIN --------------------
+    922          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+    923          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    924          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    925          //		GPIO_Init(GPIOD, &GPIO_InitStructure);
+    926          }
+    927          
+    928          /*******************************************************************************
+    929          * Function : DMA_Configuration
+    930          *******************************************************************************/
+    931          void DMA_Configuration(void)
+    932          {
+    933          	DMA_DeInit(DMA1_Channel1);
+    934          	DMA_InitStructure.DMA_PeripheralBaseAddr = ADC1_DR_Address;
+    935          	DMA_InitStructure.DMA_MemoryBaseAddr = (u32)&stADC.DMA1_ADC_VALUE;
+    936          	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
+    937          	DMA_InitStructure.DMA_BufferSize = 2;
+    938          	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+    939          	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+    940          	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Word;
+    941          	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Word;
+    942          	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
+    943          	DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+    944          	DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
+    945          	DMA_Init(DMA1_Channel1, &DMA_InitStructure);
     946          
-    947          	ADC_ResetCalibration(ADC1);  
-    948          	while(ADC_GetResetCalibrationStatus(ADC1));	
-    949          	ADC_StartCalibration(ADC1);  
-    950          	while(ADC_GetCalibrationStatus(ADC1));  
-    951          	ADC_SoftwareStartConvCmd(ADC1, ENABLE);  
-    952          }
-    953          
-    954          /*******************************************************************************
-    955          * Function : ADC_Configuration
-    956          *******************************************************************************/
-    957          void I2C_Configuration(void)
-    958          {
-    959          	/* I2C1,2 Periph clock enable */
-    960          	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
-    961          	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);	
-    962          
-    963          	//I2C1 Initial - TW9900 #1/#2 : PF0,1===========================================
-    964          	/* Reset sEE_I2C IP */
-    965          	//RCC_APB1PeriphResetCmd(RCC_APB1Periph_I2C1, ENABLE);
-    966          	/* Release reset signal of sEE_I2C IP */
-    967          	//RCC_APB1PeriphResetCmd(RCC_APB1Periph_I2C2, ENABLE);
-    968          	/* Connect PF1 to I2C_SCL*/
-    969          	//GPIO_PinAFConfig(GPIOF, GPIO_PinSource1, GPIO_AF_I2C1);
-    970          	/* Connect PF0 to I2C_SDA*/
-    971          	//GPIO_PinAFConfig(GPIOF, GPIO_PinSource0, GPIO_AF_I2C1);
+    947          	DMA_Cmd(DMA1_Channel1, ENABLE);
+    948          }
+    949          
+    950          /*******************************************************************************
+    951          * Function : ADC_Configuration
+    952          *******************************************************************************/
+    953          void ADC_Configuration(void)
+    954          {
+    955          	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
+    956          	ADC_InitStructure.ADC_ScanConvMode = ENABLE;
+    957          	ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
+    958          	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
+    959          	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
+    960          	ADC_InitStructure.ADC_NbrOfChannel = 2;
+    961          	ADC_Init(ADC1, &ADC_InitStructure);
+    962          	ADC_TempSensorVrefintCmd(ENABLE);
+    963          	
+    964          	// PA0, CH0, TEMP
+    965          	ADC_RegularChannelConfig(ADC1, ADC_Channel_0, 1, ADC_SampleTime_28Cycles5);
+    966          
+    967          	// PA4, CH4, CDS
+    968          	ADC_RegularChannelConfig(ADC1, ADC_Channel_4, 2, ADC_SampleTime_28Cycles5);
+    969          
+    970          	ADC_Cmd(ADC1, ENABLE);
+    971          	ADC_DMACmd(ADC1, ENABLE);
     972          
-    973          	// I2C1 Configuration	
-    974          	#if(1)
-    975          	I2C_InitStructure.I2C_ClockSpeed = 100000;	//100KB, 400000;
-    976          	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
-    977          	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
-    978          	I2C_InitStructure.I2C_OwnAddress1 = TW9900_ADDR;
-    979          	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
-    980          	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-    981          	I2C_Cmd(I2C1, ENABLE); /* I2C Peripheral Enable enable */
-    982          	I2C_Init(I2C1, &I2C_InitStructure);	/* Apply I2C configuration after enabling it */
-    983          	//======================================================== I2C1 Initial END
-    984          	#endif
-    985          	
-    986          	#if(1)
-    987          	// I2C2 Configuration	
-    988          	I2C_InitStructure.I2C_ClockSpeed = 100000;	//100KB, 400000;
-    989          	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
-    990          	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
-    991          	I2C_InitStructure.I2C_OwnAddress1 = AT24C256_ADDR;
-    992          	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
-    993          	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-    994          	I2C_Cmd(I2C2, ENABLE); /* I2C Peripheral Enable enable */
-    995          	I2C_Init(I2C2, &I2C_InitStructure);	/* Apply I2C configuration after enabling it */	
-    996          	#endif	
-    997          	//======================================================== I2C2 Initial END
+    973          	ADC_ResetCalibration(ADC1);  
+    974          	while(ADC_GetResetCalibrationStatus(ADC1));	
+    975          	ADC_StartCalibration(ADC1);  
+    976          	while(ADC_GetCalibrationStatus(ADC1));  
+    977          	ADC_SoftwareStartConvCmd(ADC1, ENABLE);  
+    978          }
+    979          
+    980          /*******************************************************************************
+    981          * Function : ADC_Configuration
+    982          *******************************************************************************/
+    983          void I2C_Configuration(void)
+    984          {
+    985          	/* I2C1,2 Periph clock enable */
+    986          	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
+    987          	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);	
+    988          
+    989          	//I2C1 Initial - TW9900 #1/#2 : PF0,1===========================================
+    990          	/* Reset sEE_I2C IP */
+    991          	//RCC_APB1PeriphResetCmd(RCC_APB1Periph_I2C1, ENABLE);
+    992          	/* Release reset signal of sEE_I2C IP */
+    993          	//RCC_APB1PeriphResetCmd(RCC_APB1Periph_I2C2, ENABLE);
+    994          	/* Connect PF1 to I2C_SCL*/
+    995          	//GPIO_PinAFConfig(GPIOF, GPIO_PinSource1, GPIO_AF_I2C1);
+    996          	/* Connect PF0 to I2C_SDA*/
+    997          	//GPIO_PinAFConfig(GPIOF, GPIO_PinSource0, GPIO_AF_I2C1);
     998          
-    999          }
-   1000          
-   1001          
+    999          	// I2C1 Configuration	
+   1000          	#if(1)
+   1001          	I2C_InitStructure.I2C_ClockSpeed = 100000;	//100KB, 400000;
+   1002          	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+   1003          	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+   1004          	I2C_InitStructure.I2C_OwnAddress1 = TW9900_ADDR;
+   1005          	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+   1006          	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+   1007          	I2C_Cmd(I2C1, ENABLE); /* I2C Peripheral Enable enable */
+   1008          	I2C_Init(I2C1, &I2C_InitStructure);	/* Apply I2C configuration after enabling it */
+   1009          	//======================================================== I2C1 Initial END
+   1010          	#endif
+   1011          	
+   1012          	#if(1)
+   1013          	// I2C2 Configuration	
+   1014          	I2C_InitStructure.I2C_ClockSpeed = 100000;	//100KB, 400000;
+   1015          	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+   1016          	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+   1017          	I2C_InitStructure.I2C_OwnAddress1 = AT24C256_ADDR;
+   1018          	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+   1019          	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+   1020          	I2C_Cmd(I2C2, ENABLE); /* I2C Peripheral Enable enable */
+   1021          	I2C_Init(I2C2, &I2C_InitStructure);	/* Apply I2C configuration after enabling it */	
+   1022          	#endif	
+   1023          	//======================================================== I2C2 Initial END
+   1024          
+   1025          }
+   1026          
+   1027          
 
    Maximum stack usage in bytes:
 
@@ -1182,7 +1208,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
       98  DMA_Configuration
       44  DMA_InitStructure
       40  Dipswitch_Mode_Check
-      58  GPIO_Configuration
+      84  GPIO_Configuration
        4  GPIO_InitStructure
      120  I2C_Configuration
       16  I2C_InitStructure
@@ -1196,7 +1222,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
      152  Run_Wiper
       56  SysTick_Config
      162  TIMER1_CH4_DutyPeriod
-     188  TIMER_Init
+     230  TIMER_Init
       16  TIM_OCInitStructure
       12  TIM_TimeBaseStructure
      102  UART4_Init
@@ -1211,9 +1237,9 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
 
  
    154 bytes in section .bss
- 3 050 bytes in section .text
+ 3 118 bytes in section .text
  
- 3 050 bytes of CODE memory
+ 3 118 bytes of CODE memory
    154 bytes of DATA memory
 
 Errors: none

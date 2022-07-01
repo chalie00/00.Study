@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    29/Jun/2022  18:05:44 /
+// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    01/Jul/2022  17:10:05 /
 // Copyright 1999-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Cpu mode     =  thumb                                                   /
@@ -1024,9 +1024,6 @@ TIMER_Init:
         LDR.W    R1,??DataTable19_15
         LDR.W    R0,??DataTable19_25  ;; 0x40000800
         BL       TIM_OC2Init
-        LDR.W    R1,??DataTable19_15
-        LDR.W    R0,??DataTable19_25  ;; 0x40000800
-        BL       TIM_OC3Init
         LDR.W    R0,??DataTable19_15
         MOVS     R1,#+1
         STRH     R1,[R0, #+2]
@@ -1035,6 +1032,24 @@ TIMER_Init:
         STRH     R1,[R0, #+6]
         LDR.W    R0,??DataTable19_15
         MOVS     R1,#+0
+        STRH     R1,[R0, #+8]
+        LDR.W    R0,??DataTable19_15
+        MOVS     R1,#+48
+        STRH     R1,[R0, #+0]
+        LDR.W    R1,??DataTable19_15
+        LDR.W    R0,??DataTable19_25  ;; 0x40000800
+        BL       TIM_OC3Init
+        MOVS     R1,#+1
+        LDR.W    R0,??DataTable19_25  ;; 0x40000800
+        BL       TIM_Cmd
+        LDR.W    R0,??DataTable19_15
+        MOVS     R1,#+1
+        STRH     R1,[R0, #+2]
+        LDR.W    R0,??DataTable19_15
+        MOVS     R1,#+1
+        STRH     R1,[R0, #+6]
+        LDR.W    R0,??DataTable19_15
+        MOVS     R1,#+2
         STRH     R1,[R0, #+8]
         LDR.W    R0,??DataTable19_15
         MOVS     R1,#+48
@@ -1202,6 +1217,18 @@ NVIC_Configuration:
 GPIO_Configuration:
         PUSH     {R7,LR}
         LDR.N    R0,??DataTable19_27
+        MOVS     R1,#+1
+        STRH     R1,[R0, #+0]
+        LDR.N    R0,??DataTable19_27
+        MOVS     R1,#+40
+        STRB     R1,[R0, #+3]
+        LDR.N    R0,??DataTable19_27
+        MOVS     R1,#+2
+        STRB     R1,[R0, #+2]
+        LDR.N    R1,??DataTable19_27
+        LDR.N    R0,??DataTable19_28  ;; 0x40010800
+        BL       GPIO_Init
+        LDR.N    R0,??DataTable19_27
         MOVS     R1,#+2
         STRH     R1,[R0, #+0]
         LDR.N    R0,??DataTable19_27
@@ -1214,10 +1241,10 @@ GPIO_Configuration:
         LDR.N    R0,??DataTable19_28  ;; 0x40010800
         BL       GPIO_Init
         LDR.N    R0,??DataTable19_27
-        MOV      R1,#+512
+        MOV      R1,#+800
         STRH     R1,[R0, #+0]
         LDR.N    R0,??DataTable19_27
-        MOVS     R1,#+24
+        MOVS     R1,#+28
         STRB     R1,[R0, #+3]
         LDR.N    R0,??DataTable19_27
         MOVS     R1,#+2
@@ -1638,9 +1665,9 @@ I2C_Configuration:
         END
 // 
 //   154 bytes in section .bss
-// 3 050 bytes in section .text
+// 3 118 bytes in section .text
 // 
-// 3 050 bytes of CODE memory
+// 3 118 bytes of CODE memory
 //   154 bytes of DATA memory
 //
 //Errors: none
