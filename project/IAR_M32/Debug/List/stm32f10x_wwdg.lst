@@ -1,0 +1,310 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     29/Jun/2022  17:06:09 #
+# Copyright 1999-2011 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F1 #
+#                    0x_StdPeriph_Driver\src\stm32f10x_wwdg.c                 #
+#    Command line =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F1 #
+#                    0x_StdPeriph_Driver\src\stm32f10x_wwdg.c -D              #
+#                    USE_STDPERIPH_DRIVER -D STM32F10x_HD -D USE_FULL_ASSERT  #
+#                    -lcN C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_ #
+#                    M32\Debug\List\ -lb C:\Users\TTT\Desktop\zz.STDFW\00.Stu #
+#                    dy\project\IAR_M32\Debug\List\ -o                        #
+#                    C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\ --no_cse --no_unroll --no_inline               #
+#                    --no_code_motion --no_tbaa --no_clustering               #
+#                    --no_scheduling --debug --endian=little --cpu=Cortex-M3  #
+#                    -e --fpu=None --dlib_config "C:\Program Files (x86)\IAR  #
+#                    Systems\Embedded Workbench 6.0\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\I #
+#                    AR_M32\..\..\inc\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\CMSIS\CM3\DeviceSupp #
+#                    ort\ST\STM32F10x\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\STM32F10x_StdPeriph_ #
+#                    Driver\inc\ -I "C:\Program Files (x86)\IAR               #
+#                    Systems\Embedded Workbench 6.0\arm\inc\c\" -On -I        #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.0\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\List\stm32f10x_wwdg.lst                             #
+#    Object file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\stm32f10x_wwdg.o                                #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_wwdg.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    stm32f10x_wwdg.c
+      4            * @author  MCD Application Team
+      5            * @version V3.4.0
+      6            * @date    10/15/2010
+      7            * @brief   This file provides all the WWDG firmware functions.
+      8            ******************************************************************************
+      9            * @copy
+     10            *
+     11            * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+     12            * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+     13            * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+     14            * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+     15            * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+     16            * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+     17            *
+     18            * <h2><center>&copy; COPYRIGHT 2010 STMicroelectronics</center></h2>
+     19            */ 
+     20          
+     21          /* Includes ------------------------------------------------------------------*/
+     22          #include "stm32f10x_wwdg.h"
+     23          #include "stm32f10x_rcc.h"
+     24          
+     25          /** @addtogroup STM32F10x_StdPeriph_Driver
+     26            * @{
+     27            */
+     28          
+     29          /** @defgroup WWDG 
+     30            * @brief WWDG driver modules
+     31            * @{
+     32            */
+     33          
+     34          /** @defgroup WWDG_Private_TypesDefinitions
+     35            * @{
+     36            */
+     37          
+     38          /**
+     39            * @}
+     40            */
+     41          
+     42          /** @defgroup WWDG_Private_Defines
+     43            * @{
+     44            */
+     45          
+     46          /* ----------- WWDG registers bit address in the alias region ----------- */
+     47          #define WWDG_OFFSET       (WWDG_BASE - PERIPH_BASE)
+     48          
+     49          /* Alias word address of EWI bit */
+     50          #define CFR_OFFSET        (WWDG_OFFSET + 0x04)
+     51          #define EWI_BitNumber     0x09
+     52          #define CFR_EWI_BB        (PERIPH_BB_BASE + (CFR_OFFSET * 32) + (EWI_BitNumber * 4))
+     53          
+     54          /* --------------------- WWDG registers bit mask ------------------------ */
+     55          
+     56          /* CR register bit mask */
+     57          #define CR_WDGA_Set       ((uint32_t)0x00000080)
+     58          
+     59          /* CFR register bit mask */
+     60          #define CFR_WDGTB_Mask    ((uint32_t)0xFFFFFE7F)
+     61          #define CFR_W_Mask        ((uint32_t)0xFFFFFF80)
+     62          #define BIT_Mask          ((uint8_t)0x7F)
+     63          
+     64          /**
+     65            * @}
+     66            */
+     67          
+     68          /** @defgroup WWDG_Private_Macros
+     69            * @{
+     70            */
+     71          
+     72          /**
+     73            * @}
+     74            */
+     75          
+     76          /** @defgroup WWDG_Private_Variables
+     77            * @{
+     78            */
+     79          
+     80          /**
+     81            * @}
+     82            */
+     83          
+     84          /** @defgroup WWDG_Private_FunctionPrototypes
+     85            * @{
+     86            */
+     87          
+     88          /**
+     89            * @}
+     90            */
+     91          
+     92          /** @defgroup WWDG_Private_Functions
+     93            * @{
+     94            */
+     95          
+     96          /**
+     97            * @brief  Deinitializes the WWDG peripheral registers to their default reset values.
+     98            * @param  None
+     99            * @retval None
+    100            */
+    101          void WWDG_DeInit(void)
+    102          {
+    103            RCC_APB1PeriphResetCmd(RCC_APB1Periph_WWDG, ENABLE);
+    104            RCC_APB1PeriphResetCmd(RCC_APB1Periph_WWDG, DISABLE);
+    105          }
+    106          
+    107          /**
+    108            * @brief  Sets the WWDG Prescaler.
+    109            * @param  WWDG_Prescaler: specifies the WWDG Prescaler.
+    110            *   This parameter can be one of the following values:
+    111            *     @arg WWDG_Prescaler_1: WWDG counter clock = (PCLK1/4096)/1
+    112            *     @arg WWDG_Prescaler_2: WWDG counter clock = (PCLK1/4096)/2
+    113            *     @arg WWDG_Prescaler_4: WWDG counter clock = (PCLK1/4096)/4
+    114            *     @arg WWDG_Prescaler_8: WWDG counter clock = (PCLK1/4096)/8
+    115            * @retval None
+    116            */
+    117          void WWDG_SetPrescaler(uint32_t WWDG_Prescaler)
+    118          {
+    119            uint32_t tmpreg = 0;
+    120            /* Check the parameters */
+    121            assert_param(IS_WWDG_PRESCALER(WWDG_Prescaler));
+    122            /* Clear WDGTB[1:0] bits */
+    123            tmpreg = WWDG->CFR & CFR_WDGTB_Mask;
+    124            /* Set WDGTB[1:0] bits according to WWDG_Prescaler value */
+    125            tmpreg |= WWDG_Prescaler;
+    126            /* Store the new value */
+    127            WWDG->CFR = tmpreg;
+    128          }
+    129          
+    130          /**
+    131            * @brief  Sets the WWDG window value.
+    132            * @param  WindowValue: specifies the window value to be compared to the downcounter.
+    133            *   This parameter value must be lower than 0x80.
+    134            * @retval None
+    135            */
+    136          void WWDG_SetWindowValue(uint8_t WindowValue)
+    137          {
+    138            __IO uint32_t tmpreg = 0;
+    139          
+    140            /* Check the parameters */
+    141            assert_param(IS_WWDG_WINDOW_VALUE(WindowValue));
+    142            /* Clear W[6:0] bits */
+    143          
+    144            tmpreg = WWDG->CFR & CFR_W_Mask;
+    145          
+    146            /* Set W[6:0] bits according to WindowValue value */
+    147            tmpreg |= WindowValue & (uint32_t) BIT_Mask;
+    148          
+    149            /* Store the new value */
+    150            WWDG->CFR = tmpreg;
+    151          }
+    152          
+    153          /**
+    154            * @brief  Enables the WWDG Early Wakeup interrupt(EWI).
+    155            * @param  None
+    156            * @retval None
+    157            */
+    158          void WWDG_EnableIT(void)
+    159          {
+    160            *(__IO uint32_t *) CFR_EWI_BB = (uint32_t)ENABLE;
+    161          }
+    162          
+    163          /**
+    164            * @brief  Sets the WWDG counter value.
+    165            * @param  Counter: specifies the watchdog counter value.
+    166            *   This parameter must be a number between 0x40 and 0x7F.
+    167            * @retval None
+    168            */
+    169          void WWDG_SetCounter(uint8_t Counter)
+    170          {
+    171            /* Check the parameters */
+    172            assert_param(IS_WWDG_COUNTER(Counter));
+    173            /* Write to T[6:0] bits to configure the counter value, no need to do
+    174               a read-modify-write; writing a 0 to WDGA bit does nothing */
+    175            WWDG->CR = Counter & BIT_Mask;
+    176          }
+    177          
+    178          /**
+    179            * @brief  Enables WWDG and load the counter value.                  
+    180            * @param  Counter: specifies the watchdog counter value.
+    181            *   This parameter must be a number between 0x40 and 0x7F.
+    182            * @retval None
+    183            */
+    184          void WWDG_Enable(uint8_t Counter)
+    185          {
+    186            /* Check the parameters */
+    187            assert_param(IS_WWDG_COUNTER(Counter));
+    188            WWDG->CR = CR_WDGA_Set | Counter;
+    189          }
+    190          
+    191          /**
+    192            * @brief  Checks whether the Early Wakeup interrupt flag is set or not.
+    193            * @param  None
+    194            * @retval The new state of the Early Wakeup interrupt flag (SET or RESET)
+    195            */
+    196          FlagStatus WWDG_GetFlagStatus(void)
+    197          {
+    198            return (FlagStatus)(WWDG->SR);
+    199          }
+    200          
+    201          /**
+    202            * @brief  Clears Early Wakeup interrupt flag.
+    203            * @param  None
+    204            * @retval None
+    205            */
+    206          void WWDG_ClearFlag(void)
+    207          {
+    208            WWDG->SR = (uint32_t)RESET;
+    209          }
+    210          
+    211          /**
+    212            * @}
+    213            */
+    214          
+    215          /**
+    216            * @}
+    217            */
+    218          
+    219          /**
+    220            * @}
+    221            */
+    222          
+    223          /******************* (C) COPYRIGHT 2010 STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+        0  WWDG_ClearFlag
+        8  WWDG_DeInit
+              8 -> RCC_APB1PeriphResetCmd
+        8  WWDG_Enable
+              8 -> assert_failed
+        0  WWDG_EnableIT
+        0  WWDG_GetFlagStatus
+        8  WWDG_SetCounter
+              8 -> assert_failed
+       16  WWDG_SetPrescaler
+             16 -> assert_failed
+       16  WWDG_SetWindowValue
+             16 -> assert_failed
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+     100  ?<Constant "C:\\Users\\TTT\\Desktop\\...">
+       4  ??DataTable6
+       4  ??DataTable6_1
+       4  ??DataTable6_2
+       4  ??DataTable6_3
+       4  ??DataTable6_4
+       8  WWDG_ClearFlag
+      24  WWDG_DeInit
+      36  WWDG_Enable
+       8  WWDG_EnableIT
+       8  WWDG_GetFlagStatus
+      36  WWDG_SetCounter
+      56  WWDG_SetPrescaler
+      54  WWDG_SetWindowValue
+
+ 
+ 100 bytes in section .rodata
+ 250 bytes in section .text
+ 
+ 250 bytes of CODE  memory
+ 100 bytes of CONST memory
+
+Errors: none
+Warnings: none

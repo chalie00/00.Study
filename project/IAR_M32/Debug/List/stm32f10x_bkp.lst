@@ -1,0 +1,409 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     29/Jun/2022  17:06:12 #
+# Copyright 1999-2011 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F1 #
+#                    0x_StdPeriph_Driver\src\stm32f10x_bkp.c                  #
+#    Command line =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F1 #
+#                    0x_StdPeriph_Driver\src\stm32f10x_bkp.c -D               #
+#                    USE_STDPERIPH_DRIVER -D STM32F10x_HD -D USE_FULL_ASSERT  #
+#                    -lcN C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_ #
+#                    M32\Debug\List\ -lb C:\Users\TTT\Desktop\zz.STDFW\00.Stu #
+#                    dy\project\IAR_M32\Debug\List\ -o                        #
+#                    C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\ --no_cse --no_unroll --no_inline               #
+#                    --no_code_motion --no_tbaa --no_clustering               #
+#                    --no_scheduling --debug --endian=little --cpu=Cortex-M3  #
+#                    -e --fpu=None --dlib_config "C:\Program Files (x86)\IAR  #
+#                    Systems\Embedded Workbench 6.0\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\I #
+#                    AR_M32\..\..\inc\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\CMSIS\CM3\DeviceSupp #
+#                    ort\ST\STM32F10x\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\STM32F10x_StdPeriph_ #
+#                    Driver\inc\ -I "C:\Program Files (x86)\IAR               #
+#                    Systems\Embedded Workbench 6.0\arm\inc\c\" -On -I        #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.0\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\List\stm32f10x_bkp.lst                              #
+#    Object file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\stm32f10x_bkp.o                                 #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_bkp.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    stm32f10x_bkp.c
+      4            * @author  MCD Application Team
+      5            * @version V3.4.0
+      6            * @date    10/15/2010
+      7            * @brief   This file provides all the BKP firmware functions.
+      8            ******************************************************************************
+      9            * @copy
+     10            *
+     11            * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+     12            * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+     13            * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+     14            * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+     15            * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+     16            * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+     17            *
+     18            * <h2><center>&copy; COPYRIGHT 2010 STMicroelectronics</center></h2>
+     19            */ 
+     20          
+     21          /* Includes ------------------------------------------------------------------*/
+     22          #include "stm32f10x_bkp.h"
+     23          #include "stm32f10x_rcc.h"
+     24          
+     25          /** @addtogroup STM32F10x_StdPeriph_Driver
+     26            * @{
+     27            */
+     28          
+     29          /** @defgroup BKP 
+     30            * @brief BKP driver modules
+     31            * @{
+     32            */
+     33          
+     34          /** @defgroup BKP_Private_TypesDefinitions
+     35            * @{
+     36            */
+     37          
+     38          /**
+     39            * @}
+     40            */
+     41          
+     42          /** @defgroup BKP_Private_Defines
+     43            * @{
+     44            */
+     45          
+     46          /* ------------ BKP registers bit address in the alias region --------------- */
+     47          #define BKP_OFFSET        (BKP_BASE - PERIPH_BASE)
+     48          
+     49          /* --- CR Register ----*/
+     50          
+     51          /* Alias word address of TPAL bit */
+     52          #define CR_OFFSET         (BKP_OFFSET + 0x30)
+     53          #define TPAL_BitNumber    0x01
+     54          #define CR_TPAL_BB        (PERIPH_BB_BASE + (CR_OFFSET * 32) + (TPAL_BitNumber * 4))
+     55          
+     56          /* Alias word address of TPE bit */
+     57          #define TPE_BitNumber     0x00
+     58          #define CR_TPE_BB         (PERIPH_BB_BASE + (CR_OFFSET * 32) + (TPE_BitNumber * 4))
+     59          
+     60          /* --- CSR Register ---*/
+     61          
+     62          /* Alias word address of TPIE bit */
+     63          #define CSR_OFFSET        (BKP_OFFSET + 0x34)
+     64          #define TPIE_BitNumber    0x02
+     65          #define CSR_TPIE_BB       (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (TPIE_BitNumber * 4))
+     66          
+     67          /* Alias word address of TIF bit */
+     68          #define TIF_BitNumber     0x09
+     69          #define CSR_TIF_BB        (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (TIF_BitNumber * 4))
+     70          
+     71          /* Alias word address of TEF bit */
+     72          #define TEF_BitNumber     0x08
+     73          #define CSR_TEF_BB        (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (TEF_BitNumber * 4))
+     74          
+     75          /* ---------------------- BKP registers bit mask ------------------------ */
+     76          
+     77          /* RTCCR register bit mask */
+     78          #define RTCCR_CAL_MASK    ((uint16_t)0xFF80)
+     79          #define RTCCR_MASK        ((uint16_t)0xFC7F)
+     80          
+     81          /**
+     82            * @}
+     83            */ 
+     84          
+     85          
+     86          /** @defgroup BKP_Private_Macros
+     87            * @{
+     88            */
+     89          
+     90          /**
+     91            * @}
+     92            */
+     93          
+     94          /** @defgroup BKP_Private_Variables
+     95            * @{
+     96            */
+     97          
+     98          /**
+     99            * @}
+    100            */
+    101          
+    102          /** @defgroup BKP_Private_FunctionPrototypes
+    103            * @{
+    104            */
+    105          
+    106          /**
+    107            * @}
+    108            */
+    109          
+    110          /** @defgroup BKP_Private_Functions
+    111            * @{
+    112            */
+    113          
+    114          /**
+    115            * @brief  Deinitializes the BKP peripheral registers to their default reset values.
+    116            * @param  None
+    117            * @retval None
+    118            */
+    119          void BKP_DeInit(void)
+    120          {
+    121            RCC_BackupResetCmd(ENABLE);
+    122            RCC_BackupResetCmd(DISABLE);
+    123          }
+    124          
+    125          /**
+    126            * @brief  Configures the Tamper Pin active level.
+    127            * @param  BKP_TamperPinLevel: specifies the Tamper Pin active level.
+    128            *   This parameter can be one of the following values:
+    129            *     @arg BKP_TamperPinLevel_High: Tamper pin active on high level
+    130            *     @arg BKP_TamperPinLevel_Low: Tamper pin active on low level
+    131            * @retval None
+    132            */
+    133          void BKP_TamperPinLevelConfig(uint16_t BKP_TamperPinLevel)
+    134          {
+    135            /* Check the parameters */
+    136            assert_param(IS_BKP_TAMPER_PIN_LEVEL(BKP_TamperPinLevel));
+    137            *(__IO uint32_t *) CR_TPAL_BB = BKP_TamperPinLevel;
+    138          }
+    139          
+    140          /**
+    141            * @brief  Enables or disables the Tamper Pin activation.
+    142            * @param  NewState: new state of the Tamper Pin activation.
+    143            *   This parameter can be: ENABLE or DISABLE.
+    144            * @retval None
+    145            */
+    146          void BKP_TamperPinCmd(FunctionalState NewState)
+    147          {
+    148            /* Check the parameters */
+    149            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    150            *(__IO uint32_t *) CR_TPE_BB = (uint32_t)NewState;
+    151          }
+    152          
+    153          /**
+    154            * @brief  Enables or disables the Tamper Pin Interrupt.
+    155            * @param  NewState: new state of the Tamper Pin Interrupt.
+    156            *   This parameter can be: ENABLE or DISABLE.
+    157            * @retval None
+    158            */
+    159          void BKP_ITConfig(FunctionalState NewState)
+    160          {
+    161            /* Check the parameters */
+    162            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    163            *(__IO uint32_t *) CSR_TPIE_BB = (uint32_t)NewState;
+    164          }
+    165          
+    166          /**
+    167            * @brief  Select the RTC output source to output on the Tamper pin.
+    168            * @param  BKP_RTCOutputSource: specifies the RTC output source.
+    169            *   This parameter can be one of the following values:
+    170            *     @arg BKP_RTCOutputSource_None: no RTC output on the Tamper pin.
+    171            *     @arg BKP_RTCOutputSource_CalibClock: output the RTC clock with frequency
+    172            *                                          divided by 64 on the Tamper pin.
+    173            *     @arg BKP_RTCOutputSource_Alarm: output the RTC Alarm pulse signal on
+    174            *                                     the Tamper pin.
+    175            *     @arg BKP_RTCOutputSource_Second: output the RTC Second pulse signal on
+    176            *                                      the Tamper pin.  
+    177            * @retval None
+    178            */
+    179          void BKP_RTCOutputConfig(uint16_t BKP_RTCOutputSource)
+    180          {
+    181            uint16_t tmpreg = 0;
+    182            /* Check the parameters */
+    183            assert_param(IS_BKP_RTC_OUTPUT_SOURCE(BKP_RTCOutputSource));
+    184            tmpreg = BKP->RTCCR;
+    185            /* Clear CCO, ASOE and ASOS bits */
+    186            tmpreg &= RTCCR_MASK;
+    187            
+    188            /* Set CCO, ASOE and ASOS bits according to BKP_RTCOutputSource value */
+    189            tmpreg |= BKP_RTCOutputSource;
+    190            /* Store the new value */
+    191            BKP->RTCCR = tmpreg;
+    192          }
+    193          
+    194          /**
+    195            * @brief  Sets RTC Clock Calibration value.
+    196            * @param  CalibrationValue: specifies the RTC Clock Calibration value.
+    197            *   This parameter must be a number between 0 and 0x7F.
+    198            * @retval None
+    199            */
+    200          void BKP_SetRTCCalibrationValue(uint8_t CalibrationValue)
+    201          {
+    202            uint16_t tmpreg = 0;
+    203            /* Check the parameters */
+    204            assert_param(IS_BKP_CALIBRATION_VALUE(CalibrationValue));
+    205            tmpreg = BKP->RTCCR;
+    206            /* Clear CAL[6:0] bits */
+    207            tmpreg &= RTCCR_CAL_MASK;
+    208            /* Set CAL[6:0] bits according to CalibrationValue value */
+    209            tmpreg |= CalibrationValue;
+    210            /* Store the new value */
+    211            BKP->RTCCR = tmpreg;
+    212          }
+    213          
+    214          /**
+    215            * @brief  Writes user data to the specified Data Backup Register.
+    216            * @param  BKP_DR: specifies the Data Backup Register.
+    217            *   This parameter can be BKP_DRx where x:[1, 42]
+    218            * @param  Data: data to write
+    219            * @retval None
+    220            */
+    221          void BKP_WriteBackupRegister(uint16_t BKP_DR, uint16_t Data)
+    222          {
+    223            __IO uint32_t tmp = 0;
+    224          
+    225            /* Check the parameters */
+    226            assert_param(IS_BKP_DR(BKP_DR));
+    227          
+    228            tmp = (uint32_t)BKP_BASE; 
+    229            tmp += BKP_DR;
+    230          
+    231            *(__IO uint32_t *) tmp = Data;
+    232          }
+    233          
+    234          /**
+    235            * @brief  Reads data from the specified Data Backup Register.
+    236            * @param  BKP_DR: specifies the Data Backup Register.
+    237            *   This parameter can be BKP_DRx where x:[1, 42]
+    238            * @retval The content of the specified Data Backup Register
+    239            */
+    240          uint16_t BKP_ReadBackupRegister(uint16_t BKP_DR)
+    241          {
+    242            __IO uint32_t tmp = 0;
+    243          
+    244            /* Check the parameters */
+    245            assert_param(IS_BKP_DR(BKP_DR));
+    246          
+    247            tmp = (uint32_t)BKP_BASE; 
+    248            tmp += BKP_DR;
+    249          
+    250            return (*(__IO uint16_t *) tmp);
+    251          }
+    252          
+    253          /**
+    254            * @brief  Checks whether the Tamper Pin Event flag is set or not.
+    255            * @param  None
+    256            * @retval The new state of the Tamper Pin Event flag (SET or RESET).
+    257            */
+    258          FlagStatus BKP_GetFlagStatus(void)
+    259          {
+    260            return (FlagStatus)(*(__IO uint32_t *) CSR_TEF_BB);
+    261          }
+    262          
+    263          /**
+    264            * @brief  Clears Tamper Pin Event pending flag.
+    265            * @param  None
+    266            * @retval None
+    267            */
+    268          void BKP_ClearFlag(void)
+    269          {
+    270            /* Set CTE bit to clear Tamper Pin Event flag */
+    271            BKP->CSR |= BKP_CSR_CTE;
+    272          }
+    273          
+    274          /**
+    275            * @brief  Checks whether the Tamper Pin Interrupt has occurred or not.
+    276            * @param  None
+    277            * @retval The new state of the Tamper Pin Interrupt (SET or RESET).
+    278            */
+    279          ITStatus BKP_GetITStatus(void)
+    280          {
+    281            return (ITStatus)(*(__IO uint32_t *) CSR_TIF_BB);
+    282          }
+    283          
+    284          /**
+    285            * @brief  Clears Tamper Pin Interrupt pending bit.
+    286            * @param  None
+    287            * @retval None
+    288            */
+    289          void BKP_ClearITPendingBit(void)
+    290          {
+    291            /* Set CTI bit to clear Tamper Pin Interrupt pending bit */
+    292            BKP->CSR |= BKP_CSR_CTI;
+    293          }
+    294          
+    295          /**
+    296            * @}
+    297            */
+    298          
+    299          /**
+    300            * @}
+    301            */
+    302          
+    303          /**
+    304            * @}
+    305            */
+    306          
+    307          /******************* (C) COPYRIGHT 2010 STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+        0  BKP_ClearFlag
+        0  BKP_ClearITPendingBit
+        8  BKP_DeInit
+              8 -> RCC_BackupResetCmd
+        0  BKP_GetFlagStatus
+        0  BKP_GetITStatus
+        8  BKP_ITConfig
+              8 -> assert_failed
+       16  BKP_RTCOutputConfig
+             16 -> assert_failed
+       16  BKP_ReadBackupRegister
+             16 -> assert_failed
+       16  BKP_SetRTCCalibrationValue
+             16 -> assert_failed
+        8  BKP_TamperPinCmd
+              8 -> assert_failed
+        8  BKP_TamperPinLevelConfig
+              8 -> assert_failed
+       16  BKP_WriteBackupRegister
+             16 -> assert_failed
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      96  ?<Constant "C:\\Users\\TTT\\Desktop\\...">
+       4  ??DataTable10
+       4  ??DataTable10_1
+       4  ??DataTable10_2
+       4  ??DataTable10_3
+       4  ??DataTable10_4
+       4  ??DataTable10_5
+       4  ??DataTable10_6
+       4  ??DataTable10_7
+       4  ??DataTable10_8
+      14  BKP_ClearFlag
+      14  BKP_ClearITPendingBit
+      16  BKP_DeInit
+       8  BKP_GetFlagStatus
+       8  BKP_GetITStatus
+      32  BKP_ITConfig
+      66  BKP_RTCOutputConfig
+     290  BKP_ReadBackupRegister
+      42  BKP_SetRTCCalibrationValue
+      36  BKP_TamperPinCmd
+      36  BKP_TamperPinLevelConfig
+     292  BKP_WriteBackupRegister
+
+ 
+  96 bytes in section .rodata
+ 890 bytes in section .text
+ 
+ 890 bytes of CODE  memory
+  96 bytes of CONST memory
+
+Errors: none
+Warnings: none

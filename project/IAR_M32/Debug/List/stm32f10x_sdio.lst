@@ -1,0 +1,968 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     29/Jun/2022  17:06:15 #
+# Copyright 1999-2011 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F1 #
+#                    0x_StdPeriph_Driver\src\stm32f10x_sdio.c                 #
+#    Command line =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F1 #
+#                    0x_StdPeriph_Driver\src\stm32f10x_sdio.c -D              #
+#                    USE_STDPERIPH_DRIVER -D STM32F10x_HD -D USE_FULL_ASSERT  #
+#                    -lcN C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_ #
+#                    M32\Debug\List\ -lb C:\Users\TTT\Desktop\zz.STDFW\00.Stu #
+#                    dy\project\IAR_M32\Debug\List\ -o                        #
+#                    C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\ --no_cse --no_unroll --no_inline               #
+#                    --no_code_motion --no_tbaa --no_clustering               #
+#                    --no_scheduling --debug --endian=little --cpu=Cortex-M3  #
+#                    -e --fpu=None --dlib_config "C:\Program Files (x86)\IAR  #
+#                    Systems\Embedded Workbench 6.0\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\I #
+#                    AR_M32\..\..\inc\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\CMSIS\CM3\DeviceSupp #
+#                    ort\ST\STM32F10x\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\STM32F10x_StdPeriph_ #
+#                    Driver\inc\ -I "C:\Program Files (x86)\IAR               #
+#                    Systems\Embedded Workbench 6.0\arm\inc\c\" -On -I        #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.0\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\List\stm32f10x_sdio.lst                             #
+#    Object file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\stm32f10x_sdio.o                                #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_sdio.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    stm32f10x_sdio.c
+      4            * @author  MCD Application Team
+      5            * @version V3.4.0
+      6            * @date    10/15/2010
+      7            * @brief   This file provides all the SDIO firmware functions.
+      8            ******************************************************************************
+      9            * @copy
+     10            *
+     11            * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+     12            * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+     13            * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+     14            * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+     15            * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+     16            * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+     17            *
+     18            * <h2><center>&copy; COPYRIGHT 2010 STMicroelectronics</center></h2>
+     19            */ 
+     20          
+     21          /* Includes ------------------------------------------------------------------*/
+     22          #include "stm32f10x_sdio.h"
+     23          #include "stm32f10x_rcc.h"
+     24          
+     25          /** @addtogroup STM32F10x_StdPeriph_Driver
+     26            * @{
+     27            */
+     28          
+     29          /** @defgroup SDIO 
+     30            * @brief SDIO driver modules
+     31            * @{
+     32            */ 
+     33          
+     34          /** @defgroup SDIO_Private_TypesDefinitions
+     35            * @{
+     36            */ 
+     37          
+     38          /* ------------ SDIO registers bit address in the alias region ----------- */
+     39          #define SDIO_OFFSET                (SDIO_BASE - PERIPH_BASE)
+     40          
+     41          /* --- CLKCR Register ---*/
+     42          
+     43          /* Alias word address of CLKEN bit */
+     44          #define CLKCR_OFFSET              (SDIO_OFFSET + 0x04)
+     45          #define CLKEN_BitNumber           0x08
+     46          #define CLKCR_CLKEN_BB            (PERIPH_BB_BASE + (CLKCR_OFFSET * 32) + (CLKEN_BitNumber * 4))
+     47          
+     48          /* --- CMD Register ---*/
+     49          
+     50          /* Alias word address of SDIOSUSPEND bit */
+     51          #define CMD_OFFSET                (SDIO_OFFSET + 0x0C)
+     52          #define SDIOSUSPEND_BitNumber     0x0B
+     53          #define CMD_SDIOSUSPEND_BB        (PERIPH_BB_BASE + (CMD_OFFSET * 32) + (SDIOSUSPEND_BitNumber * 4))
+     54          
+     55          /* Alias word address of ENCMDCOMPL bit */
+     56          #define ENCMDCOMPL_BitNumber      0x0C
+     57          #define CMD_ENCMDCOMPL_BB         (PERIPH_BB_BASE + (CMD_OFFSET * 32) + (ENCMDCOMPL_BitNumber * 4))
+     58          
+     59          /* Alias word address of NIEN bit */
+     60          #define NIEN_BitNumber            0x0D
+     61          #define CMD_NIEN_BB               (PERIPH_BB_BASE + (CMD_OFFSET * 32) + (NIEN_BitNumber * 4))
+     62          
+     63          /* Alias word address of ATACMD bit */
+     64          #define ATACMD_BitNumber          0x0E
+     65          #define CMD_ATACMD_BB             (PERIPH_BB_BASE + (CMD_OFFSET * 32) + (ATACMD_BitNumber * 4))
+     66          
+     67          /* --- DCTRL Register ---*/
+     68          
+     69          /* Alias word address of DMAEN bit */
+     70          #define DCTRL_OFFSET              (SDIO_OFFSET + 0x2C)
+     71          #define DMAEN_BitNumber           0x03
+     72          #define DCTRL_DMAEN_BB            (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (DMAEN_BitNumber * 4))
+     73          
+     74          /* Alias word address of RWSTART bit */
+     75          #define RWSTART_BitNumber         0x08
+     76          #define DCTRL_RWSTART_BB          (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (RWSTART_BitNumber * 4))
+     77          
+     78          /* Alias word address of RWSTOP bit */
+     79          #define RWSTOP_BitNumber          0x09
+     80          #define DCTRL_RWSTOP_BB           (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (RWSTOP_BitNumber * 4))
+     81          
+     82          /* Alias word address of RWMOD bit */
+     83          #define RWMOD_BitNumber           0x0A
+     84          #define DCTRL_RWMOD_BB            (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (RWMOD_BitNumber * 4))
+     85          
+     86          /* Alias word address of SDIOEN bit */
+     87          #define SDIOEN_BitNumber          0x0B
+     88          #define DCTRL_SDIOEN_BB           (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (SDIOEN_BitNumber * 4))
+     89          
+     90          /* ---------------------- SDIO registers bit mask ------------------------ */
+     91          
+     92          /* --- CLKCR Register ---*/
+     93          
+     94          /* CLKCR register clear mask */
+     95          #define CLKCR_CLEAR_MASK         ((uint32_t)0xFFFF8100) 
+     96          
+     97          /* --- PWRCTRL Register ---*/
+     98          
+     99          /* SDIO PWRCTRL Mask */
+    100          #define PWR_PWRCTRL_MASK         ((uint32_t)0xFFFFFFFC)
+    101          
+    102          /* --- DCTRL Register ---*/
+    103          
+    104          /* SDIO DCTRL Clear Mask */
+    105          #define DCTRL_CLEAR_MASK         ((uint32_t)0xFFFFFF08)
+    106          
+    107          /* --- CMD Register ---*/
+    108          
+    109          /* CMD Register clear mask */
+    110          #define CMD_CLEAR_MASK           ((uint32_t)0xFFFFF800)
+    111          
+    112          /* SDIO RESP Registers Address */
+    113          #define SDIO_RESP_ADDR           ((uint32_t)(SDIO_BASE + 0x14))
+    114          
+    115          /**
+    116            * @}
+    117            */
+    118          
+    119          /** @defgroup SDIO_Private_Defines
+    120            * @{
+    121            */
+    122          
+    123          /**
+    124            * @}
+    125            */
+    126          
+    127          /** @defgroup SDIO_Private_Macros
+    128            * @{
+    129            */
+    130          
+    131          /**
+    132            * @}
+    133            */
+    134          
+    135          /** @defgroup SDIO_Private_Variables
+    136            * @{
+    137            */
+    138          
+    139          /**
+    140            * @}
+    141            */
+    142          
+    143          /** @defgroup SDIO_Private_FunctionPrototypes
+    144            * @{
+    145            */
+    146          
+    147          /**
+    148            * @}
+    149            */
+    150          
+    151          /** @defgroup SDIO_Private_Functions
+    152            * @{
+    153            */
+    154          
+    155          /**
+    156            * @brief  Deinitializes the SDIO peripheral registers to their default reset values.
+    157            * @param  None
+    158            * @retval None
+    159            */
+    160          void SDIO_DeInit(void)
+    161          {
+    162            SDIO->POWER = 0x00000000;
+    163            SDIO->CLKCR = 0x00000000;
+    164            SDIO->ARG = 0x00000000;
+    165            SDIO->CMD = 0x00000000;
+    166            SDIO->DTIMER = 0x00000000;
+    167            SDIO->DLEN = 0x00000000;
+    168            SDIO->DCTRL = 0x00000000;
+    169            SDIO->ICR = 0x00C007FF;
+    170            SDIO->MASK = 0x00000000;
+    171          }
+    172          
+    173          /**
+    174            * @brief  Initializes the SDIO peripheral according to the specified 
+    175            *   parameters in the SDIO_InitStruct.
+    176            * @param  SDIO_InitStruct : pointer to a SDIO_InitTypeDef structure 
+    177            *   that contains the configuration information for the SDIO peripheral.
+    178            * @retval None
+    179            */
+    180          void SDIO_Init(SDIO_InitTypeDef* SDIO_InitStruct)
+    181          {
+    182            uint32_t tmpreg = 0;
+    183              
+    184            /* Check the parameters */
+    185            assert_param(IS_SDIO_CLOCK_EDGE(SDIO_InitStruct->SDIO_ClockEdge));
+    186            assert_param(IS_SDIO_CLOCK_BYPASS(SDIO_InitStruct->SDIO_ClockBypass));
+    187            assert_param(IS_SDIO_CLOCK_POWER_SAVE(SDIO_InitStruct->SDIO_ClockPowerSave));
+    188            assert_param(IS_SDIO_BUS_WIDE(SDIO_InitStruct->SDIO_BusWide));
+    189            assert_param(IS_SDIO_HARDWARE_FLOW_CONTROL(SDIO_InitStruct->SDIO_HardwareFlowControl)); 
+    190             
+    191          /*---------------------------- SDIO CLKCR Configuration ------------------------*/  
+    192            /* Get the SDIO CLKCR value */
+    193            tmpreg = SDIO->CLKCR;
+    194            
+    195            /* Clear CLKDIV, PWRSAV, BYPASS, WIDBUS, NEGEDGE, HWFC_EN bits */
+    196            tmpreg &= CLKCR_CLEAR_MASK;
+    197            
+    198            /* Set CLKDIV bits according to SDIO_ClockDiv value */
+    199            /* Set PWRSAV bit according to SDIO_ClockPowerSave value */
+    200            /* Set BYPASS bit according to SDIO_ClockBypass value */
+    201            /* Set WIDBUS bits according to SDIO_BusWide value */
+    202            /* Set NEGEDGE bits according to SDIO_ClockEdge value */
+    203            /* Set HWFC_EN bits according to SDIO_HardwareFlowControl value */
+    204            tmpreg |= (SDIO_InitStruct->SDIO_ClockDiv  | SDIO_InitStruct->SDIO_ClockPowerSave |
+    205                       SDIO_InitStruct->SDIO_ClockBypass | SDIO_InitStruct->SDIO_BusWide |
+    206                       SDIO_InitStruct->SDIO_ClockEdge | SDIO_InitStruct->SDIO_HardwareFlowControl); 
+    207            
+    208            /* Write to SDIO CLKCR */
+    209            SDIO->CLKCR = tmpreg;
+    210          }
+    211          
+    212          /**
+    213            * @brief  Fills each SDIO_InitStruct member with its default value.
+    214            * @param  SDIO_InitStruct: pointer to an SDIO_InitTypeDef structure which 
+    215            *   will be initialized.
+    216            * @retval None
+    217            */
+    218          void SDIO_StructInit(SDIO_InitTypeDef* SDIO_InitStruct)
+    219          {
+    220            /* SDIO_InitStruct members default value */
+    221            SDIO_InitStruct->SDIO_ClockDiv = 0x00;
+    222            SDIO_InitStruct->SDIO_ClockEdge = SDIO_ClockEdge_Rising;
+    223            SDIO_InitStruct->SDIO_ClockBypass = SDIO_ClockBypass_Disable;
+    224            SDIO_InitStruct->SDIO_ClockPowerSave = SDIO_ClockPowerSave_Disable;
+    225            SDIO_InitStruct->SDIO_BusWide = SDIO_BusWide_1b;
+    226            SDIO_InitStruct->SDIO_HardwareFlowControl = SDIO_HardwareFlowControl_Disable;
+    227          }
+    228          
+    229          /**
+    230            * @brief  Enables or disables the SDIO Clock.
+    231            * @param  NewState: new state of the SDIO Clock. This parameter can be: ENABLE or DISABLE.
+    232            * @retval None
+    233            */
+    234          void SDIO_ClockCmd(FunctionalState NewState)
+    235          {
+    236            /* Check the parameters */
+    237            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    238            
+    239            *(__IO uint32_t *) CLKCR_CLKEN_BB = (uint32_t)NewState;
+    240          }
+    241          
+    242          /**
+    243            * @brief  Sets the power status of the controller.
+    244            * @param  SDIO_PowerState: new state of the Power state. 
+    245            *   This parameter can be one of the following values:
+    246            *     @arg SDIO_PowerState_OFF
+    247            *     @arg SDIO_PowerState_ON
+    248            * @retval None
+    249            */
+    250          void SDIO_SetPowerState(uint32_t SDIO_PowerState)
+    251          {
+    252            /* Check the parameters */
+    253            assert_param(IS_SDIO_POWER_STATE(SDIO_PowerState));
+    254            
+    255            SDIO->POWER &= PWR_PWRCTRL_MASK;
+    256            SDIO->POWER |= SDIO_PowerState;
+    257          }
+    258          
+    259          /**
+    260            * @brief  Gets the power status of the controller.
+    261            * @param  None
+    262            * @retval Power status of the controller. The returned value can
+    263            *   be one of the following:
+    264            * - 0x00: Power OFF
+    265            * - 0x02: Power UP
+    266            * - 0x03: Power ON 
+    267            */
+    268          uint32_t SDIO_GetPowerState(void)
+    269          {
+    270            return (SDIO->POWER & (~PWR_PWRCTRL_MASK));
+    271          }
+    272          
+    273          /**
+    274            * @brief  Enables or disables the SDIO interrupts.
+    275            * @param  SDIO_IT: specifies the SDIO interrupt sources to be enabled or disabled.
+    276            *   This parameter can be one or a combination of the following values:
+    277            *     @arg SDIO_IT_CCRCFAIL: Command response received (CRC check failed) interrupt
+    278            *     @arg SDIO_IT_DCRCFAIL: Data block sent/received (CRC check failed) interrupt
+    279            *     @arg SDIO_IT_CTIMEOUT: Command response timeout interrupt
+    280            *     @arg SDIO_IT_DTIMEOUT: Data timeout interrupt
+    281            *     @arg SDIO_IT_TXUNDERR: Transmit FIFO underrun error interrupt
+    282            *     @arg SDIO_IT_RXOVERR:  Received FIFO overrun error interrupt
+    283            *     @arg SDIO_IT_CMDREND:  Command response received (CRC check passed) interrupt
+    284            *     @arg SDIO_IT_CMDSENT:  Command sent (no response required) interrupt
+    285            *     @arg SDIO_IT_DATAEND:  Data end (data counter, SDIDCOUNT, is zero) interrupt
+    286            *     @arg SDIO_IT_STBITERR: Start bit not detected on all data signals in wide 
+    287            *                            bus mode interrupt
+    288            *     @arg SDIO_IT_DBCKEND:  Data block sent/received (CRC check passed) interrupt
+    289            *     @arg SDIO_IT_CMDACT:   Command transfer in progress interrupt
+    290            *     @arg SDIO_IT_TXACT:    Data transmit in progress interrupt
+    291            *     @arg SDIO_IT_RXACT:    Data receive in progress interrupt
+    292            *     @arg SDIO_IT_TXFIFOHE: Transmit FIFO Half Empty interrupt
+    293            *     @arg SDIO_IT_RXFIFOHF: Receive FIFO Half Full interrupt
+    294            *     @arg SDIO_IT_TXFIFOF:  Transmit FIFO full interrupt
+    295            *     @arg SDIO_IT_RXFIFOF:  Receive FIFO full interrupt
+    296            *     @arg SDIO_IT_TXFIFOE:  Transmit FIFO empty interrupt
+    297            *     @arg SDIO_IT_RXFIFOE:  Receive FIFO empty interrupt
+    298            *     @arg SDIO_IT_TXDAVL:   Data available in transmit FIFO interrupt
+    299            *     @arg SDIO_IT_RXDAVL:   Data available in receive FIFO interrupt
+    300            *     @arg SDIO_IT_SDIOIT:   SD I/O interrupt received interrupt
+    301            *     @arg SDIO_IT_CEATAEND: CE-ATA command completion signal received for CMD61 interrupt
+    302            * @param  NewState: new state of the specified SDIO interrupts.
+    303            *   This parameter can be: ENABLE or DISABLE.
+    304            * @retval None 
+    305            */
+    306          void SDIO_ITConfig(uint32_t SDIO_IT, FunctionalState NewState)
+    307          {
+    308            /* Check the parameters */
+    309            assert_param(IS_SDIO_IT(SDIO_IT));
+    310            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    311            
+    312            if (NewState != DISABLE)
+    313            {
+    314              /* Enable the SDIO interrupts */
+    315              SDIO->MASK |= SDIO_IT;
+    316            }
+    317            else
+    318            {
+    319              /* Disable the SDIO interrupts */
+    320              SDIO->MASK &= ~SDIO_IT;
+    321            } 
+    322          }
+    323          
+    324          /**
+    325            * @brief  Enables or disables the SDIO DMA request.
+    326            * @param  NewState: new state of the selected SDIO DMA request.
+    327            *   This parameter can be: ENABLE or DISABLE.
+    328            * @retval None
+    329            */
+    330          void SDIO_DMACmd(FunctionalState NewState)
+    331          {
+    332            /* Check the parameters */
+    333            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    334            
+    335            *(__IO uint32_t *) DCTRL_DMAEN_BB = (uint32_t)NewState;
+    336          }
+    337          
+    338          /**
+    339            * @brief  Initializes the SDIO Command according to the specified 
+    340            *   parameters in the SDIO_CmdInitStruct and send the command.
+    341            * @param  SDIO_CmdInitStruct : pointer to a SDIO_CmdInitTypeDef 
+    342            *   structure that contains the configuration information for the SDIO command.
+    343            * @retval None
+    344            */
+    345          void SDIO_SendCommand(SDIO_CmdInitTypeDef *SDIO_CmdInitStruct)
+    346          {
+    347            uint32_t tmpreg = 0;
+    348            
+    349            /* Check the parameters */
+    350            assert_param(IS_SDIO_CMD_INDEX(SDIO_CmdInitStruct->SDIO_CmdIndex));
+    351            assert_param(IS_SDIO_RESPONSE(SDIO_CmdInitStruct->SDIO_Response));
+    352            assert_param(IS_SDIO_WAIT(SDIO_CmdInitStruct->SDIO_Wait));
+    353            assert_param(IS_SDIO_CPSM(SDIO_CmdInitStruct->SDIO_CPSM));
+    354            
+    355          /*---------------------------- SDIO ARG Configuration ------------------------*/
+    356            /* Set the SDIO Argument value */
+    357            SDIO->ARG = SDIO_CmdInitStruct->SDIO_Argument;
+    358            
+    359          /*---------------------------- SDIO CMD Configuration ------------------------*/  
+    360            /* Get the SDIO CMD value */
+    361            tmpreg = SDIO->CMD;
+    362            /* Clear CMDINDEX, WAITRESP, WAITINT, WAITPEND, CPSMEN bits */
+    363            tmpreg &= CMD_CLEAR_MASK;
+    364            /* Set CMDINDEX bits according to SDIO_CmdIndex value */
+    365            /* Set WAITRESP bits according to SDIO_Response value */
+    366            /* Set WAITINT and WAITPEND bits according to SDIO_Wait value */
+    367            /* Set CPSMEN bits according to SDIO_CPSM value */
+    368            tmpreg |= (uint32_t)SDIO_CmdInitStruct->SDIO_CmdIndex | SDIO_CmdInitStruct->SDIO_Response
+    369                     | SDIO_CmdInitStruct->SDIO_Wait | SDIO_CmdInitStruct->SDIO_CPSM;
+    370            
+    371            /* Write to SDIO CMD */
+    372            SDIO->CMD = tmpreg;
+    373          }
+    374          
+    375          /**
+    376            * @brief  Fills each SDIO_CmdInitStruct member with its default value.
+    377            * @param  SDIO_CmdInitStruct: pointer to an SDIO_CmdInitTypeDef 
+    378            *   structure which will be initialized.
+    379            * @retval None
+    380            */
+    381          void SDIO_CmdStructInit(SDIO_CmdInitTypeDef* SDIO_CmdInitStruct)
+    382          {
+    383            /* SDIO_CmdInitStruct members default value */
+    384            SDIO_CmdInitStruct->SDIO_Argument = 0x00;
+    385            SDIO_CmdInitStruct->SDIO_CmdIndex = 0x00;
+    386            SDIO_CmdInitStruct->SDIO_Response = SDIO_Response_No;
+    387            SDIO_CmdInitStruct->SDIO_Wait = SDIO_Wait_No;
+    388            SDIO_CmdInitStruct->SDIO_CPSM = SDIO_CPSM_Disable;
+    389          }
+    390          
+    391          /**
+    392            * @brief  Returns command index of last command for which response received.
+    393            * @param  None
+    394            * @retval Returns the command index of the last command response received.
+    395            */
+    396          uint8_t SDIO_GetCommandResponse(void)
+    397          {
+    398            return (uint8_t)(SDIO->RESPCMD);
+    399          }
+    400          
+    401          /**
+    402            * @brief  Returns response received from the card for the last command.
+    403            * @param  SDIO_RESP: Specifies the SDIO response register. 
+    404            *   This parameter can be one of the following values:
+    405            *     @arg SDIO_RESP1: Response Register 1
+    406            *     @arg SDIO_RESP2: Response Register 2
+    407            *     @arg SDIO_RESP3: Response Register 3
+    408            *     @arg SDIO_RESP4: Response Register 4
+    409            * @retval The Corresponding response register value.
+    410            */
+    411          uint32_t SDIO_GetResponse(uint32_t SDIO_RESP)
+    412          {
+    413            __IO uint32_t tmp = 0;
+    414          
+    415            /* Check the parameters */
+    416            assert_param(IS_SDIO_RESP(SDIO_RESP));
+    417          
+    418            tmp = SDIO_RESP_ADDR + SDIO_RESP;
+    419            
+    420            return (*(__IO uint32_t *) tmp); 
+    421          }
+    422          
+    423          /**
+    424            * @brief  Initializes the SDIO data path according to the specified 
+    425            *   parameters in the SDIO_DataInitStruct.
+    426            * @param  SDIO_DataInitStruct : pointer to a SDIO_DataInitTypeDef structure that
+    427            *   contains the configuration information for the SDIO command.
+    428            * @retval None
+    429            */
+    430          void SDIO_DataConfig(SDIO_DataInitTypeDef* SDIO_DataInitStruct)
+    431          {
+    432            uint32_t tmpreg = 0;
+    433            
+    434            /* Check the parameters */
+    435            assert_param(IS_SDIO_DATA_LENGTH(SDIO_DataInitStruct->SDIO_DataLength));
+    436            assert_param(IS_SDIO_BLOCK_SIZE(SDIO_DataInitStruct->SDIO_DataBlockSize));
+    437            assert_param(IS_SDIO_TRANSFER_DIR(SDIO_DataInitStruct->SDIO_TransferDir));
+    438            assert_param(IS_SDIO_TRANSFER_MODE(SDIO_DataInitStruct->SDIO_TransferMode));
+    439            assert_param(IS_SDIO_DPSM(SDIO_DataInitStruct->SDIO_DPSM));
+    440          
+    441          /*---------------------------- SDIO DTIMER Configuration ---------------------*/
+    442            /* Set the SDIO Data TimeOut value */
+    443            SDIO->DTIMER = SDIO_DataInitStruct->SDIO_DataTimeOut;
+    444          
+    445          /*---------------------------- SDIO DLEN Configuration -----------------------*/
+    446            /* Set the SDIO DataLength value */
+    447            SDIO->DLEN = SDIO_DataInitStruct->SDIO_DataLength;
+    448          
+    449          /*---------------------------- SDIO DCTRL Configuration ----------------------*/  
+    450            /* Get the SDIO DCTRL value */
+    451            tmpreg = SDIO->DCTRL;
+    452            /* Clear DEN, DTMODE, DTDIR and DBCKSIZE bits */
+    453            tmpreg &= DCTRL_CLEAR_MASK;
+    454            /* Set DEN bit according to SDIO_DPSM value */
+    455            /* Set DTMODE bit according to SDIO_TransferMode value */
+    456            /* Set DTDIR bit according to SDIO_TransferDir value */
+    457            /* Set DBCKSIZE bits according to SDIO_DataBlockSize value */
+    458            tmpreg |= (uint32_t)SDIO_DataInitStruct->SDIO_DataBlockSize | SDIO_DataInitStruct->SDIO_TransferDir
+    459                     | SDIO_DataInitStruct->SDIO_TransferMode | SDIO_DataInitStruct->SDIO_DPSM;
+    460          
+    461            /* Write to SDIO DCTRL */
+    462            SDIO->DCTRL = tmpreg;
+    463          }
+    464          
+    465          /**
+    466            * @brief  Fills each SDIO_DataInitStruct member with its default value.
+    467            * @param  SDIO_DataInitStruct: pointer to an SDIO_DataInitTypeDef structure which
+    468            *   will be initialized.
+    469            * @retval None
+    470            */
+    471          void SDIO_DataStructInit(SDIO_DataInitTypeDef* SDIO_DataInitStruct)
+    472          {
+    473            /* SDIO_DataInitStruct members default value */
+    474            SDIO_DataInitStruct->SDIO_DataTimeOut = 0xFFFFFFFF;
+    475            SDIO_DataInitStruct->SDIO_DataLength = 0x00;
+    476            SDIO_DataInitStruct->SDIO_DataBlockSize = SDIO_DataBlockSize_1b;
+    477            SDIO_DataInitStruct->SDIO_TransferDir = SDIO_TransferDir_ToCard;
+    478            SDIO_DataInitStruct->SDIO_TransferMode = SDIO_TransferMode_Block;  
+    479            SDIO_DataInitStruct->SDIO_DPSM = SDIO_DPSM_Disable;
+    480          }
+    481          
+    482          /**
+    483            * @brief  Returns number of remaining data bytes to be transferred.
+    484            * @param  None
+    485            * @retval Number of remaining data bytes to be transferred
+    486            */
+    487          uint32_t SDIO_GetDataCounter(void)
+    488          { 
+    489            return SDIO->DCOUNT;
+    490          }
+    491          
+    492          /**
+    493            * @brief  Read one data word from Rx FIFO.
+    494            * @param  None
+    495            * @retval Data received
+    496            */
+    497          uint32_t SDIO_ReadData(void)
+    498          { 
+    499            return SDIO->FIFO;
+    500          }
+    501          
+    502          /**
+    503            * @brief  Write one data word to Tx FIFO.
+    504            * @param  Data: 32-bit data word to write.
+    505            * @retval None
+    506            */
+    507          void SDIO_WriteData(uint32_t Data)
+    508          { 
+    509            SDIO->FIFO = Data;
+    510          }
+    511          
+    512          /**
+    513            * @brief  Returns the number of words left to be written to or read from FIFO.	
+    514            * @param  None
+    515            * @retval Remaining number of words.
+    516            */
+    517          uint32_t SDIO_GetFIFOCount(void)
+    518          { 
+    519            return SDIO->FIFOCNT;
+    520          }
+    521          
+    522          /**
+    523            * @brief  Starts the SD I/O Read Wait operation.	
+    524            * @param  NewState: new state of the Start SDIO Read Wait operation. 
+    525            *   This parameter can be: ENABLE or DISABLE.
+    526            * @retval None
+    527            */
+    528          void SDIO_StartSDIOReadWait(FunctionalState NewState)
+    529          { 
+    530            /* Check the parameters */
+    531            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    532            
+    533            *(__IO uint32_t *) DCTRL_RWSTART_BB = (uint32_t) NewState;
+    534          }
+    535          
+    536          /**
+    537            * @brief  Stops the SD I/O Read Wait operation.	
+    538            * @param  NewState: new state of the Stop SDIO Read Wait operation. 
+    539            *   This parameter can be: ENABLE or DISABLE.
+    540            * @retval None
+    541            */
+    542          void SDIO_StopSDIOReadWait(FunctionalState NewState)
+    543          { 
+    544            /* Check the parameters */
+    545            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    546            
+    547            *(__IO uint32_t *) DCTRL_RWSTOP_BB = (uint32_t) NewState;
+    548          }
+    549          
+    550          /**
+    551            * @brief  Sets one of the two options of inserting read wait interval.
+    552            * @param  SDIO_ReadWaitMode: SD I/O Read Wait operation mode.
+    553            *   This parametre can be:
+    554            *     @arg SDIO_ReadWaitMode_CLK: Read Wait control by stopping SDIOCLK
+    555            *     @arg SDIO_ReadWaitMode_DATA2: Read Wait control using SDIO_DATA2
+    556            * @retval None
+    557            */
+    558          void SDIO_SetSDIOReadWaitMode(uint32_t SDIO_ReadWaitMode)
+    559          {
+    560            /* Check the parameters */
+    561            assert_param(IS_SDIO_READWAIT_MODE(SDIO_ReadWaitMode));
+    562            
+    563            *(__IO uint32_t *) DCTRL_RWMOD_BB = SDIO_ReadWaitMode;
+    564          }
+    565          
+    566          /**
+    567            * @brief  Enables or disables the SD I/O Mode Operation.
+    568            * @param  NewState: new state of SDIO specific operation. 
+    569            *   This parameter can be: ENABLE or DISABLE.
+    570            * @retval None
+    571            */
+    572          void SDIO_SetSDIOOperation(FunctionalState NewState)
+    573          { 
+    574            /* Check the parameters */
+    575            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    576            
+    577            *(__IO uint32_t *) DCTRL_SDIOEN_BB = (uint32_t)NewState;
+    578          }
+    579          
+    580          /**
+    581            * @brief  Enables or disables the SD I/O Mode suspend command sending.
+    582            * @param  NewState: new state of the SD I/O Mode suspend command.
+    583            *   This parameter can be: ENABLE or DISABLE.
+    584            * @retval None
+    585            */
+    586          void SDIO_SendSDIOSuspendCmd(FunctionalState NewState)
+    587          { 
+    588            /* Check the parameters */
+    589            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    590            
+    591            *(__IO uint32_t *) CMD_SDIOSUSPEND_BB = (uint32_t)NewState;
+    592          }
+    593          
+    594          /**
+    595            * @brief  Enables or disables the command completion signal.
+    596            * @param  NewState: new state of command completion signal. 
+    597            *   This parameter can be: ENABLE or DISABLE.
+    598            * @retval None
+    599            */
+    600          void SDIO_CommandCompletionCmd(FunctionalState NewState)
+    601          { 
+    602            /* Check the parameters */
+    603            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    604            
+    605            *(__IO uint32_t *) CMD_ENCMDCOMPL_BB = (uint32_t)NewState;
+    606          }
+    607          
+    608          /**
+    609            * @brief  Enables or disables the CE-ATA interrupt.
+    610            * @param  NewState: new state of CE-ATA interrupt. This parameter can be: ENABLE or DISABLE.
+    611            * @retval None
+    612            */
+    613          void SDIO_CEATAITCmd(FunctionalState NewState)
+    614          { 
+    615            /* Check the parameters */
+    616            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    617            
+    618            *(__IO uint32_t *) CMD_NIEN_BB = (uint32_t)((~((uint32_t)NewState)) & ((uint32_t)0x1));
+    619          }
+    620          
+    621          /**
+    622            * @brief  Sends CE-ATA command (CMD61).
+    623            * @param  NewState: new state of CE-ATA command. This parameter can be: ENABLE or DISABLE.
+    624            * @retval None
+    625            */
+    626          void SDIO_SendCEATACmd(FunctionalState NewState)
+    627          { 
+    628            /* Check the parameters */
+    629            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    630            
+    631            *(__IO uint32_t *) CMD_ATACMD_BB = (uint32_t)NewState;
+    632          }
+    633          
+    634          /**
+    635            * @brief  Checks whether the specified SDIO flag is set or not.
+    636            * @param  SDIO_FLAG: specifies the flag to check. 
+    637            *   This parameter can be one of the following values:
+    638            *     @arg SDIO_FLAG_CCRCFAIL: Command response received (CRC check failed)
+    639            *     @arg SDIO_FLAG_DCRCFAIL: Data block sent/received (CRC check failed)
+    640            *     @arg SDIO_FLAG_CTIMEOUT: Command response timeout
+    641            *     @arg SDIO_FLAG_DTIMEOUT: Data timeout
+    642            *     @arg SDIO_FLAG_TXUNDERR: Transmit FIFO underrun error
+    643            *     @arg SDIO_FLAG_RXOVERR:  Received FIFO overrun error
+    644            *     @arg SDIO_FLAG_CMDREND:  Command response received (CRC check passed)
+    645            *     @arg SDIO_FLAG_CMDSENT:  Command sent (no response required)
+    646            *     @arg SDIO_FLAG_DATAEND:  Data end (data counter, SDIDCOUNT, is zero)
+    647            *     @arg SDIO_FLAG_STBITERR: Start bit not detected on all data signals in wide 
+    648            *                              bus mode.
+    649            *     @arg SDIO_FLAG_DBCKEND:  Data block sent/received (CRC check passed)
+    650            *     @arg SDIO_FLAG_CMDACT:   Command transfer in progress
+    651            *     @arg SDIO_FLAG_TXACT:    Data transmit in progress
+    652            *     @arg SDIO_FLAG_RXACT:    Data receive in progress
+    653            *     @arg SDIO_FLAG_TXFIFOHE: Transmit FIFO Half Empty
+    654            *     @arg SDIO_FLAG_RXFIFOHF: Receive FIFO Half Full
+    655            *     @arg SDIO_FLAG_TXFIFOF:  Transmit FIFO full
+    656            *     @arg SDIO_FLAG_RXFIFOF:  Receive FIFO full
+    657            *     @arg SDIO_FLAG_TXFIFOE:  Transmit FIFO empty
+    658            *     @arg SDIO_FLAG_RXFIFOE:  Receive FIFO empty
+    659            *     @arg SDIO_FLAG_TXDAVL:   Data available in transmit FIFO
+    660            *     @arg SDIO_FLAG_RXDAVL:   Data available in receive FIFO
+    661            *     @arg SDIO_FLAG_SDIOIT:   SD I/O interrupt received
+    662            *     @arg SDIO_FLAG_CEATAEND: CE-ATA command completion signal received for CMD61
+    663            * @retval The new state of SDIO_FLAG (SET or RESET).
+    664            */
+    665          FlagStatus SDIO_GetFlagStatus(uint32_t SDIO_FLAG)
+    666          { 
+    667            FlagStatus bitstatus = RESET;
+    668            
+    669            /* Check the parameters */
+    670            assert_param(IS_SDIO_FLAG(SDIO_FLAG));
+    671            
+    672            if ((SDIO->STA & SDIO_FLAG) != (uint32_t)RESET)
+    673            {
+    674              bitstatus = SET;
+    675            }
+    676            else
+    677            {
+    678              bitstatus = RESET;
+    679            }
+    680            return bitstatus;
+    681          }
+    682          
+    683          /**
+    684            * @brief  Clears the SDIO's pending flags.
+    685            * @param  SDIO_FLAG: specifies the flag to clear.  
+    686            *   This parameter can be one or a combination of the following values:
+    687            *     @arg SDIO_FLAG_CCRCFAIL: Command response received (CRC check failed)
+    688            *     @arg SDIO_FLAG_DCRCFAIL: Data block sent/received (CRC check failed)
+    689            *     @arg SDIO_FLAG_CTIMEOUT: Command response timeout
+    690            *     @arg SDIO_FLAG_DTIMEOUT: Data timeout
+    691            *     @arg SDIO_FLAG_TXUNDERR: Transmit FIFO underrun error
+    692            *     @arg SDIO_FLAG_RXOVERR:  Received FIFO overrun error
+    693            *     @arg SDIO_FLAG_CMDREND:  Command response received (CRC check passed)
+    694            *     @arg SDIO_FLAG_CMDSENT:  Command sent (no response required)
+    695            *     @arg SDIO_FLAG_DATAEND:  Data end (data counter, SDIDCOUNT, is zero)
+    696            *     @arg SDIO_FLAG_STBITERR: Start bit not detected on all data signals in wide 
+    697            *                              bus mode
+    698            *     @arg SDIO_FLAG_DBCKEND:  Data block sent/received (CRC check passed)
+    699            *     @arg SDIO_FLAG_SDIOIT:   SD I/O interrupt received
+    700            *     @arg SDIO_FLAG_CEATAEND: CE-ATA command completion signal received for CMD61
+    701            * @retval None
+    702            */
+    703          void SDIO_ClearFlag(uint32_t SDIO_FLAG)
+    704          { 
+    705            /* Check the parameters */
+    706            assert_param(IS_SDIO_CLEAR_FLAG(SDIO_FLAG));
+    707             
+    708            SDIO->ICR = SDIO_FLAG;
+    709          }
+    710          
+    711          /**
+    712            * @brief  Checks whether the specified SDIO interrupt has occurred or not.
+    713            * @param  SDIO_IT: specifies the SDIO interrupt source to check. 
+    714            *   This parameter can be one of the following values:
+    715            *     @arg SDIO_IT_CCRCFAIL: Command response received (CRC check failed) interrupt
+    716            *     @arg SDIO_IT_DCRCFAIL: Data block sent/received (CRC check failed) interrupt
+    717            *     @arg SDIO_IT_CTIMEOUT: Command response timeout interrupt
+    718            *     @arg SDIO_IT_DTIMEOUT: Data timeout interrupt
+    719            *     @arg SDIO_IT_TXUNDERR: Transmit FIFO underrun error interrupt
+    720            *     @arg SDIO_IT_RXOVERR:  Received FIFO overrun error interrupt
+    721            *     @arg SDIO_IT_CMDREND:  Command response received (CRC check passed) interrupt
+    722            *     @arg SDIO_IT_CMDSENT:  Command sent (no response required) interrupt
+    723            *     @arg SDIO_IT_DATAEND:  Data end (data counter, SDIDCOUNT, is zero) interrupt
+    724            *     @arg SDIO_IT_STBITERR: Start bit not detected on all data signals in wide 
+    725            *                            bus mode interrupt
+    726            *     @arg SDIO_IT_DBCKEND:  Data block sent/received (CRC check passed) interrupt
+    727            *     @arg SDIO_IT_CMDACT:   Command transfer in progress interrupt
+    728            *     @arg SDIO_IT_TXACT:    Data transmit in progress interrupt
+    729            *     @arg SDIO_IT_RXACT:    Data receive in progress interrupt
+    730            *     @arg SDIO_IT_TXFIFOHE: Transmit FIFO Half Empty interrupt
+    731            *     @arg SDIO_IT_RXFIFOHF: Receive FIFO Half Full interrupt
+    732            *     @arg SDIO_IT_TXFIFOF:  Transmit FIFO full interrupt
+    733            *     @arg SDIO_IT_RXFIFOF:  Receive FIFO full interrupt
+    734            *     @arg SDIO_IT_TXFIFOE:  Transmit FIFO empty interrupt
+    735            *     @arg SDIO_IT_RXFIFOE:  Receive FIFO empty interrupt
+    736            *     @arg SDIO_IT_TXDAVL:   Data available in transmit FIFO interrupt
+    737            *     @arg SDIO_IT_RXDAVL:   Data available in receive FIFO interrupt
+    738            *     @arg SDIO_IT_SDIOIT:   SD I/O interrupt received interrupt
+    739            *     @arg SDIO_IT_CEATAEND: CE-ATA command completion signal received for CMD61 interrupt
+    740            * @retval The new state of SDIO_IT (SET or RESET).
+    741            */
+    742          ITStatus SDIO_GetITStatus(uint32_t SDIO_IT)
+    743          { 
+    744            ITStatus bitstatus = RESET;
+    745            
+    746            /* Check the parameters */
+    747            assert_param(IS_SDIO_GET_IT(SDIO_IT));
+    748            if ((SDIO->STA & SDIO_IT) != (uint32_t)RESET)  
+    749            {
+    750              bitstatus = SET;
+    751            }
+    752            else
+    753            {
+    754              bitstatus = RESET;
+    755            }
+    756            return bitstatus;
+    757          }
+    758          
+    759          /**
+    760            * @brief  Clears the SDIO’s interrupt pending bits.
+    761            * @param  SDIO_IT: specifies the interrupt pending bit to clear. 
+    762            *   This parameter can be one or a combination of the following values:
+    763            *     @arg SDIO_IT_CCRCFAIL: Command response received (CRC check failed) interrupt
+    764            *     @arg SDIO_IT_DCRCFAIL: Data block sent/received (CRC check failed) interrupt
+    765            *     @arg SDIO_IT_CTIMEOUT: Command response timeout interrupt
+    766            *     @arg SDIO_IT_DTIMEOUT: Data timeout interrupt
+    767            *     @arg SDIO_IT_TXUNDERR: Transmit FIFO underrun error interrupt
+    768            *     @arg SDIO_IT_RXOVERR:  Received FIFO overrun error interrupt
+    769            *     @arg SDIO_IT_CMDREND:  Command response received (CRC check passed) interrupt
+    770            *     @arg SDIO_IT_CMDSENT:  Command sent (no response required) interrupt
+    771            *     @arg SDIO_IT_DATAEND:  Data end (data counter, SDIDCOUNT, is zero) interrupt
+    772            *     @arg SDIO_IT_STBITERR: Start bit not detected on all data signals in wide 
+    773            *                            bus mode interrupt
+    774            *     @arg SDIO_IT_SDIOIT:   SD I/O interrupt received interrupt
+    775            *     @arg SDIO_IT_CEATAEND: CE-ATA command completion signal received for CMD61
+    776            * @retval None
+    777            */
+    778          void SDIO_ClearITPendingBit(uint32_t SDIO_IT)
+    779          { 
+    780            /* Check the parameters */
+    781            assert_param(IS_SDIO_CLEAR_IT(SDIO_IT));
+    782             
+    783            SDIO->ICR = SDIO_IT;
+    784          }
+    785          
+    786          /**
+    787            * @}
+    788            */
+    789          
+    790          /**
+    791            * @}
+    792            */
+    793          
+    794          /**
+    795            * @}
+    796            */
+    797          
+    798          /******************* (C) COPYRIGHT 2010 STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+        8  SDIO_CEATAITCmd
+              8 -> assert_failed
+        8  SDIO_ClearFlag
+              8 -> assert_failed
+        8  SDIO_ClearITPendingBit
+              8 -> assert_failed
+        8  SDIO_ClockCmd
+              8 -> assert_failed
+        0  SDIO_CmdStructInit
+        8  SDIO_CommandCompletionCmd
+              8 -> assert_failed
+        8  SDIO_DMACmd
+              8 -> assert_failed
+       16  SDIO_DataConfig
+             16 -> assert_failed
+        0  SDIO_DataStructInit
+        0  SDIO_DeInit
+        0  SDIO_GetCommandResponse
+        0  SDIO_GetDataCounter
+        0  SDIO_GetFIFOCount
+       16  SDIO_GetFlagStatus
+             16 -> assert_failed
+       16  SDIO_GetITStatus
+             16 -> assert_failed
+        0  SDIO_GetPowerState
+       16  SDIO_GetResponse
+             16 -> assert_failed
+       16  SDIO_ITConfig
+             16 -> assert_failed
+       16  SDIO_Init
+             16 -> assert_failed
+        0  SDIO_ReadData
+        8  SDIO_SendCEATACmd
+              8 -> assert_failed
+       16  SDIO_SendCommand
+             16 -> assert_failed
+        8  SDIO_SendSDIOSuspendCmd
+              8 -> assert_failed
+        8  SDIO_SetPowerState
+              8 -> assert_failed
+        8  SDIO_SetSDIOOperation
+              8 -> assert_failed
+        8  SDIO_SetSDIOReadWaitMode
+              8 -> assert_failed
+        8  SDIO_StartSDIOReadWait
+              8 -> assert_failed
+        8  SDIO_StopSDIOReadWait
+              8 -> assert_failed
+        0  SDIO_StructInit
+        0  SDIO_WriteData
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+     100  ?<Constant "C:\\Users\\TTT\\Desktop\\...">
+       4  ??DataTable26
+       4  ??DataTable26_1
+       4  ??DataTable26_10
+       4  ??DataTable26_11
+       4  ??DataTable26_12
+       4  ??DataTable26_13
+       4  ??DataTable26_14
+       4  ??DataTable26_15
+       4  ??DataTable26_16
+       4  ??DataTable26_17
+       4  ??DataTable26_18
+       4  ??DataTable26_19
+       4  ??DataTable26_2
+       4  ??DataTable26_20
+       4  ??DataTable26_21
+       4  ??DataTable26_22
+       4  ??DataTable26_23
+       4  ??DataTable26_24
+       4  ??DataTable26_25
+       4  ??DataTable26_26
+       4  ??DataTable26_27
+       4  ??DataTable26_28
+       4  ??DataTable26_3
+       4  ??DataTable26_4
+       4  ??DataTable26_5
+       4  ??DataTable26_6
+       4  ??DataTable26_7
+       4  ??DataTable26_8
+       4  ??DataTable26_9
+      40  SDIO_CEATAITCmd
+      30  SDIO_ClearFlag
+      30  SDIO_ClearITPendingBit
+      36  SDIO_ClockCmd
+      22  SDIO_CmdStructInit
+      34  SDIO_CommandCompletionCmd
+      38  SDIO_DMACmd
+     248  SDIO_DataConfig
+      28  SDIO_DataStructInit
+      76  SDIO_DeInit
+      10  SDIO_GetCommandResponse
+       6  SDIO_GetDataCounter
+       6  SDIO_GetFIFOCount
+     172  SDIO_GetFlagStatus
+     172  SDIO_GetITStatus
+      12  SDIO_GetPowerState
+      52  SDIO_GetResponse
+      90  SDIO_ITConfig
+     182  SDIO_Init
+       6  SDIO_ReadData
+      34  SDIO_SendCEATACmd
+     162  SDIO_SendCommand
+      34  SDIO_SendSDIOSuspendCmd
+      54  SDIO_SetPowerState
+      34  SDIO_SetSDIOOperation
+      28  SDIO_SetSDIOReadWaitMode
+      34  SDIO_StartSDIOReadWait
+      34  SDIO_StopSDIOReadWait
+      26  SDIO_StructInit
+       6  SDIO_WriteData
+
+ 
+   100 bytes in section .rodata
+ 1 852 bytes in section .text
+ 
+ 1 852 bytes of CODE  memory
+   100 bytes of CONST memory
+
+Errors: none
+Warnings: none

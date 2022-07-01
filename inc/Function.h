@@ -1,0 +1,24 @@
+#include "stm32f10x.h"
+#include "Define.h"
+#include "Extern.h"
+#include "Device.h"
+#include "stdio.h"
+#include "string.h"
+
+void DRSZoomMove(void);
+void DRS_BaudRate_AutoSet(void);
+void FanCheck(void);
+void CheckTempCondition(void);
+void AlarmCheck(void);
+void PROTOCOL_PROCESS(void);
+void KeyCheck(void);
+void DipSwitchCheck(void);
+void InitCamId(void);
+void CameraInit(void);
+void SystemStart(void);
+void Focus_Far(void);
+void Up_Key(void);
+void Down_Key(void);
+void Left_Key(void);
+void Right_Key(void);
+void Key_Stop(void);

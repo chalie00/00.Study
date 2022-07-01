@@ -1,0 +1,141 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     29/Jun/2022  17:06:10 #
+# Copyright 1999-2011 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\LED_Control.c #
+#    Command line =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\LED_Control.c #
+#                     -D USE_STDPERIPH_DRIVER -D STM32F10x_HD -D              #
+#                    USE_FULL_ASSERT -lcN C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\Debug\List\ -lb                      #
+#                    C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\List\ -o C:\Users\TTT\Desktop\zz.STDFW\00.Study\pro #
+#                    ject\IAR_M32\Debug\Obj\ --no_cse --no_unroll             #
+#                    --no_inline --no_code_motion --no_tbaa --no_clustering   #
+#                    --no_scheduling --debug --endian=little --cpu=Cortex-M3  #
+#                    -e --fpu=None --dlib_config "C:\Program Files (x86)\IAR  #
+#                    Systems\Embedded Workbench 6.0\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\I #
+#                    AR_M32\..\..\inc\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\CMSIS\CM3\DeviceSupp #
+#                    ort\ST\STM32F10x\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\STM32F10x_StdPeriph_ #
+#                    Driver\inc\ -I "C:\Program Files (x86)\IAR               #
+#                    Systems\Embedded Workbench 6.0\arm\inc\c\" -On -I        #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.0\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\List\LED_Control.lst                                #
+#    Object file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\LED_Control.o                                   #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\LED_Control.c
+      1          
+      2          /*
+      3           * File Name: Led_Control.c
+      4           * Author: Chalie
+      5           * Version: v1.0
+      6           * Date: 2022.06.29
+      7          */
+      8          
+      9          /* include */
+     10          #include "stm32f10x.h"
+     11          //	#include "Extern.h"
+     12          //	#include "stm32f10x_tim.h"
+     13          //	#include "Define.h"
+     14          //	#include "stm32f10x_adc.h"
+     15          //	#include "stm32f10x_dma.h"
+     16          
+     17          /* Functions */
+     18          /*
+     19           * GPIOB Pin9 // Red
+     20           * GIPOB Pin8 //Green
+     21           * GPIOB Pin5 //Yellow
+     22          */
+     23          
+     24          void LED_On_Red (void);
+     25          void LED_Off_Red (void);
+     26          void LED_On_Green (void);
+     27          void LED_Off_Green (void);
+     28          void LED_On_Yellow (void);
+     29          void LED_Off_Yellow (void);
+     30          
+     31          
+     32          
+     33          
+     34          void LED_On_Red (void) {
+     35          	GPIO_SetBits(GPIOB, GPIO_Pin_9);
+     36          }
+     37          
+     38          void LED_Off_Red (void) {
+     39          	GPIO_ResetBits(GPIOB, GPIO_Pin_9);
+     40          }
+     41          
+     42          void LED_On_Green (void) {
+     43          	GPIO_SetBits(GPIOB, GPIO_Pin_8);
+     44          }
+     45          
+     46          void LED_Off_Green (void) {
+     47          	GPIO_ResetBits(GPIOB, GPIO_Pin_8);
+     48          }
+     49          
+     50          void LED_On_Yellow (void) {
+     51          	GPIO_SetBits(GPIOB, GPIO_Pin_5);
+     52          }
+     53          
+     54          void LED_Off_Yellow (void) {
+     55          	GPIO_ResetBits(GPIOB, GPIO_Pin_5);
+     56          }
+     57          
+     58          
+     59          
+     60          
+     61          
+     62          
+     63          
+     64          
+     65          
+     66          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+        8  LED_Off_Green
+             8 -> GPIO_ResetBits
+        8  LED_Off_Red
+             8 -> GPIO_ResetBits
+        8  LED_Off_Yellow
+             8 -> GPIO_ResetBits
+        8  LED_On_Green
+             8 -> GPIO_SetBits
+        8  LED_On_Red
+             8 -> GPIO_SetBits
+        8  LED_On_Yellow
+             8 -> GPIO_SetBits
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable5
+      14  LED_Off_Green
+      14  LED_Off_Red
+      12  LED_Off_Yellow
+      14  LED_On_Green
+      14  LED_On_Red
+      12  LED_On_Yellow
+
+ 
+ 84 bytes in section .text
+ 
+ 84 bytes of CODE memory
+
+Errors: none
+Warnings: none

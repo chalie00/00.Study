@@ -1,0 +1,232 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     29/Jun/2022  17:06:12 #
+# Copyright 1999-2011 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F1 #
+#                    0x_StdPeriph_Driver\src\stm32f10x_crc.c                  #
+#    Command line =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F1 #
+#                    0x_StdPeriph_Driver\src\stm32f10x_crc.c -D               #
+#                    USE_STDPERIPH_DRIVER -D STM32F10x_HD -D USE_FULL_ASSERT  #
+#                    -lcN C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_ #
+#                    M32\Debug\List\ -lb C:\Users\TTT\Desktop\zz.STDFW\00.Stu #
+#                    dy\project\IAR_M32\Debug\List\ -o                        #
+#                    C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\ --no_cse --no_unroll --no_inline               #
+#                    --no_code_motion --no_tbaa --no_clustering               #
+#                    --no_scheduling --debug --endian=little --cpu=Cortex-M3  #
+#                    -e --fpu=None --dlib_config "C:\Program Files (x86)\IAR  #
+#                    Systems\Embedded Workbench 6.0\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\I #
+#                    AR_M32\..\..\inc\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\CMSIS\CM3\DeviceSupp #
+#                    ort\ST\STM32F10x\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\STM32F10x_StdPeriph_ #
+#                    Driver\inc\ -I "C:\Program Files (x86)\IAR               #
+#                    Systems\Embedded Workbench 6.0\arm\inc\c\" -On -I        #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.0\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\List\stm32f10x_crc.lst                              #
+#    Object file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\stm32f10x_crc.o                                 #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_crc.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    stm32f10x_crc.c
+      4            * @author  MCD Application Team
+      5            * @version V3.4.0
+      6            * @date    10/15/2010
+      7            * @brief   This file provides all the CRC firmware functions.
+      8            ******************************************************************************
+      9            * @copy
+     10            *
+     11            * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+     12            * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+     13            * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+     14            * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+     15            * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+     16            * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+     17            *
+     18            * <h2><center>&copy; COPYRIGHT 2010 STMicroelectronics</center></h2>
+     19            */ 
+     20          
+     21          /* Includes ------------------------------------------------------------------*/
+     22          #include "stm32f10x_crc.h"
+     23          
+     24          /** @addtogroup STM32F10x_StdPeriph_Driver
+     25            * @{
+     26            */
+     27          
+     28          /** @defgroup CRC 
+     29            * @brief CRC driver modules
+     30            * @{
+     31            */
+     32          
+     33          /** @defgroup CRC_Private_TypesDefinitions
+     34            * @{
+     35            */
+     36          
+     37          /**
+     38            * @}
+     39            */
+     40          
+     41          /** @defgroup CRC_Private_Defines
+     42            * @{
+     43            */
+     44          
+     45          /**
+     46            * @}
+     47            */
+     48          
+     49          /** @defgroup CRC_Private_Macros
+     50            * @{
+     51            */
+     52          
+     53          /**
+     54            * @}
+     55            */
+     56          
+     57          /** @defgroup CRC_Private_Variables
+     58            * @{
+     59            */
+     60          
+     61          /**
+     62            * @}
+     63            */
+     64          
+     65          /** @defgroup CRC_Private_FunctionPrototypes
+     66            * @{
+     67            */
+     68          
+     69          /**
+     70            * @}
+     71            */
+     72          
+     73          /** @defgroup CRC_Private_Functions
+     74            * @{
+     75            */
+     76          
+     77          /**
+     78            * @brief  Resets the CRC Data register (DR).
+     79            * @param  None
+     80            * @retval None
+     81            */
+     82          void CRC_ResetDR(void)
+     83          {
+     84            /* Reset CRC generator */
+     85            CRC->CR = CRC_CR_RESET;
+     86          }
+     87          
+     88          /**
+     89            * @brief  Computes the 32-bit CRC of a given data word(32-bit).
+     90            * @param  Data: data word(32-bit) to compute its CRC
+     91            * @retval 32-bit CRC
+     92            */
+     93          uint32_t CRC_CalcCRC(uint32_t Data)
+     94          {
+     95            CRC->DR = Data;
+     96            
+     97            return (CRC->DR);
+     98          }
+     99          
+    100          /**
+    101            * @brief  Computes the 32-bit CRC of a given buffer of data word(32-bit).
+    102            * @param  pBuffer: pointer to the buffer containing the data to be computed
+    103            * @param  BufferLength: length of the buffer to be computed					
+    104            * @retval 32-bit CRC
+    105            */
+    106          uint32_t CRC_CalcBlockCRC(uint32_t pBuffer[], uint32_t BufferLength)
+    107          {
+    108            uint32_t index = 0;
+    109            
+    110            for(index = 0; index < BufferLength; index++)
+    111            {
+    112              CRC->DR = pBuffer[index];
+    113            }
+    114            return (CRC->DR);
+    115          }
+    116          
+    117          /**
+    118            * @brief  Returns the current CRC value.
+    119            * @param  None
+    120            * @retval 32-bit CRC
+    121            */
+    122          uint32_t CRC_GetCRC(void)
+    123          {
+    124            return (CRC->DR);
+    125          }
+    126          
+    127          /**
+    128            * @brief  Stores a 8-bit data in the Independent Data(ID) register.
+    129            * @param  IDValue: 8-bit value to be stored in the ID register 					
+    130            * @retval None
+    131            */
+    132          void CRC_SetIDRegister(uint8_t IDValue)
+    133          {
+    134            CRC->IDR = IDValue;
+    135          }
+    136          
+    137          /**
+    138            * @brief  Returns the 8-bit data stored in the Independent Data(ID) register
+    139            * @param  None
+    140            * @retval 8-bit value of the ID register 
+    141            */
+    142          uint8_t CRC_GetIDRegister(void)
+    143          {
+    144            return (CRC->IDR);
+    145          }
+    146          
+    147          /**
+    148            * @}
+    149            */
+    150          
+    151          /**
+    152            * @}
+    153            */
+    154          
+    155          /**
+    156            * @}
+    157            */
+    158          
+    159          /******************* (C) COPYRIGHT 2010 STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+        4  CRC_CalcBlockCRC
+        0  CRC_CalcCRC
+        0  CRC_GetCRC
+        0  CRC_GetIDRegister
+        0  CRC_ResetDR
+        0  CRC_SetIDRegister
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable5
+       4  ??DataTable5_1
+       4  ??DataTable5_2
+      34  CRC_CalcBlockCRC
+      12  CRC_CalcCRC
+       6  CRC_GetCRC
+       8  CRC_GetIDRegister
+       8  CRC_ResetDR
+       6  CRC_SetIDRegister
+
+ 
+ 86 bytes in section .text
+ 
+ 86 bytes of CODE memory
+
+Errors: none
+Warnings: none

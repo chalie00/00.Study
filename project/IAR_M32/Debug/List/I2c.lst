@@ -1,0 +1,770 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     29/Jun/2022  17:06:10 #
+# Copyright 1999-2011 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\I2c.c         #
+#    Command line =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\I2c.c -D      #
+#                    USE_STDPERIPH_DRIVER -D STM32F10x_HD -D USE_FULL_ASSERT  #
+#                    -lcN C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_ #
+#                    M32\Debug\List\ -lb C:\Users\TTT\Desktop\zz.STDFW\00.Stu #
+#                    dy\project\IAR_M32\Debug\List\ -o                        #
+#                    C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\ --no_cse --no_unroll --no_inline               #
+#                    --no_code_motion --no_tbaa --no_clustering               #
+#                    --no_scheduling --debug --endian=little --cpu=Cortex-M3  #
+#                    -e --fpu=None --dlib_config "C:\Program Files (x86)\IAR  #
+#                    Systems\Embedded Workbench 6.0\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\I #
+#                    AR_M32\..\..\inc\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\CMSIS\CM3\DeviceSupp #
+#                    ort\ST\STM32F10x\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\STM32F10x_StdPeriph_ #
+#                    Driver\inc\ -I "C:\Program Files (x86)\IAR               #
+#                    Systems\Embedded Workbench 6.0\arm\inc\c\" -On -I        #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.0\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\List\I2c.lst                                        #
+#    Object file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\I2c.o                                           #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\I2c.c
+      1          /*=================================================================================
+      2          Project Name 		:	TPV HD Type (HD IP THERMOGRAPHY PTZ CAMERA)
+      3          Author			:	phs@tbtsys.com
+      4          ==================================================================================*/ 
+      5          
+      6          /*******************************************************************************
+      7          * INCLUDE
+      8          *******************************************************************************/
+      9          #include "I2c.h"
+     10          
+     11          /*******************************************************************************
+     12          * Function : SDA1_InputModeSet
+     13          *******************************************************************************/
+     14          void SDA1_InputModeSet(void)
+     15          {
+     16          	GPIO_InitTypeDef GPIO_InitStruct;
+     17          	
+     18          	GPIO_InitStruct.GPIO_Pin = I2C1_SDA;				
+     19          	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN_FLOATING; 	
+     20          	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+     21          	GPIO_Init(GPIOB, &GPIO_InitStruct);
+     22            	Delay_Us(100);
+     23          }
+     24          
+     25          /*******************************************************************************
+     26          * Function : SDA2_InputModeSet
+     27          *******************************************************************************/
+     28          void SDA2_InputModeSet(void)
+     29          {
+     30          	GPIO_InitTypeDef GPIO_InitStruct;
+     31          	
+     32          	GPIO_InitStruct.GPIO_Pin = I2C2_SDA;				
+     33          	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN_FLOATING; 	
+     34          	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+     35          	GPIO_Init(GPIOB, &GPIO_InitStruct);
+     36          }
+     37          
+     38          /*******************************************************************************
+     39          * Function : SDA1_OutputModeSet
+     40          *******************************************************************************/
+     41          void SDA1_OutputModeSet(void)
+     42          {
+     43          	GPIO_InitTypeDef GPIO_InitStruct;
+     44          	
+     45          	GPIO_InitStruct.GPIO_Pin = I2C1_SDA;
+     46          	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_Out_OD;	
+     47          	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+     48          	GPIO_Init(GPIOB, &GPIO_InitStruct);
+     49          }
+     50          
+     51          /*******************************************************************************
+     52          * Function : SDA2_OutputModeSet
+     53          *******************************************************************************/
+     54          void SDA2_OutputModeSet(void)
+     55          {
+     56          	GPIO_InitTypeDef GPIO_InitStruct;
+     57          	
+     58          	GPIO_InitStruct.GPIO_Pin = I2C2_SDA;
+     59          	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_Out_OD;	
+     60          	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+     61          	GPIO_Init(GPIOB, &GPIO_InitStruct);
+     62          }
+     63          
+     64          /*******************************************************************************
+     65          * Function : I2C1_Start
+     66          *******************************************************************************/
+     67          void I2C1_Start(void)
+     68          {
+     69          	GPIO_SetBits(GPIOB, I2C1_SDA);	// 1
+     70          	GPIO_SetBits(GPIOB, I2C1_SCL);	// 1
+     71           	Delay_Us(10);
+     72          	GPIO_ResetBits(GPIOB, I2C1_SDA);	// 0
+     73           	Delay_Us(10);
+     74          }
+     75          
+     76          /*******************************************************************************
+     77          * Function : I2C2_Start
+     78          *******************************************************************************/
+     79          void I2C2_Start(void)
+     80          {
+     81          	GPIO_SetBits(GPIOB, I2C2_SDA);	// 1
+     82          	GPIO_SetBits(GPIOB, I2C2_SCL);	// 1
+     83           	Delay_Us(10);
+     84          	GPIO_ResetBits(GPIOB, I2C2_SDA);	// 0
+     85           	Delay_Us(10);
+     86          }
+     87          
+     88          /*******************************************************************************
+     89          * Function : I2C1_AckWait
+     90          *******************************************************************************/
+     91          void I2C1_AckWait(void)
+     92          {
+     93          	u8 BCnt;
+     94          	
+     95          	GPIO_ResetBits(GPIOB, I2C1_SDA);
+     96          	SDA1_InputModeSet();	// SDA INPUT
+     97           	Delay_Us(10);
+     98          	GPIO_SetBits(GPIOB, I2C1_SCL); // 1
+     99           	Delay_Us(10);
+    100          	BCnt = 0;
+    101            	while(GPIO_ReadInputDataBit(GPIOB, I2C1_SDA))
+    102            	{
+    103          	    	BCnt++;
+    104          
+    105          	    	if(BCnt > 20)
+    106          		{
+    107          		      	BCnt = 0;
+    108          		      	break;
+    109          	    	}
+    110            	}
+    111           	Delay_Us(10);
+    112          	GPIO_ResetBits(GPIOB, I2C1_SCL);	// 0
+    113           	Delay_Us(10);
+    114          	SDA1_OutputModeSet();	// SDA OUTPUT
+    115          	GPIO_ResetBits(GPIOB, I2C1_SDA);
+    116          }
+    117          
+    118          /*******************************************************************************
+    119          * Function : I2C2_AckWait
+    120          *******************************************************************************/
+    121          void I2C2_AckWait(void)
+    122          {
+    123          	u8 BCnt;
+    124          	
+    125          	GPIO_ResetBits(GPIOB, I2C2_SDA);
+    126          	SDA2_InputModeSet();	// SDA INPUT
+    127           	Delay_Us(10);
+    128          	GPIO_SetBits(GPIOB, I2C2_SCL); // 1
+    129           	Delay_Us(10);
+    130          	BCnt = 0;
+    131            	while(GPIO_ReadInputDataBit(GPIOB, I2C2_SDA))
+    132            	{
+    133          	    	BCnt++;
+    134          
+    135          	    	if(BCnt > 20)
+    136          		{
+    137          		      	BCnt = 0;
+    138          		      	break;
+    139          	    	}
+    140            	}
+    141           	Delay_Us(10);
+    142          	GPIO_ResetBits(GPIOB, I2C2_SCL);	// 0
+    143           	Delay_Us(10);
+    144          	SDA2_OutputModeSet();	// SDA OUTPUT
+    145          	GPIO_ResetBits(GPIOB, I2C2_SDA);
+    146          }
+    147          
+    148          /*******************************************************************************
+    149          * Function : I2C1_NakSend
+    150          *******************************************************************************/
+    151          void I2C1_NakSend(void)
+    152          {
+    153          	GPIO_SetBits(GPIOB, I2C1_SDA);
+    154           	Delay_Us(200);
+    155          	GPIO_SetBits(GPIOB, I2C1_SCL);	// Clock High
+    156           	Delay_Us(200);
+    157          	GPIO_ResetBits(GPIOB, I2C1_SCL);	// Clock Low
+    158           	Delay_Us(200);
+    159          	GPIO_ResetBits(GPIOB, I2C1_SDA);
+    160           	Delay_Us(200);
+    161          }
+    162          
+    163          /*******************************************************************************
+    164          * Function : I2C2_NakSend
+    165          *******************************************************************************/
+    166          void I2C2_NakSend(void)
+    167          {
+    168          	GPIO_SetBits(GPIOB, I2C2_SDA);
+    169           	Delay_Us(200);
+    170          	GPIO_SetBits(GPIOB, I2C2_SCL);	// Clock High
+    171           	Delay_Us(200);
+    172          	GPIO_ResetBits(GPIOB, I2C2_SCL);	// Clock Low
+    173           	Delay_Us(200);
+    174          	GPIO_ResetBits(GPIOB, I2C2_SDA);
+    175           	Delay_Us(200);
+    176          }
+    177          
+    178          /*******************************************************************************
+    179          * Function : I2C1_Stop
+    180          *******************************************************************************/
+    181          void I2C1_Stop(void)
+    182          {
+    183          	GPIO_ResetBits(GPIOB, I2C1_SDA);
+    184           	Delay_Us(10);
+    185          	GPIO_SetBits(GPIOB, I2C1_SCL);	// Clock High
+    186           	Delay_Us(10);
+    187          	GPIO_SetBits(GPIOB, I2C1_SDA);
+    188           	Delay_Us(10);
+    189          }
+    190          
+    191          /*******************************************************************************
+    192          * Function : I2C2_Stop
+    193          *******************************************************************************/
+    194          void I2C2_Stop(void)
+    195          {
+    196          	GPIO_ResetBits(GPIOB, I2C2_SCL);
+    197          	GPIO_ResetBits(GPIOB, I2C2_SDA);
+    198          	Delay_Us(10);
+    199          	GPIO_SetBits(GPIOB, I2C2_SCL);	// Clock High
+    200           	Delay_Us(10);
+    201          	GPIO_SetBits(GPIOB, I2C2_SDA);
+    202           	Delay_Us(10);
+    203          }
+    204          
+    205          /*******************************************************************************
+    206          * Function : I2C1_Send_8bit
+    207          *******************************************************************************/
+    208          void I2C1_Send_8bit(u8 SendData)
+    209          {
+    210          	u8 Count;
+    211          	
+    212          	GPIO_ResetBits(GPIOB, I2C1_SCL);	// Clock Low
+    213           	Delay_Us(10);
+    214          	
+    215           	for(Count = 0; Count < 8; Count++)
+    216            	{
+    217           		if(SendData & 0x80) 	GPIO_SetBits(GPIOB, I2C1_SDA); // '1'
+    218          		else GPIO_ResetBits(GPIOB, I2C1_SDA);	// '0'
+    219          		
+    220           		Delay_Us(5);
+    221          		GPIO_SetBits(GPIOB, I2C1_SCL);	// Clock High
+    222          		Delay_Us(10);
+    223          		GPIO_ResetBits(GPIOB, I2C1_SCL);	// Clock Low
+    224          		Delay_Us(5);
+    225           		SendData <<= 1;
+    226          	}
+    227          
+    228          	GPIO_ResetBits(GPIOB, I2C1_SDA);	// '0'
+    229          }
+    230          
+    231          /*******************************************************************************
+    232          * Function : I2C2_Send_8bit
+    233          *******************************************************************************/
+    234          void I2C2_Send_8bit(u8 SendData)
+    235          {
+    236          	u8 Count;
+    237          	
+    238          	GPIO_ResetBits(GPIOB, I2C2_SCL);	// Clock Low
+    239           	Delay_Us(10);
+    240          	
+    241           	for(Count = 0; Count < 8; Count++)
+    242            	{
+    243           		if(SendData & 0x80) 	GPIO_SetBits(GPIOB, I2C2_SDA); // '1'
+    244          		else GPIO_ResetBits(GPIOB, I2C2_SDA);	// '0'
+    245          		
+    246           		Delay_Us(5);
+    247          		GPIO_SetBits(GPIOB, I2C2_SCL);	// Clock High
+    248          		Delay_Us(10);
+    249          		GPIO_ResetBits(GPIOB, I2C2_SCL);	// Clock Low
+    250          		Delay_Us(5);
+    251           		SendData <<= 1;
+    252           	}
+    253          	
+    254          	GPIO_ResetBits(GPIOB, I2C2_SDA);	// '0'
+    255          }
+    256          
+    257          /*******************************************************************************
+    258          * Function : I2C1_Read_8bit
+    259          *******************************************************************************/
+    260          u8 I2C1_Read_8bit(void)
+    261          {
+    262          	u8 Count;
+    263          	u8 Data;
+    264          	
+    265           	SDA1_InputModeSet();	// SDA INPUT
+    266          	GPIO_ResetBits(GPIOB, I2C1_SCL);	// Clock Low
+    267           	Delay_Us(10);
+    268          	
+    269           	Data = 0;
+    270            	for(Count = 0; Count < 8; Count++)
+    271            	{
+    272          		GPIO_SetBits(GPIOB, I2C1_SCL);	// Clock High
+    273           		Delay_Us(10);
+    274          		
+    275          		if(GPIO_ReadInputDataBit(GPIOB, I2C1_SDA)) Data |= (0x80>>Count);	// '1' 
+    276          
+    277          		GPIO_ResetBits(GPIOB, I2C1_SCL);	// Clock Low
+    278           		Delay_Us(10);
+    279            	}
+    280          	
+    281          	SDA1_OutputModeSet();	// SDA OUTPUT
+    282          	GPIO_ResetBits(GPIOB, I2C1_SDA);	// '0'	
+    283          	return Data;
+    284          }
+    285          
+    286          /*******************************************************************************
+    287          * Function : I2C2_Read_8bit
+    288          *******************************************************************************/
+    289          u8 I2C2_Read_8bit(void)
+    290          {
+    291          	u8 Count;
+    292          	u8 Data;
+    293          	
+    294           	SDA2_InputModeSet();	// SDA INPUT
+    295          	GPIO_ResetBits(GPIOB, I2C2_SCL);	// Clock Low
+    296           	Delay_Us(10);
+    297          	
+    298           	Data = 0;
+    299            	for(Count = 0; Count < 8; Count++)
+    300            	{
+    301          		GPIO_SetBits(GPIOB, I2C2_SCL);	// Clock High
+    302           		Delay_Us(10);
+    303          
+    304          	   	if(GPIO_ReadInputDataBit(GPIOB, I2C2_SDA)) Data |= (0x80>>Count);	// '1' 
+    305          	   	
+    306          		GPIO_ResetBits(GPIOB, I2C2_SCL);	// Clock Low
+    307           		Delay_Us(10);
+    308            	}
+    309          	
+    310          	SDA2_OutputModeSet();	// SDA OUTPUT
+    311          	GPIO_ResetBits(GPIOB, I2C2_SDA);	// '0'	
+    312          	return Data;
+    313          }
+    314          
+    315          /*******************************************************************************
+    316          * Function : I2C1_Write
+    317          *******************************************************************************/
+    318          void I2C1_Write(u8 ObjAddr, u16 Addr, u8 bData)
+    319          {
+    320           	u8 DevAddr;
+    321           	u8 Data;
+    322          
+    323          	I2C1_Start();
+    324           	DevAddr = ObjAddr | WRITE_MODE;		// ADDRESS(7bit) + R/W(1bit)
+    325          	I2C1_Send_8bit(DevAddr);
+    326          	I2C1_AckWait();  
+    327          	Data = (u8)((Addr >> 8) & 0xff);
+    328          	I2C1_Send_8bit(Data);
+    329          	I2C1_AckWait();
+    330          	Data = (u8)(Addr & 0xFF);
+    331          	I2C1_Send_8bit(Data);
+    332          	I2C1_AckWait();
+    333          	I2C1_Send_8bit(bData);
+    334          	I2C1_AckWait();
+    335          	I2C1_Stop();
+    336           	Delay_ms(5);
+    337          }
+    338          
+    339          /*******************************************************************************
+    340          * Function : I2C1_Read
+    341          *******************************************************************************/
+    342          u8 I2C1_Read(u8 ObjAddr, u16 Addr)
+    343          {
+    344           	u8 DevAddr;
+    345           	u8 Data;
+    346          
+    347          	I2C1_Start();
+    348           	DevAddr = ObjAddr | WRITE_MODE;		// ADDRESS(7bit) + Write(1bit)
+    349          	I2C1_Send_8bit(DevAddr);
+    350          	I2C1_AckWait();  
+    351          	Data = (u8)((Addr >> 8) & 0xFF);
+    352          	I2C1_Send_8bit(Data);
+    353          	I2C1_AckWait();
+    354          	Data = (u8)(Addr & 0xFF);
+    355          	I2C1_Send_8bit(Data);
+    356          	I2C1_AckWait();
+    357          	I2C1_Start();
+    358          	DevAddr = ObjAddr | READ_MODE;		// ADDRESS(7bit) + Read(1bit)
+    359          	I2C1_Send_8bit(DevAddr);
+    360          	I2C1_AckWait();
+    361          	Data = I2C1_Read_8bit();
+    362          	I2C1_AckWait();
+    363          	I2C1_Stop();
+    364           	Delay_1us(100);
+    365           	return Data;
+    366          }
+    367          
+    368          /*******************************************************************************
+    369          * Function : I2C2_Write
+    370          *******************************************************************************/
+    371          void I2C2_Write(u8 ObjAddr, u16 Addr, u8 bData)
+    372          {
+    373           	u8 DevAddr;
+    374           	u8 Data;
+    375          
+    376          	I2C2_Start();
+    377           	DevAddr = ObjAddr | WRITE_MODE;		// ADDRESS(7bit) + R/W(1bit)
+    378          	I2C2_Send_8bit(DevAddr);
+    379          	I2C2_AckWait();  
+    380          	Data = (u8)((Addr >> 8) & 0xff);
+    381          	I2C2_Send_8bit(Data);
+    382          	I2C2_AckWait();
+    383          	Data = (u8)(Addr & 0xFF);
+    384          	I2C2_Send_8bit(Data);
+    385          	I2C2_AckWait();
+    386          	I2C2_Send_8bit(bData);
+    387          	I2C2_AckWait();
+    388          	I2C2_Stop();
+    389           	Delay_ms(5);
+    390          }
+    391          
+    392          /*******************************************************************************
+    393          * Function : I2C2_Read
+    394          *******************************************************************************/
+    395          u8 I2C2_Read(u8 ObjAddr, u16 Addr)
+    396          {
+    397           	u8 DevAddr;
+    398           	u8 Data;
+    399          
+    400          	I2C2_Start();
+    401           	DevAddr = ObjAddr | WRITE_MODE;		// ADDRESS(7bit) + Write(1bit)
+    402          	I2C2_Send_8bit(DevAddr);
+    403          	I2C2_AckWait();  
+    404          	Data = (u8)((Addr >> 8) & 0xFF);
+    405          	I2C2_Send_8bit(Data);
+    406          	I2C2_AckWait();
+    407          	Data = (u8)(Addr & 0xFF);
+    408          	I2C2_Send_8bit(Data);
+    409          	I2C2_AckWait();
+    410          	I2C2_Start();
+    411          	DevAddr = ObjAddr | READ_MODE;		// ADDRESS(7bit) + Read(1bit)
+    412          	I2C2_Send_8bit(DevAddr);
+    413          	I2C2_AckWait();
+    414          	Data = I2C2_Read_8bit();
+    415          	I2C2_AckWait();
+    416          	I2C2_Stop();
+    417           	Delay_1us(100);
+    418           	return Data;
+    419          }
+    420          
+    421          /*******************************************************************************
+    422          * Function : EpromWrite
+    423          *******************************************************************************/
+    424          void EpromWrite(u16 EepAddr, u8 EepData)
+    425          {
+    426          	I2C2_Write(AT24C256_ADDR, EepAddr, EepData);
+    427          }
+    428          
+    429          /*******************************************************************************
+    430          * Function : EpromRead
+    431          *******************************************************************************/
+    432          u8 EpromRead(u16 EepAddr)
+    433          {
+    434          	return I2C2_Read(AT24C256_ADDR, EepAddr);
+    435          }
+    436          
+    437          /*******************************************************************************
+    438          * I2C1 - TW9900 (DECODER 2CH)
+    439          - slave_addr 		: DEVICE ADDRESS
+    440          - AddrByte   		: WORD_ADDR/BYTE_ADDR
+    441          - StartAddress	: Write Start Address
+    442          - Data			: Write Data(Byte)
+    443          *******************************************************************************/
+    444          uint32_t TW9900_I2C1_ByteWrite(uint8_t slave_addr, uint8_t AddrByte, int32_t StartAddress, uint8_t Data)
+    445          {
+    446          	/* Clear EV6 by setting again the PE bit */
+    447          	I2C_Cmd(I2C1, ENABLE);
+    448          
+    449          	/* Send STRAT condition */
+    450          	I2C_GenerateSTART(I2C1, ENABLE);
+    451          
+    452          	/* Test on EV5 and clear it */
+    453          	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT));
+    454          
+    455          	if(StartAddress !=-1) 
+    456          	{
+    457          		/* Send TW9900 address for write */
+    458          		I2C_Send7bitAddress(I2C1, slave_addr |(uint8_t)(StartAddress>>15), I2C_Direction_Transmitter);
+    459          		/* Test on EV6 and clear it */
+    460          		while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED));
+    461          
+    462          		if (AddrByte==WORD_ADDR)
+    463          		{
+    464          			/* Send the TW9900's internal address to write to */
+    465          			I2C_SendData(I2C1, (uint8_t)(StartAddress>>8));
+    466          			/* Test on EV8 and clear it */
+    467          			while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
+    468          		}
+    469          		
+    470          		/* Send the TW9900's internal address to write to */
+    471          		I2C_SendData(I2C1, (uint8_t)StartAddress);
+    472          		/* Test on EV8 and clear it */
+    473          		while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
+    474          	}
+    475          	else 
+    476          	{
+    477          		/* Send TW9900 address for write */
+    478          		I2C_Send7bitAddress(I2C1, slave_addr , I2C_Direction_Transmitter);
+    479          		/* Test on EV6 and clear it */
+    480          		while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED));
+    481          	}
+    482          
+    483          	/* Send the byte to be written */
+    484          	I2C_SendData(I2C1, Data);
+    485          	/* Test on EV8 and clear it */
+    486          	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
+    487          
+    488          	/* Send STOP condition */
+    489          	I2C_GenerateSTOP(I2C1, ENABLE);
+    490          
+    491          	//for(i=0; i<100; i++);
+    492          
+    493          	/* Clear EV6 by setting again the PE bit */
+    494          	//I2C_Cmd(I2C1, DISABLE);
+    495          
+    496          	/* If all operations OK, return sEE_OK (0) */
+    497          	return sEE_OK;
+    498          }
+    499          
+    500          /*******************************************************************************
+    501          * I2C1 - TW9900 (DECODER 2CH)
+    502          - slave_addr 		: DEVICE ADDRESS
+    503          - AddrByte		: WORD_ADDR/BYTE_ADDR
+    504          - StartAddress	: Read Address
+    505          *******************************************************************************/
+    506          uint8_t TW9900_I2C1_ByteRead(uint8_t slave_addr, uint8_t AddrByte, uint32_t StartAddress)
+    507          {
+    508          	uint8_t Data;
+    509          	uint16_t i;
+    510          
+    511          	Delay_1ms(2);
+    512          
+    513          	/* Clear EV6 by setting again the PE bit */
+    514          	I2C_Cmd(I2C1, ENABLE);
+    515          
+    516          	/* Send START condition */
+    517          	I2C_GenerateSTART(I2C1, ENABLE);
+    518          	/* Test on EV5 and clear it */
+    519          	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT));
+    520          
+    521          	/* Send TW9900 address for write */
+    522          	I2C_Send7bitAddress(I2C1, slave_addr |(uint8_t)(StartAddress>>15), I2C_Direction_Transmitter);
+    523          	/* Test on EV6 and clear it */
+    524          	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED));
+    525          
+    526          	/* Clear EV6 by setting again the PE bit */
+    527          	if (AddrByte == WORD_ADDR)
+    528          	{
+    529          		/* Send the TW9900's internal address to write to */
+    530          		I2C_SendData(I2C1, (uint8_t)(StartAddress>>8));
+    531          		/* Test on EV8 and clear it */
+    532          		while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
+    533          	}
+    534          
+    535          	/* Send the TW9900's internal address to write to */
+    536          	I2C_SendData(I2C1, (uint8_t)StartAddress);
+    537          	/* Test on EV8 and clear it */
+    538          	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
+    539          	I2C_AcknowledgeConfig(I2C1, DISABLE);
+    540          
+    541          	/* Send STRAT condition a second time */
+    542          	I2C_GenerateSTART(I2C1, ENABLE);
+    543          
+    544          	/* Test on EV5 and clear it */
+    545          	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT));
+    546          
+    547          	/* Send TW9900 address for read */
+    548          	I2C_Send7bitAddress(I2C1, slave_addr |(uint8_t)(StartAddress>>15), I2C_Direction_Receiver);
+    549          	/* Test on EV6 and clear it */
+    550          	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED));
+    551          
+    552          	I2C_AcknowledgeConfig(I2C1, DISABLE);
+    553          	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_RECEIVED));
+    554          
+    555          	Data =I2C_ReceiveData(I2C1);
+    556          
+    557          	/* Send STOP Condition */
+    558          	I2C_GenerateSTOP(I2C1, ENABLE);
+    559          
+    560          	for(i=0; i<50; i++);
+    561          
+    562          	/* Clear EV6 by setting again the PE bit */
+    563          	I2C_AcknowledgeConfig(I2C1, ENABLE);
+    564          
+    565          	return Data;
+    566          }
+    567          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+        8  EpromRead
+              8 -> I2C2_Read
+       16  EpromWrite
+             16 -> I2C2_Write
+        8  I2C1_AckWait
+              8 -> Delay_Us
+              8 -> GPIO_ReadInputDataBit
+              8 -> GPIO_ResetBits
+              8 -> GPIO_SetBits
+              8 -> SDA1_InputModeSet
+              8 -> SDA1_OutputModeSet
+        8  I2C1_NakSend
+              8 -> Delay_Us
+              8 -> GPIO_ResetBits
+              8 -> GPIO_SetBits
+       24  I2C1_Read
+             24 -> Delay_1us
+             24 -> I2C1_AckWait
+             24 -> I2C1_Read_8bit
+             24 -> I2C1_Send_8bit
+             24 -> I2C1_Start
+             24 -> I2C1_Stop
+       16  I2C1_Read_8bit
+             16 -> Delay_Us
+             16 -> GPIO_ReadInputDataBit
+             16 -> GPIO_ResetBits
+             16 -> GPIO_SetBits
+             16 -> SDA1_InputModeSet
+             16 -> SDA1_OutputModeSet
+       16  I2C1_Send_8bit
+             16 -> Delay_Us
+             16 -> GPIO_ResetBits
+             16 -> GPIO_SetBits
+        8  I2C1_Start
+              8 -> Delay_Us
+              8 -> GPIO_ResetBits
+              8 -> GPIO_SetBits
+        8  I2C1_Stop
+              8 -> Delay_Us
+              8 -> GPIO_ResetBits
+              8 -> GPIO_SetBits
+       24  I2C1_Write
+             24 -> Delay_ms
+             24 -> I2C1_AckWait
+             24 -> I2C1_Send_8bit
+             24 -> I2C1_Start
+             24 -> I2C1_Stop
+        8  I2C2_AckWait
+              8 -> Delay_Us
+              8 -> GPIO_ReadInputDataBit
+              8 -> GPIO_ResetBits
+              8 -> GPIO_SetBits
+              8 -> SDA2_InputModeSet
+              8 -> SDA2_OutputModeSet
+        8  I2C2_NakSend
+              8 -> Delay_Us
+              8 -> GPIO_ResetBits
+              8 -> GPIO_SetBits
+       24  I2C2_Read
+             24 -> Delay_1us
+             24 -> I2C2_AckWait
+             24 -> I2C2_Read_8bit
+             24 -> I2C2_Send_8bit
+             24 -> I2C2_Start
+             24 -> I2C2_Stop
+       16  I2C2_Read_8bit
+             16 -> Delay_Us
+             16 -> GPIO_ReadInputDataBit
+             16 -> GPIO_ResetBits
+             16 -> GPIO_SetBits
+             16 -> SDA2_InputModeSet
+             16 -> SDA2_OutputModeSet
+       16  I2C2_Send_8bit
+             16 -> Delay_Us
+             16 -> GPIO_ResetBits
+             16 -> GPIO_SetBits
+        8  I2C2_Start
+              8 -> Delay_Us
+              8 -> GPIO_ResetBits
+              8 -> GPIO_SetBits
+        8  I2C2_Stop
+              8 -> Delay_Us
+              8 -> GPIO_ResetBits
+              8 -> GPIO_SetBits
+       24  I2C2_Write
+             24 -> Delay_ms
+             24 -> I2C2_AckWait
+             24 -> I2C2_Send_8bit
+             24 -> I2C2_Start
+             24 -> I2C2_Stop
+        8  SDA1_InputModeSet
+              8 -> Delay_Us
+              8 -> GPIO_Init
+        8  SDA1_OutputModeSet
+              8 -> GPIO_Init
+        8  SDA2_InputModeSet
+              8 -> GPIO_Init
+        8  SDA2_OutputModeSet
+              8 -> GPIO_Init
+       24  TW9900_I2C1_ByteRead
+             24 -> Delay_1ms
+             24 -> I2C_AcknowledgeConfig
+             24 -> I2C_CheckEvent
+             24 -> I2C_Cmd
+             24 -> I2C_GenerateSTART
+             24 -> I2C_GenerateSTOP
+             24 -> I2C_ReceiveData
+             24 -> I2C_Send7bitAddress
+             24 -> I2C_SendData
+       24  TW9900_I2C1_ByteWrite
+             24 -> I2C_CheckEvent
+             24 -> I2C_Cmd
+             24 -> I2C_GenerateSTART
+             24 -> I2C_GenerateSTOP
+             24 -> I2C_Send7bitAddress
+             24 -> I2C_SendData
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable17
+       4  ??DataTable17_1
+       4  ??DataTable17_2
+       4  ??DataTable17_3
+       4  ??DataTable17_4
+       4  ??DataTable17_5
+       4  ??DataTable17_6
+      14  EpromRead
+      20  EpromWrite
+     106  I2C1_AckWait
+      68  I2C1_NakSend
+     104  I2C1_Read
+     112  I2C1_Read_8bit
+     112  I2C1_Send_8bit
+      46  I2C1_Start
+      52  I2C1_Stop
+      86  I2C1_Write
+     116  I2C2_AckWait
+      76  I2C2_NakSend
+     104  I2C2_Read
+     120  I2C2_Read_8bit
+     124  I2C2_Send_8bit
+      52  I2C2_Start
+      70  I2C2_Stop
+      86  I2C2_Write
+      38  SDA1_InputModeSet
+      32  SDA1_OutputModeSet
+      34  SDA2_InputModeSet
+      34  SDA2_OutputModeSet
+     250  TW9900_I2C1_ByteRead
+     182  TW9900_I2C1_ByteWrite
+
+ 
+ 2 066 bytes in section .text
+ 
+ 2 066 bytes of CODE memory
+
+Errors: none
+Warnings: none

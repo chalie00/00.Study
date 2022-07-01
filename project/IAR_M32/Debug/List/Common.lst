@@ -1,0 +1,116 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     29/Jun/2022  17:06:09 #
+# Copyright 1999-2011 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Common.c      #
+#    Command line =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Common.c -D   #
+#                    USE_STDPERIPH_DRIVER -D STM32F10x_HD -D USE_FULL_ASSERT  #
+#                    -lcN C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_ #
+#                    M32\Debug\List\ -lb C:\Users\TTT\Desktop\zz.STDFW\00.Stu #
+#                    dy\project\IAR_M32\Debug\List\ -o                        #
+#                    C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\ --no_cse --no_unroll --no_inline               #
+#                    --no_code_motion --no_tbaa --no_clustering               #
+#                    --no_scheduling --debug --endian=little --cpu=Cortex-M3  #
+#                    -e --fpu=None --dlib_config "C:\Program Files (x86)\IAR  #
+#                    Systems\Embedded Workbench 6.0\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\I #
+#                    AR_M32\..\..\inc\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\CMSIS\CM3\DeviceSupp #
+#                    ort\ST\STM32F10x\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\STM32F10x_StdPeriph_ #
+#                    Driver\inc\ -I "C:\Program Files (x86)\IAR               #
+#                    Systems\Embedded Workbench 6.0\arm\inc\c\" -On -I        #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.0\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\List\Common.lst                                     #
+#    Object file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\Common.o                                        #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Common.c
+      1          /*=================================================================================
+      2          Project Name 		:	TPV HD Type (HD IP THERMOGRAPHY PTZ CAMERA)
+      3          Author			:	phs@tbtsys.com
+      4          ==================================================================================*/
+      5          #include "Common.h"
+      6          
+      7          //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      8          //      DEFINE STRUCTURES
+      9          //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+     10          MDIN_DATA_INFO stOSD;
+     11          LED_CONTROL_DATA stLED_SET;
+     12          LIGHT_DATA stLIGHT;
+     13          LRF_DATA stLRF;
+     14          WIPER1_DATA stWIPER1;
+     15          WIPER2_DATA stWIPER2;
+     16          SONY_DATA_INFO stSONY;
+     17          TEMPERATURE_DATA_INFO stTEMP;
+     18          FAN_DATA_INFO stFAN;
+     19          HEATER_DATA_INFO stHEATER;
+     20          ADC_DATA_INFO stADC;
+     21          MODEL_DATA_INFO stINFO;
+     22          TSM_DATA_INFO stTSM;
+     23          TCM_DATA_INFO stTCM;
+     24          CDS_DATA_INFO stCDS;
+     25          
+     26          COORDINATE_DATA_INFO stCOOR;
+     27          SYSTEM_DATA_INFO stSYS;
+     28          USART_CLEAR_INFO stUSART_CLEAR;
+     29          USART1_DATA_INFO stUSART1;
+     30          USART2_DATA_INFO stUSART2;
+     31          UART4_DATA_INFO stUART4;
+     32          UART5_DATA_INFO stUART5;
+     33          BYPASS_DATA_INFO stBYPASS;
+     34          DIPSWITCH_DATA_INFO stDIP;
+     35          
+     36          TEST_DATA_INFO stTEST;
+     37          ERROR_DATA_INFO stUSART_ERROR;
+     38          IP_ERROR_DATA_INFO stERROR;
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       8  stADC
+     208  stBYPASS
+      36  stCDS
+    2504  stCOOR
+       4  stDIP
+     304  stERROR
+      12  stFAN
+       4  stHEATER
+      40  stINFO
+       4  stLED_SET
+      12  stLIGHT
+      48  stLRF
+       4  stOSD
+      92  stSONY
+    5008  stSYS
+       4  stTCM
+      28  stTEMP
+      16  stTEST
+     224  stTSM
+     224  stUART4
+     720  stUART5
+     232  stUSART1
+     220  stUSART2
+       4  stUSART_CLEAR
+     224  stUSART_ERROR
+       8  stWIPER1
+      28  stWIPER2
+
+ 
+ 10 220 bytes in section .bss
+ 
+ 10 220 bytes of DATA memory
+
+Errors: none
+Warnings: none

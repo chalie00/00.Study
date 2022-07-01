@@ -1,0 +1,79 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     29/Jun/2022  17:06:09 #
+# Copyright 1999-2011 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Function.c    #
+#    Command line =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Function.c    #
+#                    -D USE_STDPERIPH_DRIVER -D STM32F10x_HD -D               #
+#                    USE_FULL_ASSERT -lcN C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\Debug\List\ -lb                      #
+#                    C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\List\ -o C:\Users\TTT\Desktop\zz.STDFW\00.Study\pro #
+#                    ject\IAR_M32\Debug\Obj\ --no_cse --no_unroll             #
+#                    --no_inline --no_code_motion --no_tbaa --no_clustering   #
+#                    --no_scheduling --debug --endian=little --cpu=Cortex-M3  #
+#                    -e --fpu=None --dlib_config "C:\Program Files (x86)\IAR  #
+#                    Systems\Embedded Workbench 6.0\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\I #
+#                    AR_M32\..\..\inc\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\CMSIS\CM3\DeviceSupp #
+#                    ort\ST\STM32F10x\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\STM32F10x_StdPeriph_ #
+#                    Driver\inc\ -I "C:\Program Files (x86)\IAR               #
+#                    Systems\Embedded Workbench 6.0\arm\inc\c\" -On -I        #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.0\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\List\Function.lst                                   #
+#    Object file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\Function.o                                      #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Function.c
+      1          #include "Function.h"
+      2          
+      3          void SystemStart(void)
+      4          {
+      5          	Initial_Device();
+      6          	Delay(500);
+      7          
+      8          	TempMonitorting = 0;
+      9          	
+     10          	Delay_1ms(1000);
+     11          
+     12          	TempCalibration();
+     13          	
+     14          	TempMonitorting = 1;	
+     15          }
+     16          
+     17          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+        8  SystemStart
+             8 -> Delay
+             8 -> Delay_1ms
+             8 -> Initial_Device
+             8 -> TempCalibration
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      44  SystemStart
+
+ 
+ 44 bytes in section .text
+ 
+ 44 bytes of CODE memory
+
+Errors: none
+Warnings: none

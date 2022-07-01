@@ -1,0 +1,271 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     29/Jun/2022  17:06:15 #
+# Copyright 1999-2011 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F1 #
+#                    0x_StdPeriph_Driver\src\stm32f10x_iwdg.c                 #
+#    Command line =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F1 #
+#                    0x_StdPeriph_Driver\src\stm32f10x_iwdg.c -D              #
+#                    USE_STDPERIPH_DRIVER -D STM32F10x_HD -D USE_FULL_ASSERT  #
+#                    -lcN C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_ #
+#                    M32\Debug\List\ -lb C:\Users\TTT\Desktop\zz.STDFW\00.Stu #
+#                    dy\project\IAR_M32\Debug\List\ -o                        #
+#                    C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\ --no_cse --no_unroll --no_inline               #
+#                    --no_code_motion --no_tbaa --no_clustering               #
+#                    --no_scheduling --debug --endian=little --cpu=Cortex-M3  #
+#                    -e --fpu=None --dlib_config "C:\Program Files (x86)\IAR  #
+#                    Systems\Embedded Workbench 6.0\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\I #
+#                    AR_M32\..\..\inc\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\CMSIS\CM3\DeviceSupp #
+#                    ort\ST\STM32F10x\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\STM32F10x_StdPeriph_ #
+#                    Driver\inc\ -I "C:\Program Files (x86)\IAR               #
+#                    Systems\Embedded Workbench 6.0\arm\inc\c\" -On -I        #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.0\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\List\stm32f10x_iwdg.lst                             #
+#    Object file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\stm32f10x_iwdg.o                                #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_iwdg.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    stm32f10x_iwdg.c
+      4            * @author  MCD Application Team
+      5            * @version V3.4.0
+      6            * @date    10/15/2010
+      7            * @brief   This file provides all the IWDG firmware functions.
+      8            ******************************************************************************
+      9            * @copy
+     10            *
+     11            * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+     12            * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+     13            * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+     14            * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+     15            * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+     16            * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+     17            *
+     18            * <h2><center>&copy; COPYRIGHT 2010 STMicroelectronics</center></h2>
+     19            */ 
+     20          
+     21          /* Includes ------------------------------------------------------------------*/
+     22          #include "stm32f10x_iwdg.h"
+     23          
+     24          /** @addtogroup STM32F10x_StdPeriph_Driver
+     25            * @{
+     26            */
+     27          
+     28          /** @defgroup IWDG 
+     29            * @brief IWDG driver modules
+     30            * @{
+     31            */ 
+     32          
+     33          /** @defgroup IWDG_Private_TypesDefinitions
+     34            * @{
+     35            */
+     36          
+     37          /**
+     38            * @}
+     39            */
+     40          
+     41          /** @defgroup IWDG_Private_Defines
+     42            * @{
+     43            */ 
+     44          
+     45          /* ---------------------- IWDG registers bit mask ----------------------------*/
+     46          
+     47          /* KR register bit mask */
+     48          #define KR_KEY_Reload    ((uint16_t)0xAAAA)
+     49          #define KR_KEY_Enable    ((uint16_t)0xCCCC)
+     50          
+     51          /**
+     52            * @}
+     53            */ 
+     54          
+     55          /** @defgroup IWDG_Private_Macros
+     56            * @{
+     57            */
+     58          
+     59          /**
+     60            * @}
+     61            */
+     62          
+     63          /** @defgroup IWDG_Private_Variables
+     64            * @{
+     65            */
+     66          
+     67          /**
+     68            * @}
+     69            */
+     70          
+     71          /** @defgroup IWDG_Private_FunctionPrototypes
+     72            * @{
+     73            */
+     74          
+     75          /**
+     76            * @}
+     77            */
+     78          
+     79          /** @defgroup IWDG_Private_Functions
+     80            * @{
+     81            */
+     82          
+     83          /**
+     84            * @brief  Enables or disables write access to IWDG_PR and IWDG_RLR registers.
+     85            * @param  IWDG_WriteAccess: new state of write access to IWDG_PR and IWDG_RLR registers.
+     86            *   This parameter can be one of the following values:
+     87            *     @arg IWDG_WriteAccess_Enable: Enable write access to IWDG_PR and IWDG_RLR registers
+     88            *     @arg IWDG_WriteAccess_Disable: Disable write access to IWDG_PR and IWDG_RLR registers
+     89            * @retval None
+     90            */
+     91          void IWDG_WriteAccessCmd(uint16_t IWDG_WriteAccess)
+     92          {
+     93            /* Check the parameters */
+     94            assert_param(IS_IWDG_WRITE_ACCESS(IWDG_WriteAccess));
+     95            IWDG->KR = IWDG_WriteAccess;
+     96          }
+     97          
+     98          /**
+     99            * @brief  Sets IWDG Prescaler value.
+    100            * @param  IWDG_Prescaler: specifies the IWDG Prescaler value.
+    101            *   This parameter can be one of the following values:
+    102            *     @arg IWDG_Prescaler_4: IWDG prescaler set to 4
+    103            *     @arg IWDG_Prescaler_8: IWDG prescaler set to 8
+    104            *     @arg IWDG_Prescaler_16: IWDG prescaler set to 16
+    105            *     @arg IWDG_Prescaler_32: IWDG prescaler set to 32
+    106            *     @arg IWDG_Prescaler_64: IWDG prescaler set to 64
+    107            *     @arg IWDG_Prescaler_128: IWDG prescaler set to 128
+    108            *     @arg IWDG_Prescaler_256: IWDG prescaler set to 256
+    109            * @retval None
+    110            */
+    111          void IWDG_SetPrescaler(uint8_t IWDG_Prescaler)
+    112          {
+    113            /* Check the parameters */
+    114            assert_param(IS_IWDG_PRESCALER(IWDG_Prescaler));
+    115            IWDG->PR = IWDG_Prescaler;
+    116          }
+    117          
+    118          /**
+    119            * @brief  Sets IWDG Reload value.
+    120            * @param  Reload: specifies the IWDG Reload value.
+    121            *   This parameter must be a number between 0 and 0x0FFF.
+    122            * @retval None
+    123            */
+    124          void IWDG_SetReload(uint16_t Reload)
+    125          {
+    126            /* Check the parameters */
+    127            assert_param(IS_IWDG_RELOAD(Reload));
+    128            IWDG->RLR = Reload;
+    129          }
+    130          
+    131          /**
+    132            * @brief  Reloads IWDG counter with value defined in the reload register
+    133            *   (write access to IWDG_PR and IWDG_RLR registers disabled).
+    134            * @param  None
+    135            * @retval None
+    136            */
+    137          void IWDG_ReloadCounter(void)
+    138          {
+    139            IWDG->KR = KR_KEY_Reload;
+    140          }
+    141          
+    142          /**
+    143            * @brief  Enables IWDG (write access to IWDG_PR and IWDG_RLR registers disabled).
+    144            * @param  None
+    145            * @retval None
+    146            */
+    147          void IWDG_Enable(void)
+    148          {
+    149            IWDG->KR = KR_KEY_Enable;
+    150          }
+    151          
+    152          /**
+    153            * @brief  Checks whether the specified IWDG flag is set or not.
+    154            * @param  IWDG_FLAG: specifies the flag to check.
+    155            *   This parameter can be one of the following values:
+    156            *     @arg IWDG_FLAG_PVU: Prescaler Value Update on going
+    157            *     @arg IWDG_FLAG_RVU: Reload Value Update on going
+    158            * @retval The new state of IWDG_FLAG (SET or RESET).
+    159            */
+    160          FlagStatus IWDG_GetFlagStatus(uint16_t IWDG_FLAG)
+    161          {
+    162            FlagStatus bitstatus = RESET;
+    163            /* Check the parameters */
+    164            assert_param(IS_IWDG_FLAG(IWDG_FLAG));
+    165            if ((IWDG->SR & IWDG_FLAG) != (uint32_t)RESET)
+    166            {
+    167              bitstatus = SET;
+    168            }
+    169            else
+    170            {
+    171              bitstatus = RESET;
+    172            }
+    173            /* Return the flag status */
+    174            return bitstatus;
+    175          }
+    176          
+    177          /**
+    178            * @}
+    179            */
+    180          
+    181          /**
+    182            * @}
+    183            */
+    184          
+    185          /**
+    186            * @}
+    187            */
+    188          
+    189          /******************* (C) COPYRIGHT 2010 STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+        0  IWDG_Enable
+       16  IWDG_GetFlagStatus
+             16 -> assert_failed
+        0  IWDG_ReloadCounter
+        8  IWDG_SetPrescaler
+              8 -> assert_failed
+        8  IWDG_SetReload
+              8 -> assert_failed
+        8  IWDG_WriteAccessCmd
+              8 -> assert_failed
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+     100  ?<Constant "C:\\Users\\TTT\\Desktop\\...">
+       4  ??DataTable5
+       4  ??DataTable5_1
+       4  ??DataTable5_2
+       4  ??DataTable5_3
+       4  ??DataTable5_4
+      10  IWDG_Enable
+      52  IWDG_GetFlagStatus
+      10  IWDG_ReloadCounter
+      62  IWDG_SetPrescaler
+      28  IWDG_SetReload
+      36  IWDG_WriteAccessCmd
+
+ 
+ 100 bytes in section .rodata
+ 218 bytes in section .text
+ 
+ 218 bytes of CODE  memory
+ 100 bytes of CONST memory
+
+Errors: none
+Warnings: none

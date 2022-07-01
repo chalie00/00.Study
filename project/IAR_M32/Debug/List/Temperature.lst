@@ -1,0 +1,743 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     29/Jun/2022  17:06:10 #
+# Copyright 1999-2011 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Temperature.c #
+#    Command line =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Temperature.c #
+#                     -D USE_STDPERIPH_DRIVER -D STM32F10x_HD -D              #
+#                    USE_FULL_ASSERT -lcN C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\Debug\List\ -lb                      #
+#                    C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\List\ -o C:\Users\TTT\Desktop\zz.STDFW\00.Study\pro #
+#                    ject\IAR_M32\Debug\Obj\ --no_cse --no_unroll             #
+#                    --no_inline --no_code_motion --no_tbaa --no_clustering   #
+#                    --no_scheduling --debug --endian=little --cpu=Cortex-M3  #
+#                    -e --fpu=None --dlib_config "C:\Program Files (x86)\IAR  #
+#                    Systems\Embedded Workbench 6.0\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\I #
+#                    AR_M32\..\..\inc\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\CMSIS\CM3\DeviceSupp #
+#                    ort\ST\STM32F10x\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\STM32F10x_StdPeriph_ #
+#                    Driver\inc\ -I "C:\Program Files (x86)\IAR               #
+#                    Systems\Embedded Workbench 6.0\arm\inc\c\" -On -I        #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.0\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\List\Temperature.lst                                #
+#    Object file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\Temperature.o                                   #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Temperature.c
+      1          /*=================================================================================
+      2          Project Name 					:	TPV HD Type (HD IP THERMOGRAPHY PTZ CAMERA)
+      3          Author						:	phs@tbtsys.com
+      4          ==================================================================================
+      5          Part Name 					: 	NTC (R-T Characteristics & Tolerance)
+      6          Part No.						:	DS103FU(3435K)
+      7          Center-Temp/R-Value			:	25.0б╔/10000.00е╪
+      8          R-Tolerance of Center-Temp	: 	1.00%
+      9          Test Conditon					:	Zero Power
+     10          ет-Range						:	(25/85)б╔
+     11          ет-Value						:	3435.4K
+     12          ет-Tolerance					:	1.00%
+     13          ==================================================================================*/ 
+     14          
+     15          /*******************************************************************************
+     16          * INCLUDE
+     17          *******************************************************************************/
+     18          #include "Temperature.h"
+     19          
+     20          /*******************************************************************************
+     21          * Function Name  : TempToADC - TBT Temperature Check Code
+     22          *******************************************************************************/
+     23          u16 TempToADC(u8 TempVal)
+     24          {
+     25          	u16 ConvertData;
+     26          	
+     27          	switch (TempVal)
+     28          	{
+     29          		case 0: 		//-30'
+     30          			ConvertData = 2875;
+     31          			break;
+     32          		case 1:
+     33          			ConvertData = 2857;
+     34          			break;
+     35          		case 2:
+     36          			ConvertData = 2838;
+     37          			break;
+     38          		case 3:
+     39          			ConvertData = 2819;
+     40          			break;
+     41          		case 4:
+     42          			ConvertData = 2799;
+     43          			break;
+     44          		case 5:		//-15'
+     45          			ConvertData = 2779;
+     46          			break;
+     47          		case 6:
+     48          			ConvertData = 2758;
+     49          			break;
+     50          		case 7:
+     51          			ConvertData = 2737;
+     52          			break;
+     53          		case 8:
+     54          			ConvertData = 2715;
+     55          			break;
+     56          		case 9:
+     57          			ConvertData = 2693;
+     58          			break;
+     59          		case 10:		//-10'
+     60          			ConvertData = 2670;
+     61          			break;
+     62          		case 11:
+     63          			ConvertData = 2647;
+     64          			break;
+     65          		case 12:
+     66          			ConvertData = 2623;
+     67          			break;
+     68          		case 13:
+     69          			ConvertData = 2598;
+     70          			break;
+     71          		case 14:
+     72          			ConvertData = 2574;
+     73          			break;
+     74          		case 15:		//-5'
+     75          			ConvertData = 2548;
+     76          			break;
+     77          		case 16:
+     78          			ConvertData = 2522;
+     79          			break;
+     80          		case 17:
+     81          			ConvertData = 2496;
+     82          			break;
+     83          		case 18:
+     84          			ConvertData = 2469;
+     85          			break;
+     86          		case 19:
+     87          			ConvertData = 2442;
+     88          			break;
+     89          		case 20:		//0'
+     90          			ConvertData = 2414;
+     91          			break;
+     92          		case 21:
+     93          			ConvertData = 2386;
+     94          			break;
+     95          		case 22:
+     96          			ConvertData = 2358;
+     97          			break;
+     98          		case 23:
+     99          			ConvertData = 2329;
+    100          			break;
+    101          		case 24:
+    102          			ConvertData = 2300;
+    103          			break;
+    104          		case 25:		//5'
+    105          			ConvertData = 2271;
+    106          			break;
+    107          		case 26:
+    108          			ConvertData = 2241;
+    109          			break;
+    110          		case 27:
+    111          			ConvertData = 2211;
+    112          			break;
+    113          		case 28:
+    114          			ConvertData = 2181;
+    115          			break;
+    116          		case 29:
+    117          			ConvertData = 2150;
+    118          			break;
+    119          		case 30:		//10'
+    120          			ConvertData = 2119;
+    121          			break;
+    122          		case 31:
+    123          			ConvertData = 2088;
+    124          			break;
+    125          		case 32:
+    126          			ConvertData = 2057;
+    127          			break;
+    128          		case 33:
+    129          			ConvertData = 2026;
+    130          			break;
+    131          		case 34:
+    132          			ConvertData = 1995;
+    133          			break;
+    134          		case 35:
+    135          			ConvertData = 1963;
+    136          			break;
+    137          		case 36:
+    138          			ConvertData = 1932;
+    139          			break;
+    140          		case 37:
+    141          			ConvertData = 1900;
+    142          			break;
+    143          		case 38:
+    144          			ConvertData = 1869;
+    145          			break;
+    146          		case 39:
+    147          			ConvertData = 1837;
+    148          			break;
+    149          		case 40:		//20'
+    150          			ConvertData = 1806;
+    151          			break;
+    152          		case 41:
+    153          			ConvertData = 1774;
+    154          			break;
+    155          		case 42:
+    156          			ConvertData = 1743;
+    157          			break;
+    158          		case 43:
+    159          			ConvertData = 1712;
+    160          			break;
+    161          		case 44:
+    162          			ConvertData = 1680;
+    163          			break;
+    164          		case 45:		//25'
+    165          			ConvertData = 1650;
+    166          			break;
+    167          		case 46:
+    168          			ConvertData = 1619;
+    169          			break;
+    170          		case 47:
+    171          			ConvertData = 1588;
+    172          			break;
+    173          		case 48:
+    174          			ConvertData = 1558;
+    175          			break;
+    176          		case 49:
+    177          			ConvertData = 1527;
+    178          			break;
+    179          		case 50:		//30'
+    180          			ConvertData = 1497;
+    181          			break;
+    182          		case 51:
+    183          			ConvertData = 1468;
+    184          			break;
+    185          		case 52:
+    186          			ConvertData = 1438;
+    187          			break;
+    188          		case 53:
+    189          			ConvertData = 1409;
+    190          			break;
+    191          		case 54:
+    192          			ConvertData = 1380;
+    193          			break;
+    194          		case 55:
+    195          			ConvertData = 1352;
+    196          			break;
+    197          		case 56:
+    198          			ConvertData = 1324;
+    199          			break;
+    200          		case 57:
+    201          			ConvertData = 1296;
+    202          			break;
+    203          		case 58:
+    204          			ConvertData = 1268;
+    205          			break;
+    206          		case 59:
+    207          			ConvertData = 1241;
+    208          			break;
+    209          		case 60:		// 40'
+    210          			ConvertData = 1214;
+    211          			break;
+    212          		case 61:		// 41'
+    213          			ConvertData = 1188;
+    214          			break;
+    215          		case 62:		// 42'
+    216          			ConvertData = 1162;
+    217          			break;			
+    218          		case 63:		// 43'
+    219          			ConvertData = 1136;
+    220          			break;		
+    221          		case 64:		// 44'
+    222          			ConvertData = 1111;
+    223          			break;		
+    224          		case 65:		// 45'
+    225          			ConvertData = 1087;
+    226          			break;		
+    227          		case 66:		// 46'
+    228          			ConvertData = 1062;
+    229          			break;		
+    230          		case 67:		// 47'
+    231          			ConvertData = 1038;
+    232          			break;		
+    233          		case 68:		// 48'
+    234          			ConvertData = 1015;
+    235          			break;	
+    236          		case 69:		// 49'
+    237          			ConvertData = 992;
+    238          			break;	
+    239          		case 70:		// 50'
+    240          			ConvertData = 969;
+    241          			break;
+    242          	}
+    243          	return ConvertData;
+    244          }
+    245          
+    246          /*******************************************************************************
+    247          * Function Name  : CheckTemp - TBT Temperature Check Code
+    248          *******************************************************************************/
+    249          void CheckTemp(void)
+    250          {
+    251          	switch (convertV){
+    252          		case 3027:
+    253          			ConvertData = 30;
+    254          			break;
+    255          		case 3014:
+    256          			ConvertData = 29;
+    257          			break;
+    258          		case 3000:
+    259          			ConvertData = 28;
+    260          			break;
+    261          		case 2986:
+    262          			ConvertData = 27;
+    263          			break;
+    264          		case 2972:
+    265          			ConvertData = 26;
+    266          			break;
+    267          		case 2957:
+    268          			ConvertData = 25;
+    269          			break;
+    270          		case 2942:
+    271          			ConvertData = 24;
+    272          			break;
+    273          		case 2926:
+    274          			ConvertData = 23;
+    275          			break;
+    276          		case 2909:
+    277          			ConvertData = 22;
+    278          			break;
+    279          		case 2892:
+    280          			ConvertData = 21;
+    281          			break;
+    282          		case 2875:
+    283          			ConvertData = 20;
+    284          			break;
+    285          		case 2857:
+    286          			ConvertData = 19;
+    287          			break;
+    288          		case 2838:
+    289          			ConvertData = 18;
+    290          			break;
+    291          		case 2819:
+    292          			ConvertData = 17;
+    293          			break;
+    294          		case 2799:
+    295          			ConvertData = 16;
+    296          			break;
+    297          		case 2779:
+    298          			ConvertData = 15;
+    299          			break;
+    300          		case 2758:
+    301          			ConvertData = 14;
+    302          			break;
+    303          		case 2737:
+    304          			ConvertData = 13;
+    305          			break;
+    306          		case 2715:
+    307          			ConvertData = 12;
+    308          			break;
+    309          		case 2693:
+    310          			ConvertData = 11;
+    311          			break;
+    312          		case 2670:
+    313          			ConvertData = 10;
+    314          			break;
+    315          		case 2647:
+    316          			ConvertData = 9;
+    317          			break;
+    318          		case 2623:
+    319          			ConvertData = 8;
+    320          			break;
+    321          		case 2598:
+    322          			ConvertData = 7;
+    323          			break;
+    324          		case 2574:
+    325          			ConvertData = 6;
+    326          			break;
+    327          		case 2548:
+    328          			ConvertData = 5;
+    329          			break;
+    330          		case 2522:
+    331          			ConvertData = 4;
+    332          			break;
+    333          		case 2496:
+    334          			ConvertData = 3;
+    335          			break;
+    336          		case 2469:
+    337          			ConvertData = 2;
+    338          			break;
+    339          		case 2442:
+    340          			ConvertData = 1;
+    341          			break;
+    342          		case 2414:
+    343          			ConvertData = 0;
+    344          			break;
+    345          		case 2386:
+    346          			ConvertData = 1;
+    347          			break;
+    348          		case 2358:
+    349          			ConvertData = 2;
+    350          			break;
+    351          		case 2329:
+    352          			ConvertData = 3;
+    353          			break;
+    354          		case 2300:
+    355          			ConvertData = 4;
+    356          			break;
+    357          		case 2271:
+    358          			ConvertData = 5;
+    359          			break;
+    360          		case 2241:
+    361          			ConvertData = 6;
+    362          			break;
+    363          		case 2211:
+    364          			ConvertData = 7;
+    365          			break;
+    366          		case 2181:
+    367          			ConvertData = 8;
+    368          			break;
+    369          		case 2150:
+    370          			ConvertData = 9;
+    371          			break;
+    372          		case 2119:
+    373          			ConvertData = 10;
+    374          			break;
+    375          		case 2088:
+    376          			ConvertData = 11;
+    377          			break;
+    378          		case 2057:
+    379          			ConvertData = 12;
+    380          			break;
+    381          		case 2026:
+    382          			ConvertData = 13;
+    383          			break;
+    384          		case 1995:
+    385          			ConvertData = 14;
+    386          			break;
+    387          		case 1963:
+    388          			ConvertData = 15;
+    389          			break;
+    390          		case 1932:
+    391          			ConvertData = 16;
+    392          			break;
+    393          		case 1900:
+    394          			ConvertData = 17;
+    395          			break;
+    396          		case 1869:
+    397          			ConvertData = 18;
+    398          			break;
+    399          		case 1837:
+    400          			ConvertData = 19;
+    401          			break;
+    402          		case 1806:
+    403          			ConvertData = 20;
+    404          			break;
+    405          		case 1774:
+    406          			ConvertData = 21;
+    407          			break;
+    408          		case 1743:
+    409          			ConvertData = 22;
+    410          			break;
+    411          		case 1712:
+    412          			ConvertData = 23;
+    413          			break;
+    414          		case 1680:
+    415          			ConvertData = 24;
+    416          			break;
+    417          		case 1650:
+    418          			ConvertData = 25;
+    419          			break;
+    420          		case 1619:
+    421          			ConvertData = 26;
+    422          			break;
+    423          		case 1588:
+    424          			ConvertData = 27;
+    425          			break;
+    426          		case 1558:
+    427          			ConvertData = 28;
+    428          			break;
+    429          		case 1527:
+    430          			ConvertData = 29;
+    431          			break;
+    432          		case 1497:
+    433          			ConvertData = 30;
+    434          			break;
+    435          		case 1468:
+    436          			ConvertData = 31;
+    437          			break;
+    438          		case 1438:
+    439          			ConvertData = 32;
+    440          			break;
+    441          		case 1409:
+    442          			ConvertData = 33;
+    443          			break;
+    444          		case 1380:
+    445          			ConvertData = 34;
+    446          			break;
+    447          		case 1352:
+    448          			ConvertData = 35;
+    449          			break;
+    450          		case 1324:
+    451          			ConvertData = 36;
+    452          			break;
+    453          		case 1296:
+    454          			ConvertData = 37;
+    455          			break;
+    456          		case 1268:
+    457          			ConvertData = 38;
+    458          			break;
+    459          		case 1241:
+    460          			ConvertData = 39;
+    461          			break;
+    462          		case 1214:
+    463          			ConvertData = 40;
+    464          			break;
+    465          		case 1188:
+    466          			ConvertData = 41;
+    467          			break;
+    468          		case 1162:
+    469          			ConvertData = 42;
+    470          			break;
+    471          		case 1136:
+    472          			ConvertData = 43;
+    473          			break;
+    474          		case 1111:
+    475          			ConvertData = 44;
+    476          			break;
+    477          		case 1087:
+    478          			ConvertData = 45;
+    479          			break;
+    480          		case 1062:
+    481          			ConvertData = 46;
+    482          			break;
+    483          		case 1038:
+    484          			ConvertData = 47;
+    485          			break;
+    486          		case 1015:
+    487          			ConvertData = 48;
+    488          			break;
+    489          		case 992:
+    490          			ConvertData = 49;
+    491          			break;
+    492          		case 969:
+    493          			ConvertData = 50;
+    494          			break;
+    495          		case 947:
+    496          			ConvertData = 51;
+    497          			break;
+    498          		case 925:
+    499          			ConvertData = 52;
+    500          			break;
+    501          		case 903:
+    502          			ConvertData = 53;
+    503          			break;
+    504          		case 882:
+    505          			ConvertData = 54;
+    506          			break;
+    507          		case 862:
+    508          			ConvertData = 55;
+    509          			break;
+    510          		case 842:
+    511          			ConvertData = 56;
+    512          			break;
+    513          		case 822:
+    514          			ConvertData = 57;
+    515          			break;
+    516          		case 802:
+    517          			ConvertData = 58;
+    518          			break;
+    519          		case 784:
+    520          			ConvertData = 59;
+    521          			break;
+    522          		case 765:
+    523          			ConvertData = 60;
+    524          			break;
+    525          		case 747:
+    526          			ConvertData = 61;
+    527          			break;
+    528          		case 729:
+    529          			ConvertData = 62;
+    530          			break;
+    531          		case 712:
+    532          			ConvertData = 63;
+    533          			break;
+    534          		case 695:
+    535          			ConvertData = 64;
+    536          			break;
+    537          		case 678:
+    538          			ConvertData = 65;
+    539          			break;
+    540          		case 662:
+    541          			ConvertData = 66;
+    542          			break;
+    543          		case 646:
+    544          			ConvertData = 67;
+    545          			break;
+    546          		case 631:
+    547          			ConvertData = 68;
+    548          			break;
+    549          		case 616:
+    550          			ConvertData = 69;
+    551          			break;
+    552          		case 601:
+    553          			ConvertData = 70;
+    554          			break;
+    555          		case 586:
+    556          			ConvertData = 71;
+    557          			break;
+    558          		case 572:
+    559          			ConvertData = 72;
+    560          			break;
+    561          		case 559:
+    562          			ConvertData = 73;
+    563          			break;
+    564          		case 545:
+    565          			ConvertData = 74;
+    566          			break;
+    567          		case 532:
+    568          			ConvertData = 75;
+    569          			break;
+    570          		case 519:
+    571          			ConvertData = 76;
+    572          			break;
+    573          		case 507:
+    574          			ConvertData = 77;
+    575          			break;
+    576          		case 495:
+    577          			ConvertData = 78;
+    578          			break;
+    579          		case 483:
+    580          			ConvertData = 79;
+    581          			break;
+    582          		case 471:
+    583          			ConvertData = 80;
+    584          			break;
+    585          		case 460:
+    586          			ConvertData = 81;
+    587          			break;
+    588          		case 449:
+    589          			ConvertData = 82;
+    590          			break;
+    591          		case 438:
+    592          			ConvertData = 83;
+    593          			break;
+    594          		case 428:
+    595          			ConvertData = 84;
+    596          			break;
+    597          		case 418:
+    598          			ConvertData = 85;
+    599          			break;
+    600          		case 408:
+    601          			ConvertData = 86;
+    602          			break;
+    603          		case 398:
+    604          			ConvertData = 87;
+    605          			break;
+    606          		case 389:
+    607          			ConvertData = 88;
+    608          			break;
+    609          		case 379:
+    610          			ConvertData = 89;
+    611          			break;
+    612          		case 371:
+    613          			ConvertData = 90;
+    614          			break;
+    615          	}
+    616          }
+    617          
+    618          /*******************************************************************************
+    619          * Function Name  : TempCalibration - TBT Temperature Check Code
+    620          *******************************************************************************/
+    621          void TempCalibration(void)
+    622          {
+    623          	u8 i;
+    624          	
+    625          	TempMonitorting = 0xff;
+    626          	
+    627          	for(i = 0; i<100; i++)
+    628          	{
+    629          		CheckTemp();
+    630          		convertV = convertV++;			
+    631          	}
+    632          
+    633          	for(i = 0 ;i<100; i++)
+    634          	{
+    635          		CheckTemp();
+    636          		convertV = convertV--;			
+    637          	}
+    638          	
+    639          	TempMonitorting = 0;		
+    640          }
+    641          /*
+    642          362.2848511	91
+    643          353.766629	92
+    644          345.4646825	93
+    645          337.3737166	94
+    646          329.4885296	95
+    647          321.8040142	96
+    648          314.3151589	97
+    649          307.017049	98
+    650          299.9048669	99
+    651          292.9738927	100
+    652          286.2195044	101
+    653          279.6371777	102
+    654          273.2224859	103
+    655          266.9710993	104
+    656          260.878785	105
+    657          254.9414058	106
+    658          249.1549199	107
+    659          243.5153794	108
+    660          238.0189297	109
+    661          232.661808	110
+    662          227.4403426	111
+    663          222.3509512	112
+    664          217.3901398	113
+    665          212.554501	114
+    666          207.840713	115
+    667          203.2455379	116
+    668          198.7658201	117
+    669          194.3984849	118
+    670          190.1405371	119
+    671          185.9890589	120
+    672          181.941209	121
+    673          177.9942205	122
+    674          174.1453996	123
+    675          170.3921237	124
+    676          166.7318402	125
+    677          */
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+        0  CheckTemp
+        8  TempCalibration
+             8 -> CheckTemp
+        0  TempToADC
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable1
+       4  ??DataTable1_1
+       4  ??DataTable1_2
+    1766  CheckTemp
+      88  TempCalibration
+     930  TempToADC
+
+ 
+ 2 796 bytes in section .text
+ 
+ 2 796 bytes of CODE memory
+
+Errors: none
+Warnings: 2

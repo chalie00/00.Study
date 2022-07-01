@@ -1,0 +1,450 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     29/Jun/2022  17:06:15 #
+# Copyright 1999-2011 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F1 #
+#                    0x_StdPeriph_Driver\src\stm32f10x_rtc.c                  #
+#    Command line =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F1 #
+#                    0x_StdPeriph_Driver\src\stm32f10x_rtc.c -D               #
+#                    USE_STDPERIPH_DRIVER -D STM32F10x_HD -D USE_FULL_ASSERT  #
+#                    -lcN C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_ #
+#                    M32\Debug\List\ -lb C:\Users\TTT\Desktop\zz.STDFW\00.Stu #
+#                    dy\project\IAR_M32\Debug\List\ -o                        #
+#                    C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\ --no_cse --no_unroll --no_inline               #
+#                    --no_code_motion --no_tbaa --no_clustering               #
+#                    --no_scheduling --debug --endian=little --cpu=Cortex-M3  #
+#                    -e --fpu=None --dlib_config "C:\Program Files (x86)\IAR  #
+#                    Systems\Embedded Workbench 6.0\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\I #
+#                    AR_M32\..\..\inc\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\CMSIS\CM3\DeviceSupp #
+#                    ort\ST\STM32F10x\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\STM32F10x_StdPeriph_ #
+#                    Driver\inc\ -I "C:\Program Files (x86)\IAR               #
+#                    Systems\Embedded Workbench 6.0\arm\inc\c\" -On -I        #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.0\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\List\stm32f10x_rtc.lst                              #
+#    Object file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\stm32f10x_rtc.o                                 #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rtc.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    stm32f10x_rtc.c
+      4            * @author  MCD Application Team
+      5            * @version V3.4.0
+      6            * @date    10/15/2010
+      7            * @brief   This file provides all the RTC firmware functions.
+      8            ******************************************************************************
+      9            * @copy
+     10            *
+     11            * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+     12            * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+     13            * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+     14            * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+     15            * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+     16            * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+     17            *
+     18            * <h2><center>&copy; COPYRIGHT 2010 STMicroelectronics</center></h2>
+     19            */ 
+     20          
+     21          /* Includes ------------------------------------------------------------------*/
+     22          #include "stm32f10x_rtc.h"
+     23          
+     24          /** @addtogroup STM32F10x_StdPeriph_Driver
+     25            * @{
+     26            */
+     27          
+     28          /** @defgroup RTC 
+     29            * @brief RTC driver modules
+     30            * @{
+     31            */
+     32          
+     33          /** @defgroup RTC_Private_TypesDefinitions
+     34            * @{
+     35            */ 
+     36          /**
+     37            * @}
+     38            */
+     39          
+     40          /** @defgroup RTC_Private_Defines
+     41            * @{
+     42            */
+     43          #define RTC_LSB_MASK     ((uint32_t)0x0000FFFF)  /*!< RTC LSB Mask */
+     44          #define PRLH_MSB_MASK    ((uint32_t)0x000F0000)  /*!< RTC Prescaler MSB Mask */
+     45          
+     46          /**
+     47            * @}
+     48            */
+     49          
+     50          /** @defgroup RTC_Private_Macros
+     51            * @{
+     52            */
+     53          
+     54          /**
+     55            * @}
+     56            */
+     57          
+     58          /** @defgroup RTC_Private_Variables
+     59            * @{
+     60            */
+     61          
+     62          /**
+     63            * @}
+     64            */
+     65          
+     66          /** @defgroup RTC_Private_FunctionPrototypes
+     67            * @{
+     68            */
+     69          
+     70          /**
+     71            * @}
+     72            */
+     73          
+     74          /** @defgroup RTC_Private_Functions
+     75            * @{
+     76            */
+     77          
+     78          /**
+     79            * @brief  Enables or disables the specified RTC interrupts.
+     80            * @param  RTC_IT: specifies the RTC interrupts sources to be enabled or disabled.
+     81            *   This parameter can be any combination of the following values:
+     82            *     @arg RTC_IT_OW: Overflow interrupt
+     83            *     @arg RTC_IT_ALR: Alarm interrupt
+     84            *     @arg RTC_IT_SEC: Second interrupt
+     85            * @param  NewState: new state of the specified RTC interrupts.
+     86            *   This parameter can be: ENABLE or DISABLE.
+     87            * @retval None
+     88            */
+     89          void RTC_ITConfig(uint16_t RTC_IT, FunctionalState NewState)
+     90          {
+     91            /* Check the parameters */
+     92            assert_param(IS_RTC_IT(RTC_IT));  
+     93            assert_param(IS_FUNCTIONAL_STATE(NewState));
+     94            
+     95            if (NewState != DISABLE)
+     96            {
+     97              RTC->CRH |= RTC_IT;
+     98            }
+     99            else
+    100            {
+    101              RTC->CRH &= (uint16_t)~RTC_IT;
+    102            }
+    103          }
+    104          
+    105          /**
+    106            * @brief  Enters the RTC configuration mode.
+    107            * @param  None
+    108            * @retval None
+    109            */
+    110          void RTC_EnterConfigMode(void)
+    111          {
+    112            /* Set the CNF flag to enter in the Configuration Mode */
+    113            RTC->CRL |= RTC_CRL_CNF;
+    114          }
+    115          
+    116          /**
+    117            * @brief  Exits from the RTC configuration mode.
+    118            * @param  None
+    119            * @retval None
+    120            */
+    121          void RTC_ExitConfigMode(void)
+    122          {
+    123            /* Reset the CNF flag to exit from the Configuration Mode */
+    124            RTC->CRL &= (uint16_t)~((uint16_t)RTC_CRL_CNF); 
+    125          }
+    126          
+    127          /**
+    128            * @brief  Gets the RTC counter value.
+    129            * @param  None
+    130            * @retval RTC counter value.
+    131            */
+    132          uint32_t RTC_GetCounter(void)
+    133          {
+    134            uint16_t tmp = 0;
+    135            tmp = RTC->CNTL;
+    136            return (((uint32_t)RTC->CNTH << 16 ) | tmp) ;
+    137          }
+    138          
+    139          /**
+    140            * @brief  Sets the RTC counter value.
+    141            * @param  CounterValue: RTC counter new value.
+    142            * @retval None
+    143            */
+    144          void RTC_SetCounter(uint32_t CounterValue)
+    145          { 
+    146            RTC_EnterConfigMode();
+    147            /* Set RTC COUNTER MSB word */
+    148            RTC->CNTH = CounterValue >> 16;
+    149            /* Set RTC COUNTER LSB word */
+    150            RTC->CNTL = (CounterValue & RTC_LSB_MASK);
+    151            RTC_ExitConfigMode();
+    152          }
+    153          
+    154          /**
+    155            * @brief  Sets the RTC prescaler value.
+    156            * @param  PrescalerValue: RTC prescaler new value.
+    157            * @retval None
+    158            */
+    159          void RTC_SetPrescaler(uint32_t PrescalerValue)
+    160          {
+    161            /* Check the parameters */
+    162            assert_param(IS_RTC_PRESCALER(PrescalerValue));
+    163            
+    164            RTC_EnterConfigMode();
+    165            /* Set RTC PRESCALER MSB word */
+    166            RTC->PRLH = (PrescalerValue & PRLH_MSB_MASK) >> 16;
+    167            /* Set RTC PRESCALER LSB word */
+    168            RTC->PRLL = (PrescalerValue & RTC_LSB_MASK);
+    169            RTC_ExitConfigMode();
+    170          }
+    171          
+    172          /**
+    173            * @brief  Sets the RTC alarm value.
+    174            * @param  AlarmValue: RTC alarm new value.
+    175            * @retval None
+    176            */
+    177          void RTC_SetAlarm(uint32_t AlarmValue)
+    178          {  
+    179            RTC_EnterConfigMode();
+    180            /* Set the ALARM MSB word */
+    181            RTC->ALRH = AlarmValue >> 16;
+    182            /* Set the ALARM LSB word */
+    183            RTC->ALRL = (AlarmValue & RTC_LSB_MASK);
+    184            RTC_ExitConfigMode();
+    185          }
+    186          
+    187          /**
+    188            * @brief  Gets the RTC divider value.
+    189            * @param  None
+    190            * @retval RTC Divider value.
+    191            */
+    192          uint32_t RTC_GetDivider(void)
+    193          {
+    194            uint32_t tmp = 0x00;
+    195            tmp = ((uint32_t)RTC->DIVH & (uint32_t)0x000F) << 16;
+    196            tmp |= RTC->DIVL;
+    197            return tmp;
+    198          }
+    199          
+    200          /**
+    201            * @brief  Waits until last write operation on RTC registers has finished.
+    202            * @note   This function must be called before any write to RTC registers.
+    203            * @param  None
+    204            * @retval None
+    205            */
+    206          void RTC_WaitForLastTask(void)
+    207          {
+    208            /* Loop until RTOFF flag is set */
+    209            while ((RTC->CRL & RTC_FLAG_RTOFF) == (uint16_t)RESET)
+    210            {
+    211            }
+    212          }
+    213          
+    214          /**
+    215            * @brief  Waits until the RTC registers (RTC_CNT, RTC_ALR and RTC_PRL)
+    216            *   are synchronized with RTC APB clock.
+    217            * @note   This function must be called before any read operation after an APB reset
+    218            *   or an APB clock stop.
+    219            * @param  None
+    220            * @retval None
+    221            */
+    222          void RTC_WaitForSynchro(void)
+    223          {
+    224            /* Clear RSF flag */
+    225            RTC->CRL &= (uint16_t)~RTC_FLAG_RSF;
+    226            /* Loop until RSF flag is set */
+    227            while ((RTC->CRL & RTC_FLAG_RSF) == (uint16_t)RESET)
+    228            {
+    229            }
+    230          }
+    231          
+    232          /**
+    233            * @brief  Checks whether the specified RTC flag is set or not.
+    234            * @param  RTC_FLAG: specifies the flag to check.
+    235            *   This parameter can be one the following values:
+    236            *     @arg RTC_FLAG_RTOFF: RTC Operation OFF flag
+    237            *     @arg RTC_FLAG_RSF: Registers Synchronized flag
+    238            *     @arg RTC_FLAG_OW: Overflow flag
+    239            *     @arg RTC_FLAG_ALR: Alarm flag
+    240            *     @arg RTC_FLAG_SEC: Second flag
+    241            * @retval The new state of RTC_FLAG (SET or RESET).
+    242            */
+    243          FlagStatus RTC_GetFlagStatus(uint16_t RTC_FLAG)
+    244          {
+    245            FlagStatus bitstatus = RESET;
+    246            
+    247            /* Check the parameters */
+    248            assert_param(IS_RTC_GET_FLAG(RTC_FLAG)); 
+    249            
+    250            if ((RTC->CRL & RTC_FLAG) != (uint16_t)RESET)
+    251            {
+    252              bitstatus = SET;
+    253            }
+    254            else
+    255            {
+    256              bitstatus = RESET;
+    257            }
+    258            return bitstatus;
+    259          }
+    260          
+    261          /**
+    262            * @brief  Clears the RTC’s pending flags.
+    263            * @param  RTC_FLAG: specifies the flag to clear.
+    264            *   This parameter can be any combination of the following values:
+    265            *     @arg RTC_FLAG_RSF: Registers Synchronized flag. This flag is cleared only after
+    266            *                        an APB reset or an APB Clock stop.
+    267            *     @arg RTC_FLAG_OW: Overflow flag
+    268            *     @arg RTC_FLAG_ALR: Alarm flag
+    269            *     @arg RTC_FLAG_SEC: Second flag
+    270            * @retval None
+    271            */
+    272          void RTC_ClearFlag(uint16_t RTC_FLAG)
+    273          {
+    274            /* Check the parameters */
+    275            assert_param(IS_RTC_CLEAR_FLAG(RTC_FLAG)); 
+    276              
+    277            /* Clear the coressponding RTC flag */
+    278            RTC->CRL &= (uint16_t)~RTC_FLAG;
+    279          }
+    280          
+    281          /**
+    282            * @brief  Checks whether the specified RTC interrupt has occured or not.
+    283            * @param  RTC_IT: specifies the RTC interrupts sources to check.
+    284            *   This parameter can be one of the following values:
+    285            *     @arg RTC_IT_OW: Overflow interrupt
+    286            *     @arg RTC_IT_ALR: Alarm interrupt
+    287            *     @arg RTC_IT_SEC: Second interrupt
+    288            * @retval The new state of the RTC_IT (SET or RESET).
+    289            */
+    290          ITStatus RTC_GetITStatus(uint16_t RTC_IT)
+    291          {
+    292            ITStatus bitstatus = RESET;
+    293            /* Check the parameters */
+    294            assert_param(IS_RTC_GET_IT(RTC_IT)); 
+    295            
+    296            bitstatus = (ITStatus)(RTC->CRL & RTC_IT);
+    297            if (((RTC->CRH & RTC_IT) != (uint16_t)RESET) && (bitstatus != (uint16_t)RESET))
+    298            {
+    299              bitstatus = SET;
+    300            }
+    301            else
+    302            {
+    303              bitstatus = RESET;
+    304            }
+    305            return bitstatus;
+    306          }
+    307          
+    308          /**
+    309            * @brief  Clears the RTC’s interrupt pending bits.
+    310            * @param  RTC_IT: specifies the interrupt pending bit to clear.
+    311            *   This parameter can be any combination of the following values:
+    312            *     @arg RTC_IT_OW: Overflow interrupt
+    313            *     @arg RTC_IT_ALR: Alarm interrupt
+    314            *     @arg RTC_IT_SEC: Second interrupt
+    315            * @retval None
+    316            */
+    317          void RTC_ClearITPendingBit(uint16_t RTC_IT)
+    318          {
+    319            /* Check the parameters */
+    320            assert_param(IS_RTC_IT(RTC_IT));  
+    321            
+    322            /* Clear the coressponding RTC pending bit */
+    323            RTC->CRL &= (uint16_t)~RTC_IT;
+    324          }
+    325          
+    326          /**
+    327            * @}
+    328            */
+    329          
+    330          /**
+    331            * @}
+    332            */
+    333          
+    334          /**
+    335            * @}
+    336            */
+    337          
+    338          /******************* (C) COPYRIGHT 2010 STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+        8  RTC_ClearFlag
+              8 -> assert_failed
+        8  RTC_ClearITPendingBit
+              8 -> assert_failed
+        0  RTC_EnterConfigMode
+        0  RTC_ExitConfigMode
+        0  RTC_GetCounter
+        0  RTC_GetDivider
+       16  RTC_GetFlagStatus
+             16 -> assert_failed
+       16  RTC_GetITStatus
+             16 -> assert_failed
+       16  RTC_ITConfig
+             16 -> assert_failed
+        8  RTC_SetAlarm
+              8 -> RTC_EnterConfigMode
+              8 -> RTC_ExitConfigMode
+        8  RTC_SetCounter
+              8 -> RTC_EnterConfigMode
+              8 -> RTC_ExitConfigMode
+        8  RTC_SetPrescaler
+              8 -> RTC_EnterConfigMode
+              8 -> RTC_ExitConfigMode
+              8 -> assert_failed
+        0  RTC_WaitForLastTask
+        0  RTC_WaitForSynchro
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      96  ?<Constant "C:\\Users\\TTT\\Desktop\\...">
+       4  ??DataTable13
+       4  ??DataTable13_1
+       4  ??DataTable13_10
+       4  ??DataTable13_2
+       4  ??DataTable13_3
+       4  ??DataTable13_4
+       4  ??DataTable13_5
+       4  ??DataTable13_6
+       4  ??DataTable13_7
+       4  ??DataTable13_8
+       4  ??DataTable13_9
+      40  RTC_ClearFlag
+      40  RTC_ClearITPendingBit
+      14  RTC_EnterConfigMode
+      16  RTC_ExitConfigMode
+      22  RTC_GetCounter
+      26  RTC_GetDivider
+      70  RTC_GetFlagStatus
+      74  RTC_GetITStatus
+      78  RTC_ITConfig
+      24  RTC_SetAlarm
+      24  RTC_SetCounter
+      42  RTC_SetPrescaler
+      10  RTC_WaitForLastTask
+      24  RTC_WaitForSynchro
+
+ 
+  96 bytes in section .rodata
+ 548 bytes in section .text
+ 
+ 548 bytes of CODE  memory
+  96 bytes of CONST memory
+
+Errors: none
+Warnings: none
