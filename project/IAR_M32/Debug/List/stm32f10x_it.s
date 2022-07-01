@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    29/Jun/2022  17:55:37 /
+// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    01/Jul/2022  16:57:33 /
 // Copyright 1999-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Cpu mode     =  thumb                                                   /
@@ -40,15 +40,14 @@
         #define SHT_PROGBITS 0x1
 
         EXTERN Delay_Decrement
-        EXTERN Fan_Heater_Control
         EXTERN GPIO_ReadInputDataBit
+        EXTERN LED_Off_Green
         EXTERN LED_Off_Red
+        EXTERN LED_On_Green
         EXTERN LED_On_Red
         EXTERN Run_Wiper
         EXTERN TIM_ClearITPendingBit
         EXTERN TIM_GetITStatus
-        EXTERN Temperature_Boot_Mode
-        EXTERN Temperature_Data_Check
         EXTERN TimingDelay_Decrement
         EXTERN USART_ClearITPendingBit
         EXTERN USART_GetITStatus
@@ -63,7 +62,6 @@
         EXTERN stLRF
         EXTERN stSONY
         EXTERN stSYS
-        EXTERN stTEMP
         EXTERN stTSM
         EXTERN stUART4
         EXTERN stUART5
@@ -318,46 +316,46 @@ TIM2_IRQHandler:
         MOVS     R1,#+1
         MOVS     R0,#+1073741824
         BL       TIM_ClearITPendingBit
-        LDR.W    R0,??DataTable13
+        LDR.W    R0,??DataTable14
         LDRB     R0,[R0, #+0]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable13
+        LDR.W    R1,??DataTable14
         STRB     R0,[R1, #+0]
-        LDR.W    R0,??DataTable13
+        LDR.W    R0,??DataTable14
         LDRB     R0,[R0, #+0]
         CMP      R0,#+100
         BCC.N    ??TIM2_IRQHandler_1
-        LDR.W    R0,??DataTable13
+        LDR.W    R0,??DataTable14
         MOVS     R1,#+0
         STRB     R1,[R0, #+0]
-        LDR.W    R0,??DataTable13
+        LDR.W    R0,??DataTable14
         LDRB     R0,[R0, #+1]
         EORS     R0,R0,#0xFF
-        LDR.W    R1,??DataTable13
+        LDR.W    R1,??DataTable14
         STRB     R0,[R1, #+1]
 ??TIM2_IRQHandler_1:
-        LDR.W    R0,??DataTable14
+        LDR.W    R0,??DataTable14_1
         LDRB     R0,[R0, #+0]
         CMP      R0,#+1
         BNE.N    ??TIM2_IRQHandler_2
-        LDR.W    R0,??DataTable14
+        LDR.W    R0,??DataTable14_1
         LDR      R0,[R0, #+4]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable14
+        LDR.W    R1,??DataTable14_1
         STR      R0,[R1, #+4]
-        LDR.W    R0,??DataTable14
+        LDR.W    R0,??DataTable14_1
         LDR      R0,[R0, #+4]
         MOV      R1,#+1000
         CMP      R0,R1
         BCC.N    ??TIM2_IRQHandler_2
-        LDR.W    R0,??DataTable14
+        LDR.W    R0,??DataTable14_1
         MOVS     R1,#+0
         STR      R1,[R0, #+4]
-        LDR.W    R0,??DataTable14
+        LDR.W    R0,??DataTable14_1
         MOVS     R1,#+0
         STRB     R1,[R0, #+0]
 ??TIM2_IRQHandler_2:
-        LDR.W    R0,??DataTable14_1
+        LDR.W    R0,??DataTable14_2
         LDRB     R0,[R0, #+1]
         CMP      R0,#+0
         BEQ.N    ??TIM2_IRQHandler_3
@@ -366,51 +364,51 @@ TIM2_IRQHandler:
         B.N      ??TIM2_IRQHandler_5
 ??TIM2_IRQHandler_3:
         MOVS     R1,#+1
-        LDR.W    R0,??DataTable14_2  ;; 0x40011000
+        LDR.W    R0,??DataTable14_3  ;; 0x40011000
         BL       GPIO_ReadInputDataBit
-        LDR.W    R1,??DataTable14_3
+        LDR.W    R1,??DataTable14_4
         STRB     R0,[R1, #+4]
         MOVS     R1,#+2
-        LDR.W    R0,??DataTable14_2  ;; 0x40011000
+        LDR.W    R0,??DataTable14_3  ;; 0x40011000
         BL       GPIO_ReadInputDataBit
-        LDR.W    R1,??DataTable14_3
+        LDR.W    R1,??DataTable14_4
         STRB     R0,[R1, #+5]
         B.N      ??TIM2_IRQHandler_6
 ??TIM2_IRQHandler_4:
         MOVS     R1,#+1
-        LDR.W    R0,??DataTable14_2  ;; 0x40011000
+        LDR.W    R0,??DataTable14_3  ;; 0x40011000
         BL       GPIO_ReadInputDataBit
-        LDR.W    R1,??DataTable14_3
+        LDR.W    R1,??DataTable14_4
         STRB     R0,[R1, #+4]
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         LDRB     R0,[R0, #+1]
-        LDR.W    R1,??DataTable14_3
+        LDR.W    R1,??DataTable14_4
         LDRB     R1,[R1, #+4]
         CMP      R0,R1
         BEQ.N    ??TIM2_IRQHandler_7
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+4]
         CMP      R0,#+0
         BNE.N    ??TIM2_IRQHandler_8
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         LDRB     R0,[R0, #+1]
         CMP      R0,#+1
         BNE.N    ??TIM2_IRQHandler_8
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         LDRB     R0,[R0, #+3]
         CMP      R0,#+1
         BCC.N    ??TIM2_IRQHandler_9
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         LDRB     R0,[R0, #+3]
         CMP      R0,#+15
         BCS.N    ??TIM2_IRQHandler_9
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         LDRB     R0,[R0, #+3]
         SUBS     R0,R0,#+1
-        LDR.W    R1,??DataTable14_4
+        LDR.W    R1,??DataTable14_5
         STRB     R0,[R1, #+3]
 ??TIM2_IRQHandler_9:
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         LDRB     R0,[R0, #+3]
         CMP      R0,#+0
         BNE.N    ??TIM2_IRQHandler_10
@@ -419,66 +417,66 @@ TIM2_IRQHandler:
         BL       Run_Wiper
         B.N      ??TIM2_IRQHandler_8
 ??TIM2_IRQHandler_10:
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         LDRB     R0,[R0, #+4]
         CMP      R0,#+0
         BNE.N    ??TIM2_IRQHandler_8
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         LDRB     R0,[R0, #+5]
         CMP      R0,#+0
         BEQ.N    ??TIM2_IRQHandler_8
         MOVS     R1,#+1
         MOVS     R0,#+0
         BL       Run_Wiper
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         MOVS     R1,#+1
         STRB     R1,[R0, #+4]
 ??TIM2_IRQHandler_8:
         MOVS     R1,#+1
-        LDR.W    R0,??DataTable14_2  ;; 0x40011000
+        LDR.W    R0,??DataTable14_3  ;; 0x40011000
         BL       GPIO_ReadInputDataBit
-        LDR.W    R1,??DataTable14_4
+        LDR.W    R1,??DataTable14_5
         STRB     R0,[R1, #+1]
 ??TIM2_IRQHandler_7:
         MOVS     R1,#+2
-        LDR.W    R0,??DataTable14_2  ;; 0x40011000
+        LDR.W    R0,??DataTable14_3  ;; 0x40011000
         BL       GPIO_ReadInputDataBit
-        LDR.W    R1,??DataTable14_3
+        LDR.W    R1,??DataTable14_4
         STRB     R0,[R1, #+5]
         B.N      ??TIM2_IRQHandler_6
 ??TIM2_IRQHandler_5:
 ??TIM2_IRQHandler_6:
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         LDRB     R0,[R0, #+4]
         CMP      R0,#+1
         BNE.N    ??TIM2_IRQHandler_11
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         LDRB     R0,[R0, #+6]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable14_4
+        LDR.W    R1,??DataTable14_5
         STRB     R0,[R1, #+6]
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         LDRB     R0,[R0, #+6]
         CMP      R0,#+101
         BCC.N    ??TIM2_IRQHandler_11
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         MOVS     R1,#+0
         STRB     R1,[R0, #+6]
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         LDRB     R0,[R0, #+7]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable14_4
+        LDR.W    R1,??DataTable14_5
         STRB     R0,[R1, #+7]
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         LDRB     R0,[R0, #+7]
-        LDR.W    R1,??DataTable14_4
+        LDR.W    R1,??DataTable14_5
         LDRB     R1,[R1, #+5]
         CMP      R0,R1
         BCC.N    ??TIM2_IRQHandler_11
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         MOVS     R1,#+0
         STRB     R1,[R0, #+4]
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         LDRB     R0,[R0, #+3]
         CMP      R0,#+0
         BEQ.N    ??TIM2_IRQHandler_12
@@ -486,62 +484,62 @@ TIM2_IRQHandler:
         MOVS     R0,#+1
         BL       Run_Wiper
 ??TIM2_IRQHandler_12:
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_5
         MOVS     R1,#+0
         STRB     R1,[R0, #+7]
 ??TIM2_IRQHandler_11:
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+13]
         CMP      R0,#+0
         BEQ.N    ??TIM2_IRQHandler_13
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+14]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable14_3
+        LDR.W    R1,??DataTable14_4
         STRB     R0,[R1, #+14]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+14]
         CMP      R0,#+100
         BCC.N    ??TIM2_IRQHandler_13
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+15]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable14_3
+        LDR.W    R1,??DataTable14_4
         STRB     R0,[R1, #+15]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+0
         STRB     R1,[R0, #+14]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+15]
-        LDR.W    R1,??DataTable14_3
+        LDR.W    R1,??DataTable14_4
         LDRB     R1,[R1, #+12]
         CMP      R0,R1
         BCC.N    ??TIM2_IRQHandler_13
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+1
         STRB     R1,[R0, #+16]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+0
         STRB     R1,[R0, #+15]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+0
         STRB     R1,[R0, #+13]
 ??TIM2_IRQHandler_13:
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+10]
         CMP      R0,#+0
         BNE.N    ??TIM2_IRQHandler_14
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+13]
         CMP      R0,#+0
         BEQ.N    ??TIM2_IRQHandler_14
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+0
         STRB     R1,[R0, #+13]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+0
         STRB     R1,[R0, #+14]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+0
         STRB     R1,[R0, #+15]
 ??TIM2_IRQHandler_14:
@@ -610,98 +608,98 @@ TIM2_IRQHandler:
         MOVS     R1,#+0
         STRB     R1,[R0, #+2]
 ??TIM2_IRQHandler_17:
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+18]
         CMP      R0,#+0
         BNE.N    ??TIM2_IRQHandler_18
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+19]
         CMP      R0,#+0
         BNE.N    ??TIM2_IRQHandler_19
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+20]
         CMP      R0,#+0
         BNE.N    ??TIM2_IRQHandler_19
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+21]
         CMP      R0,#+0
         BNE.N    ??TIM2_IRQHandler_19
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+22]
         CMP      R0,#+0
         BEQ.N    ??TIM2_IRQHandler_18
 ??TIM2_IRQHandler_19:
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+0
         STRB     R1,[R0, #+19]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+0
         STRB     R1,[R0, #+20]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+0
         STRB     R1,[R0, #+21]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+0
         STRB     R1,[R0, #+22]
 ??TIM2_IRQHandler_18:
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+18]
         CMP      R0,#+1
         BNE.N    ??TIM2_IRQHandler_0
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+19]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable14_3
+        LDR.W    R1,??DataTable14_4
         STRB     R0,[R1, #+19]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+19]
         CMP      R0,#+100
         BCC.N    ??TIM2_IRQHandler_0
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+0
         STRB     R1,[R0, #+19]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+20]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable14_3
+        LDR.W    R1,??DataTable14_4
         STRB     R0,[R1, #+20]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+20]
         CMP      R0,#+60
         BCC.N    ??TIM2_IRQHandler_0
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+0
         STRB     R1,[R0, #+20]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+21]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable14_3
+        LDR.W    R1,??DataTable14_4
         STRB     R0,[R1, #+21]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+21]
         CMP      R0,#+60
         BCC.N    ??TIM2_IRQHandler_0
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+0
         STRB     R1,[R0, #+21]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+22]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable14_3
+        LDR.W    R1,??DataTable14_4
         STRB     R0,[R1, #+22]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         LDRB     R0,[R0, #+22]
-        LDR.W    R1,??DataTable14_3
+        LDR.W    R1,??DataTable14_4
         LDRB     R1,[R1, #+17]
         CMP      R0,R1
         BCC.N    ??TIM2_IRQHandler_0
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+0
         STRB     R1,[R0, #+22]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+0
         STRB     R1,[R0, #+18]
-        LDR.W    R0,??DataTable14_3
+        LDR.W    R0,??DataTable14_4
         MOVS     R1,#+1
         STRB     R1,[R0, #+23]
 ??TIM2_IRQHandler_0:
@@ -717,20 +715,10 @@ TIM3_IRQHandler:
         CMP      R0,#+0
         BEQ.N    ??TIM3_IRQHandler_0
         MOVS     R1,#+1
-        LDR.W    R0,??DataTable18_2  ;; 0x40000400
+        LDR.W    R0,??DataTable18_3  ;; 0x40000800
         BL       TIM_ClearITPendingBit
-        BL       Temperature_Data_Check
-        BL       Temperature_Boot_Mode
-        LDR.W    R0,??DataTable18_3
-        LDRB     R0,[R0, #+17]
-        CMP      R0,#+0
-        BNE.N    ??TIM3_IRQHandler_1
-        MOVS     R0,#+1
-        BL       Fan_Heater_Control
-        B.N      ??TIM3_IRQHandler_0
-??TIM3_IRQHandler_1:
-        MOVS     R0,#+2
-        BL       Fan_Heater_Control
+        BL       LED_Off_Green
+        BL       LED_On_Green
 ??TIM3_IRQHandler_0:
         POP      {R0,PC}          ;; return
 
@@ -1187,12 +1175,12 @@ Boot_Status_Data_Trans:
 TIM4_IRQHandler:
         PUSH     {R7,LR}
         MOVS     R1,#+1
-        LDR.W    R0,??DataTable19  ;; 0x40000800
+        LDR.W    R0,??DataTable18_3  ;; 0x40000800
         BL       TIM_GetITStatus
         CMP      R0,#+0
         BEQ.N    ??TIM4_IRQHandler_0
         MOVS     R1,#+1
-        LDR.W    R0,??DataTable19  ;; 0x40000800
+        LDR.W    R0,??DataTable18_3  ;; 0x40000800
         BL       TIM_ClearITPendingBit
         BL       LED_On_Red
         BL       LED_Off_Red
@@ -1313,44 +1301,44 @@ Rx_Main_Comm_Handling:
         ADDS     R0,R0,#+1
         LDR.W    R1,??DataTable18_5
         STRB     R0,[R1, #+28]
-        LDR.W    R0,??DataTable19_1
+        LDR.W    R0,??DataTable19
         LDR      R0,[R0, #+0]
-        LDR.W    R1,??DataTable19_1
+        LDR.W    R1,??DataTable19
         ADDS     R0,R0,R1
         STRB     R5,[R0, #+4]
-        LDR.W    R0,??DataTable19_1
+        LDR.W    R0,??DataTable19
         LDR      R0,[R0, #+0]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable19_1
+        LDR.W    R1,??DataTable19
         STR      R0,[R1, #+0]
-        LDR.W    R0,??DataTable19_1
+        LDR.W    R0,??DataTable19
         LDR      R0,[R0, #+0]
         MOV      R1,#+300
         CMP      R0,R1
         BCC.N    ??Rx_Main_Comm_Handling_0
-        LDR.W    R0,??DataTable19_1
+        LDR.W    R0,??DataTable19
         MOVS     R1,#+0
         STR      R1,[R0, #+0]
 ??Rx_Main_Comm_Handling_0:
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
         CMP      R4,#+1
         BNE.N    ??Rx_Main_Comm_Handling_1
-        LDR.W    R0,??DataTable19_1
+        LDR.W    R0,??DataTable19
         LDR      R0,[R0, #+0]
-        LDR.W    R1,??DataTable19_1
+        LDR.W    R1,??DataTable19
         ADDS     R0,R0,R1
         STRB     R5,[R0, #+4]
-        LDR.W    R0,??DataTable19_1
+        LDR.W    R0,??DataTable19
         LDR      R0,[R0, #+0]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable19_1
+        LDR.W    R1,??DataTable19
         STR      R0,[R1, #+0]
-        LDR.W    R0,??DataTable19_1
+        LDR.W    R0,??DataTable19
         LDR      R0,[R0, #+0]
         MOV      R1,#+300
         CMP      R0,R1
         BCC.N    ??Rx_Main_Comm_Handling_2
-        LDR.W    R0,??DataTable19_1
+        LDR.W    R0,??DataTable19
         MOVS     R1,#+0
         STR      R1,[R0, #+0]
 ??Rx_Main_Comm_Handling_2:
@@ -1389,22 +1377,22 @@ Rx_Main_Comm_Handling:
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
         CMP      R4,#+2
         BNE.N    ??Rx_Main_Comm_Handling_7
-        LDR.W    R0,??DataTable19_1
+        LDR.W    R0,??DataTable19
         LDR      R0,[R0, #+0]
-        LDR.W    R1,??DataTable19_1
+        LDR.W    R1,??DataTable19
         ADDS     R0,R0,R1
         STRB     R5,[R0, #+4]
-        LDR.W    R0,??DataTable19_1
+        LDR.W    R0,??DataTable19
         LDR      R0,[R0, #+0]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable19_1
+        LDR.W    R1,??DataTable19
         STR      R0,[R1, #+0]
-        LDR.W    R0,??DataTable19_1
+        LDR.W    R0,??DataTable19
         LDR      R0,[R0, #+0]
         MOV      R1,#+300
         CMP      R0,R1
         BCC.N    ??Rx_Main_Comm_Handling_8
-        LDR.W    R0,??DataTable19_1
+        LDR.W    R0,??DataTable19
         MOVS     R1,#+0
         STR      R1,[R0, #+0]
 ??Rx_Main_Comm_Handling_8:
@@ -1455,22 +1443,22 @@ Rx_Main_Comm_Handling:
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
         CMP      R4,#+3
         BNE.N    ??Rx_Main_Comm_Handling_10
-        LDR.W    R0,??DataTable19_1
+        LDR.W    R0,??DataTable19
         LDR      R0,[R0, #+0]
-        LDR.W    R1,??DataTable19_1
+        LDR.W    R1,??DataTable19
         ADDS     R0,R0,R1
         STRB     R5,[R0, #+4]
-        LDR.W    R0,??DataTable19_1
+        LDR.W    R0,??DataTable19
         LDR      R0,[R0, #+0]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable19_1
+        LDR.W    R1,??DataTable19
         STR      R0,[R1, #+0]
-        LDR.W    R0,??DataTable19_1
+        LDR.W    R0,??DataTable19
         LDR      R0,[R0, #+0]
         MOV      R1,#+300
         CMP      R0,R1
         BCC.N    ??Rx_Main_Comm_Handling_11
-        LDR.W    R0,??DataTable19_1
+        LDR.W    R0,??DataTable19
         MOVS     R1,#+0
         STR      R1,[R0, #+0]
 ??Rx_Main_Comm_Handling_11:
@@ -1744,12 +1732,6 @@ LRF_Data_Clear:
 ??LRF_Data_Clear_1:
         BX       LR               ;; return
 
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable13:
-        DC32     stLED_SET
-
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
 LRF_Trans_Data:
@@ -1800,30 +1782,36 @@ LRF_Trans_Data:
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable14:
-        DC32     stINFO
+        DC32     stLED_SET
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable14_1:
-        DC32     stDIP
+        DC32     stINFO
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable14_2:
-        DC32     0x40011000
+        DC32     stDIP
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable14_3:
-        DC32     stWIPER2
+        DC32     0x40011000
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable14_4:
+        DC32     stWIPER2
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable14_5:
         DC32     stWIPER1
 
         SECTION `.text`:CODE:NOROOT(1)
@@ -2058,7 +2046,7 @@ SONY_Data_Clear:
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable18_3:
-        DC32     stTEMP
+        DC32     0x40000800
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
@@ -2087,25 +2075,25 @@ TSM_Data_Pasher:
         MOVS     R3,#+0
         MOVS     R4,#+0
         MOVS     R5,#+0
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+20]
         CMP      R6,#+1
         BNE.W    ??TSM_Data_Pasher_0
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+21]
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R7,??DataTable26
         ADDS     R6,R6,R7
         STRB     R0,[R6, #+124]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+21]
         ADDS     R6,R6,#+1
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R7,??DataTable26
         STRB     R6,[R7, #+21]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+22]
         CMP      R6,#+0
         BNE.N    ??TSM_Data_Pasher_1
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+125]
         CMP      R6,#+129
         BEQ.N    ??TSM_Data_Pasher_2
@@ -2115,40 +2103,40 @@ TSM_Data_Pasher:
         BEQ.N    ??TSM_Data_Pasher_4
         B.N      ??TSM_Data_Pasher_5
 ??TSM_Data_Pasher_3:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+35
         STRB     R7,[R6, #+22]
         B.N      ??TSM_Data_Pasher_1
 ??TSM_Data_Pasher_2:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+8
         STRB     R7,[R6, #+22]
         B.N      ??TSM_Data_Pasher_1
 ??TSM_Data_Pasher_4:
-        LDR.W    R6,??DataTable26
+        LDR.W    R6,??DataTable26_1
         LDRB     R6,[R6, #+10]
         CMP      R6,#+2
         BNE.N    ??TSM_Data_Pasher_6
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+7
         STRB     R7,[R6, #+22]
 ??TSM_Data_Pasher_6:
         B.N      ??TSM_Data_Pasher_1
 ??TSM_Data_Pasher_5:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+6
         STRB     R7,[R6, #+22]
 ??TSM_Data_Pasher_1:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+21]
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+22]
         CMP      R6,R7
         BNE.W    ??TSM_Data_Pasher_7
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
         CMP      R0,#+175
         BNE.W    ??TSM_Data_Pasher_7
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+22]
         CMP      R6,#+6
         BEQ.N    ??TSM_Data_Pasher_8
@@ -2160,7 +2148,7 @@ TSM_Data_Pasher:
         BEQ.W    ??TSM_Data_Pasher_11
         B.N      ??TSM_Data_Pasher_12
 ??TSM_Data_Pasher_8:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+17]
         CMP      R6,#+48
         BEQ.N    ??TSM_Data_Pasher_13
@@ -2190,11 +2178,11 @@ TSM_Data_Pasher:
         BEQ.W    ??TSM_Data_Pasher_25
         B.N      ??TSM_Data_Pasher_26
 ??TSM_Data_Pasher_13:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+125]
         CMP      R6,#+48
         BNE.N    ??TSM_Data_Pasher_27
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+126]
         MOVS     R2,R6
         UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
@@ -2206,20 +2194,20 @@ TSM_Data_Pasher:
 ??TSM_Data_Pasher_28:
         LDR.W    R6,??DataTable27
         STRB     R2,[R6, #+33]
-        LDR.W    R6,??DataTable26
+        LDR.W    R6,??DataTable26_1
         MOVS     R7,#+160
         STRB     R7,[R6, #+8]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+17]
 ??TSM_Data_Pasher_27:
         B.N      ??TSM_Data_Pasher_29
 ??TSM_Data_Pasher_15:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+125]
         CMP      R6,#+130
         BNE.N    ??TSM_Data_Pasher_30
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+128]
         MOVS     R2,R6
         UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
@@ -2230,7 +2218,7 @@ TSM_Data_Pasher:
         LDR.W    R7,??DataTable27
         LDR      R7,[R7, #+20]
         STR      R7,[R6, #+16]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+17]
 ??TSM_Data_Pasher_30:
@@ -2238,14 +2226,14 @@ TSM_Data_Pasher:
 ??TSM_Data_Pasher_16:
         B.N      ??TSM_Data_Pasher_29
 ??TSM_Data_Pasher_18:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+125]
         CMP      R6,#+133
         BNE.N    ??TSM_Data_Pasher_31
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+126]
         MOVS     R2,R6
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+127]
         MOVS     R3,R6
         UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
@@ -2255,23 +2243,23 @@ TSM_Data_Pasher:
         ORRS     R4,R3,R4
         LDR.W    R6,??DataTable27
         STR      R4,[R6, #+16]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+17]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+133
         STRB     R7,[R6, #+19]
 ??TSM_Data_Pasher_31:
         B.N      ??TSM_Data_Pasher_29
 ??TSM_Data_Pasher_17:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+125]
         CMP      R6,#+132
         BNE.N    ??TSM_Data_Pasher_32
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+126]
         MOVS     R2,R6
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+127]
         MOVS     R3,R6
         UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
@@ -2281,91 +2269,91 @@ TSM_Data_Pasher:
         ORRS     R4,R3,R4
         LDR.W    R6,??DataTable27
         STR      R4,[R6, #+24]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+17]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+132
         STRB     R7,[R6, #+19]
 ??TSM_Data_Pasher_32:
         B.N      ??TSM_Data_Pasher_29
 ??TSM_Data_Pasher_22:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+125]
         CMP      R6,#+240
         BNE.N    ??TSM_Data_Pasher_33
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+126]
         STRB     R7,[R6, #+10]
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+128]
         STRB     R7,[R6, #+11]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+17]
 ??TSM_Data_Pasher_33:
         B.N      ??TSM_Data_Pasher_29
 ??TSM_Data_Pasher_14:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+125]
         CMP      R6,#+128
         BNE.N    ??TSM_Data_Pasher_34
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+127]
         STRB     R7,[R6, #+12]
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+128]
         STRB     R7,[R6, #+13]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+17]
 ??TSM_Data_Pasher_34:
         B.N      ??TSM_Data_Pasher_29
 ??TSM_Data_Pasher_23:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+125]
         CMP      R6,#+248
         BNE.N    ??TSM_Data_Pasher_35
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+126]
         STRB     R7,[R6, #+14]
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+127]
         STRB     R7,[R6, #+15]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+17]
 ??TSM_Data_Pasher_35:
         B.N      ??TSM_Data_Pasher_29
 ??TSM_Data_Pasher_19:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+125]
         CMP      R6,#+134
         BNE.N    ??TSM_Data_Pasher_36
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+126]
         STRB     R7,[R6, #+32]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+17]
 ??TSM_Data_Pasher_36:
         B.N      ??TSM_Data_Pasher_29
 ??TSM_Data_Pasher_21:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+125]
         CMP      R6,#+213
         BNE.N    ??TSM_Data_Pasher_37
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+126]
         MOVS     R2,R6
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+127]
         MOVS     R3,R6
         UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
@@ -2379,60 +2367,60 @@ TSM_Data_Pasher:
         LDR.W    R7,??DataTable27
         LDR      R7,[R7, #+20]
         STR      R7,[R6, #+16]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+17]
 ??TSM_Data_Pasher_37:
         B.N      ??TSM_Data_Pasher_29
 ??TSM_Data_Pasher_25:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+125]
         CMP      R6,#+250
         BNE.N    ??TSM_Data_Pasher_38
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+126]
         STRB     R7,[R6, #+33]
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+127]
         STRB     R7,[R6, #+34]
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+128]
         STRB     R7,[R6, #+35]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+17]
 ??TSM_Data_Pasher_38:
         B.N      ??TSM_Data_Pasher_29
 ??TSM_Data_Pasher_24:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+125]
         CMP      R6,#+249
         BNE.N    ??TSM_Data_Pasher_39
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+126]
         STRB     R7,[R6, #+16]
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+127]
         STRB     R7,[R6, #+17]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+17]
 ??TSM_Data_Pasher_39:
         B.N      ??TSM_Data_Pasher_29
 ??TSM_Data_Pasher_20:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+125]
         CMP      R6,#+191
         BNE.N    ??TSM_Data_Pasher_40
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+126]
         MOVS     R2,R6
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+127]
         MOVS     R3,R6
         UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
@@ -2442,7 +2430,7 @@ TSM_Data_Pasher:
         ORRS     R4,R3,R4
         LDR.W    R6,??DataTable27
         STR      R4,[R6, #+24]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+17]
 ??TSM_Data_Pasher_40:
@@ -2451,90 +2439,90 @@ TSM_Data_Pasher:
 ??TSM_Data_Pasher_29:
         B.N      ??TSM_Data_Pasher_41
 ??TSM_Data_Pasher_9:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+17]
         CMP      R6,#+202
         BNE.N    ??TSM_Data_Pasher_42
-        LDR.W    R6,??DataTable26
+        LDR.W    R6,??DataTable26_1
         MOVS     R7,#+0
         STR      R7,[R6, #+20]
-        LDR.W    R6,??DataTable26
+        LDR.W    R6,??DataTable26_1
         LDR      R6,[R6, #+20]
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+126]
         ORRS     R6,R6,R7, LSL #+8
-        LDR.W    R7,??DataTable26
+        LDR.W    R7,??DataTable26_1
         STR      R6,[R7, #+20]
-        LDR.W    R6,??DataTable26
+        LDR.W    R6,??DataTable26_1
         LDR      R6,[R6, #+20]
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+127]
         ORRS     R6,R7,R6
-        LDR.W    R7,??DataTable26
+        LDR.W    R7,??DataTable26_1
         STR      R6,[R7, #+20]
-        LDR.W    R6,??DataTable26
+        LDR.W    R6,??DataTable26_1
         MOVS     R7,#+0
         STR      R7,[R6, #+24]
-        LDR.W    R6,??DataTable26
+        LDR.W    R6,??DataTable26_1
         LDR      R6,[R6, #+24]
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+128]
         ORRS     R6,R6,R7, LSL #+8
-        LDR.W    R7,??DataTable26
+        LDR.W    R7,??DataTable26_1
         STR      R6,[R7, #+24]
-        LDR.W    R6,??DataTable26
+        LDR.W    R6,??DataTable26_1
         LDR      R6,[R6, #+24]
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+129]
         ORRS     R6,R7,R6
-        LDR.W    R7,??DataTable26
+        LDR.W    R7,??DataTable26_1
         STR      R6,[R7, #+24]
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+126]
         STRB     R7,[R6, #+28]
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+127]
         STRB     R7,[R6, #+29]
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+128]
         STRB     R7,[R6, #+30]
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+129]
         STRB     R7,[R6, #+31]
-        LDR.W    R6,??DataTable26
+        LDR.W    R6,??DataTable26_1
         MOVS     R7,#+255
         STRB     R7,[R6, #+36]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+17]
 ??TSM_Data_Pasher_42:
         B.N      ??TSM_Data_Pasher_41
 ??TSM_Data_Pasher_10:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+17]
         CMP      R6,#+129
         BNE.N    ??TSM_Data_Pasher_43
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+125]
         CMP      R6,#+129
         BNE.N    ??TSM_Data_Pasher_44
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+128]
         STRB     R7,[R6, #+35]
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+129]
         STRB     R7,[R6, #+34]
-        LDR.W    R6,??DataTable26
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R6,??DataTable26_1
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+130]
         STRB     R7,[R6, #+33]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+17]
 ??TSM_Data_Pasher_44:
@@ -2549,36 +2537,36 @@ TSM_Data_Pasher:
         MOVS     R6,#+0
         MOVS     R1,R6
 ??TSM_Data_Pasher_46:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+22]
         UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
         CMP      R1,R6
         BCS.N    ??TSM_Data_Pasher_47
         UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         ADDS     R6,R1,R6
         MOVS     R7,#+0
         STRB     R7,[R6, #+124]
         ADDS     R1,R1,#+1
         B.N      ??TSM_Data_Pasher_46
 ??TSM_Data_Pasher_47:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+20]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+21]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+22]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+1
         STRB     R7,[R6, #+23]
         B.N      ??TSM_Data_Pasher_0
 ??TSM_Data_Pasher_7:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+21]
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R7,??DataTable26
         LDRB     R7,[R7, #+22]
         CMP      R6,R7
         BNE.N    ??TSM_Data_Pasher_0
@@ -2588,47 +2576,47 @@ TSM_Data_Pasher:
         MOVS     R6,#+0
         MOVS     R1,R6
 ??TSM_Data_Pasher_48:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+21]
         UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
         CMP      R1,R6
         BCS.N    ??TSM_Data_Pasher_49
         UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         ADDS     R6,R1,R6
         MOVS     R7,#+0
         STRB     R7,[R6, #+124]
         ADDS     R1,R1,#+1
         B.N      ??TSM_Data_Pasher_48
 ??TSM_Data_Pasher_49:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+20]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+21]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+0
         STRB     R7,[R6, #+22]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+1
         STRB     R7,[R6, #+18]
 ??TSM_Data_Pasher_0:
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+20]
         CMP      R6,#+0
         BNE.N    ??TSM_Data_Pasher_50
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
         CMP      R0,#+160
         BNE.N    ??TSM_Data_Pasher_50
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         STRB     R0,[R6, #+124]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         LDRB     R6,[R6, #+21]
         ADDS     R6,R6,#+1
-        LDR.W    R7,??DataTable25_3
+        LDR.W    R7,??DataTable26
         STRB     R6,[R7, #+21]
-        LDR.W    R6,??DataTable25_3
+        LDR.W    R6,??DataTable26
         MOVS     R7,#+1
         STRB     R7,[R6, #+20]
 ??TSM_Data_Pasher_50:
@@ -2639,12 +2627,6 @@ TSM_Data_Pasher:
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable19:
-        DC32     0x40000800
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable19_1:
         DC32     stERROR
 
         SECTION `.text`:CODE:NOROOT(1)
@@ -2685,7 +2667,7 @@ SONY_Data_Pasher:
         LDRB     R0,[R0, #+74]
         CMP      R0,#+255
         BNE.N    ??SONY_Data_Pasher_1
-        LDR.W    R0,??DataTable25_3
+        LDR.W    R0,??DataTable26
         LDRB     R0,[R0, #+17]
         CMP      R0,#+1
         BNE.N    ??SONY_Data_Pasher_2
@@ -2712,7 +2694,7 @@ SONY_Data_Pasher:
         B.N      ??SONY_Data_Pasher_6
 ??SONY_Data_Pasher_5:
 ??SONY_Data_Pasher_6:
-        LDR.W    R0,??DataTable26
+        LDR.W    R0,??DataTable26_1
         MOVS     R1,#+129
         STRB     R1,[R0, #+8]
         B.N      ??SONY_Data_Pasher_7
@@ -2742,7 +2724,7 @@ SONY_Data_Pasher:
         LDRB     R0,[R0, #+77]
         CMP      R0,#+255
         BNE.W    ??SONY_Data_Pasher_8
-        LDR.W    R0,??DataTable25_3
+        LDR.W    R0,??DataTable26
         LDRB     R0,[R0, #+17]
         CMP      R0,#+71
         BEQ.N    ??SONY_Data_Pasher_9
@@ -2784,15 +2766,15 @@ SONY_Data_Pasher:
         LDRB     R0,[R0, #+77]
         CMP      R0,#+0
         BNE.N    ??SONY_Data_Pasher_12
-        LDR.W    R0,??DataTable25_3
+        LDR.W    R0,??DataTable26
         MOVS     R1,#+1
         STRB     R1,[R0, #+18]
         B.N      ??SONY_Data_Pasher_13
 ??SONY_Data_Pasher_12:
-        LDR.W    R0,??DataTable25_3
+        LDR.W    R0,??DataTable26
         MOVS     R1,#+0
         STRB     R1,[R0, #+17]
-        LDR.W    R0,??DataTable25_3
+        LDR.W    R0,??DataTable26
         MOVS     R1,#+71
         STRB     R1,[R0, #+19]
 ??SONY_Data_Pasher_13:
@@ -2832,28 +2814,28 @@ SONY_Data_Pasher:
         LDRB     R0,[R0, #+77]
         CMP      R0,#+0
         BNE.N    ??SONY_Data_Pasher_15
-        LDR.W    R0,??DataTable25_3
+        LDR.W    R0,??DataTable26
         MOVS     R1,#+1
         STRB     R1,[R0, #+18]
         B.N      ??SONY_Data_Pasher_16
 ??SONY_Data_Pasher_15:
-        LDR.W    R0,??DataTable25_3
+        LDR.W    R0,??DataTable26
         MOVS     R1,#+72
         STRB     R1,[R0, #+19]
-        LDR.W    R0,??DataTable25_3
+        LDR.W    R0,??DataTable26
         MOVS     R1,#+0
         STRB     R1,[R0, #+17]
 ??SONY_Data_Pasher_16:
         B.N      ??SONY_Data_Pasher_14
 ??SONY_Data_Pasher_11:
-        LDR.W    R0,??DataTable25_3
+        LDR.W    R0,??DataTable26
         MOVS     R1,#+0
         STRB     R1,[R0, #+20]
-        LDR.W    R0,??DataTable25_3
+        LDR.W    R0,??DataTable26
         LDRB     R0,[R0, #+18]
         CMP      R0,#+0
         BEQ.N    ??SONY_Data_Pasher_17
-        LDR.W    R0,??DataTable25_3
+        LDR.W    R0,??DataTable26
         MOVS     R1,#+0
         STRB     R1,[R0, #+18]
 ??SONY_Data_Pasher_17:
@@ -2974,22 +2956,22 @@ UART4_IRQHandler:
         BL       USART_GetITStatus
         CMP      R0,#+0
         BEQ.N    ??UART4_IRQHandler_0
-        LDR.W    R0,??DataTable25_3
+        LDR.W    R0,??DataTable26
         LDRB     R0,[R0, #+0]
-        LDR.W    R1,??DataTable25_3
+        LDR.W    R1,??DataTable26
         LDRB     R1,[R1, #+1]
         CMP      R0,R1
         BCS.N    ??UART4_IRQHandler_1
-        LDR.W    R0,??DataTable25_3
+        LDR.W    R0,??DataTable26
         LDRB     R0,[R0, #+0]
-        LDR.W    R1,??DataTable25_3
+        LDR.W    R1,??DataTable26
         ADDS     R0,R0,R1
         LDRB     R0,[R0, #+24]
         MOVS     R5,R0
-        LDR.W    R0,??DataTable25_3
+        LDR.W    R0,??DataTable26
         LDRB     R0,[R0, #+0]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable25_3
+        LDR.W    R1,??DataTable26
         STRB     R0,[R1, #+0]
         UXTB     R5,R5            ;; ZeroExt  R5,R5,#+24,#+24
         MOVS     R1,R5
@@ -2998,10 +2980,10 @@ UART4_IRQHandler:
         BL       USART_SendData
         B.N      ??UART4_IRQHandler_2
 ??UART4_IRQHandler_1:
-        LDR.W    R0,??DataTable25_3
+        LDR.W    R0,??DataTable26
         MOVS     R1,#+0
         STRB     R1,[R0, #+0]
-        LDR.W    R0,??DataTable25_3
+        LDR.W    R0,??DataTable26
         MOVS     R1,#+0
         STRB     R1,[R0, #+1]
 ??UART4_IRQHandler_2:
@@ -3017,7 +2999,7 @@ UART4_IRQHandler:
         LDR.W    R0,??DataTable27_1  ;; 0x40004c00
         BL       USART_ReceiveData
         MOVS     R4,R0
-        LDR.W    R0,??DataTable26
+        LDR.W    R0,??DataTable26_1
         LDRB     R1,[R0, #+8]
         MOVS     R0,R4
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
@@ -3437,12 +3419,6 @@ Rx_Usart_Comm_Handling:
 ??DataTable25_2:
         DC32     stSONY
 
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable25_3:
-        DC32     stUART4
-
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
 Protocol_Command_Check:
@@ -3574,6 +3550,12 @@ Protocol_Command_Check:
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable26:
+        DC32     stUART4
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable26_1:
         DC32     stINFO
 
         SECTION `.text`:CODE:NOROOT(1)
@@ -3680,9 +3662,9 @@ UART5_IRQHandler:
         END
 // 
 //     1 byte  in section .bss
-// 7 616 bytes in section .text
+// 7 588 bytes in section .text
 // 
-// 7 616 bytes of CODE memory
+// 7 588 bytes of CODE memory
 //     1 byte  of DATA memory
 //
 //Errors: none

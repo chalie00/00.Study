@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=-1193016421
+Checksum=-704080162
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -55,9 +55,6 @@ Count=0
 LoggingEnabled=_ 0
 LogFile=_ ""
 Category=_ 0
-[TermIOLog]
-LoggingEnabled=_ 0
-LogFile=_ ""
 [Aliases]
 Count=0
 SuppressDialog=0
@@ -80,3 +77,6 @@ Mode=3
 Graph=0
 Symbiont=0
 Exclusions=
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""

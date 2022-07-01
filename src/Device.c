@@ -623,6 +623,12 @@ void TIMER_Init(void)
 //		TIM_ITConfig(TIM3, TIM_FLAG_Update, ENABLE);
 //		TIM_Cmd(TIM3, ENABLE);
 
+	
+
+
+	//TIM4 (CH3): GPIOB 8 LED Green
+	//TIM4 (CH4): GPIOB 9 LED Red
+	
 	TIM_TimeBaseStructure.TIM_Period = 3600-1;
 	TIM_TimeBaseStructure.TIM_Prescaler = 60000-1;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
@@ -633,20 +639,26 @@ void TIMER_Init(void)
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Disable;
 	TIM_OC1Init(TIM4, &TIM_OCInitStructure);
 	TIM_OC2Init(TIM4, &TIM_OCInitStructure);
-	TIM_OC3Init(TIM4, &TIM_OCInitStructure);
 
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 	TIM_OCInitStructure.TIM_Pulse = 1;
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
+	TIM_OC3Init(TIM4, &TIM_OCInitStructure);
+	TIM_Cmd(TIM4, ENABLE);
+	
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+	TIM_OCInitStructure.TIM_Pulse = 1;
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
 	TIM_OC4Init(TIM4, &TIM_OCInitStructure);
+	TIM_Cmd(TIM4, ENABLE);	
 
 
 	
 	//TIM_PrescalerConfig(TIM4, PrescalerValue, TIM_PSCReloadMode_Immediate);
 	//TIM_ClearFlag(TIM4, TIM_FLAG_Update); //s
 	//TIM_ITConfig(TIM4, TIM_FLAG_Update, ENABLE);
-	TIM_Cmd(TIM4, ENABLE);	
 
 	
 
@@ -791,10 +803,23 @@ void GPIO_Configuration(void)
 //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 //		GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+
+
+	    //GPIOA Pin 0: Set The WKUP SW Of Mango B'd
+		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
+		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+		GPIO_Init(GPIOA, &GPIO_InitStructure);
+		
+	    //GPIOA Pin 1: Set The UserKey SW Of Mango B'd
+		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
+		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
+		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+		GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+
+
 
 	// ========== GPIO B ===============================================
 	// GPIO_Pin_0 : NC
@@ -839,17 +864,18 @@ void GPIO_Configuration(void)
 //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 //		GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-//		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9|GPIO_Pin_8|GPIO_Pin_5;
-//		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-//		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-//		GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-	GPIO_Init(GPIOB, &GPIO_InitStructure);
-	
-	
+
+
+			//GPIOB Pin5: Yellow, Pin8: Green, Pin9: Red
+			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_8 | GPIO_Pin_5;
+			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+			GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+
+
+
 	// ========== GPIO C ===============================================
 	// GPIO_Pin_0 : WIPER1 SENSOR (IN)
 	// GPIO_Pin_1 : WIPER2 SENSOR (IN)

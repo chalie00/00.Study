@@ -812,36 +812,43 @@ void TIM3_IRQHandler(void)
 {
 	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
 	{
-		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 
-		// ================================================================
-		// Sony-Zoom & Light-Zoom Sync
-		// ================================================================
-		//Zoom_Data_Sync();
+				TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
+				LED_Off_Green();
+				LED_On_Green();
+				
 
-		// ================================================================
-		// TEMPERATURE (DC-103JU)
-		// ================================================================
-		Temperature_Data_Check();
-		Temperature_Boot_Mode();
-
-		// =======================================
-		// Temperature Control
-		// =======================================
-		if(stTEMP.STARTING_MODE == 0x00)
-		{
-			Fan_Heater_Control(BOOT_MODE);
-		}
-		else
-		{
-			Fan_Heater_Control(NORMAL_MODE);
-		}
 		
-		// ================================================================
-		// CDS CHECK
-		// ================================================================
-		//CDS_Data_Check();
-		//Auto_Day_And_Night_Control();
+//			TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+//	
+//			// ================================================================
+//			// Sony-Zoom & Light-Zoom Sync
+//			// ================================================================
+//			//Zoom_Data_Sync();
+//	
+//			// ================================================================
+//			// TEMPERATURE (DC-103JU)
+//			// ================================================================
+//			Temperature_Data_Check();
+//			Temperature_Boot_Mode();
+//	
+//			// =======================================
+//			// Temperature Control
+//			// =======================================
+//			if(stTEMP.STARTING_MODE == 0x00)
+//			{
+//				Fan_Heater_Control(BOOT_MODE);
+//			}
+//			else
+//			{
+//				Fan_Heater_Control(NORMAL_MODE);
+//			}
+//			
+//			// ================================================================
+//			// CDS CHECK
+//			// ================================================================
+//			//CDS_Data_Check();
+//			//Auto_Day_And_Night_Control();
 	}	
 }
 
@@ -1132,8 +1139,6 @@ void TIM4_IRQHandler(void)
 
 
 
-		
-
 //			if(stSYS.START == ACTIVE)
 //			{
 //				SYSTEM_Data_Parser(USART1_INDEX);
@@ -1162,6 +1167,7 @@ void I2C1_EV_IRQHandler(void)
 * Description    : This function handles I2C1 Error interrupt request.
 * Input          : None
 * Output         : None
+
 * Return         : None
 *******************************************************************************/
 void I2C1_ER_IRQHandler(void)
