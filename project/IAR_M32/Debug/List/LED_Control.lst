@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     01/Jul/2022  16:53:56 #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     08/Jul/2022  12:00:03 #
 # Copyright 1999-2011 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -51,56 +51,71 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\LED_Control.c
      14          //	#include "stm32f10x_adc.h"
      15          //	#include "stm32f10x_dma.h"
      16          
-     17          /* Functions */
-     18          /*
-     19           * GPIOB Pin9 // Red
-     20           * GIPOB Pin8 //Green
-     21           * GPIOB Pin5 //Yellow
-     22          */
+     17          
+     18          
+     19          /*Type Define*/
+     20          int red_status = 0;
+     21          int green_status = 0;
+     22          int yellow_status = 0;
      23          
-     24          void LED_On_Red (void);
-     25          void LED_Off_Red (void);
-     26          void LED_On_Green (void);
-     27          void LED_Off_Green (void);
-     28          void LED_On_Yellow (void);
-     29          void LED_Off_Yellow (void);
-     30          
-     31          
+     24          
+     25          
+     26          /* Functions */
+     27          /*
+     28           * GPIOB Pin9 // Red
+     29           * GIPOB Pin8 //Green
+     30           * GPIOB Pin5 //Yellow
+     31          */
      32          
-     33          
-     34          void LED_On_Red (void) {
-     35          	GPIO_SetBits(GPIOB, GPIO_Pin_9);
-     36          }
-     37          
-     38          void LED_Off_Red (void) {
-     39          	GPIO_ResetBits(GPIOB, GPIO_Pin_9);
-     40          }
+     33          void LED_On_Red (void);
+     34          void LED_Off_Red (void);
+     35          void LED_On_Green (void);
+     36          void LED_Off_Green (void);
+     37          void LED_On_Yellow (void);
+     38          void LED_Off_Yellow (void);
+     39          
+     40          
      41          
-     42          void LED_On_Green (void) {
-     43          	GPIO_SetBits(GPIOB, GPIO_Pin_8);
-     44          }
-     45          
-     46          void LED_Off_Green (void) {
-     47          	GPIO_ResetBits(GPIOB, GPIO_Pin_8);
-     48          }
-     49          
-     50          void LED_On_Yellow (void) {
-     51          	GPIO_SetBits(GPIOB, GPIO_Pin_5);
-     52          }
-     53          
-     54          void LED_Off_Yellow (void) {
-     55          	GPIO_ResetBits(GPIOB, GPIO_Pin_5);
+     42          
+     43          void LED_On_Red (void) {
+     44          	GPIO_SetBits(GPIOB, GPIO_Pin_9);
+     45          	red_status = 1;
+     46          }
+     47          
+     48          void LED_Off_Red (void) {
+     49          	GPIO_ResetBits(GPIOB, GPIO_Pin_9);
+     50          	red_status = 0;
+     51          }
+     52          
+     53          void LED_On_Green (void) {
+     54          	GPIO_SetBits(GPIOB, GPIO_Pin_8);
+     55          	green_status = 1;
      56          }
      57          
-     58          
-     59          
-     60          
-     61          
+     58          void LED_Off_Green (void) {
+     59          	GPIO_ResetBits(GPIOB, GPIO_Pin_8);
+     60          	green_status = 0;
+     61          }
      62          
-     63          
-     64          
-     65          
-     66          
+     63          void LED_On_Yellow (void) {
+     64          	GPIO_SetBits(GPIOB, GPIO_Pin_5);
+     65          	yellow_status = 1;
+     66          }
+     67          
+     68          void LED_Off_Yellow (void) {
+     69          	GPIO_ResetBits(GPIOB, GPIO_Pin_5);
+     70          	yellow_status = 0;
+     71          }
+     72          
+     73          
+     74          
+     75          
+     76          
+     77          
+     78          
+     79          
+     80          
+     81          
 
    Maximum stack usage in bytes:
 
@@ -125,17 +140,25 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\LED_Control.c
    Bytes  Function/Label
    -----  --------------
        4  ??DataTable5
-      14  LED_Off_Green
-      14  LED_Off_Red
-      12  LED_Off_Yellow
-      14  LED_On_Green
-      14  LED_On_Red
-      12  LED_On_Yellow
+       4  ??DataTable5_1
+       4  ??DataTable5_2
+       4  ??DataTable5_3
+      20  LED_Off_Green
+      20  LED_Off_Red
+      18  LED_Off_Yellow
+      20  LED_On_Green
+      20  LED_On_Red
+      18  LED_On_Yellow
+       4  green_status
+       4  red_status
+       4  yellow_status
 
  
- 84 bytes in section .text
+  12 bytes in section .bss
+ 132 bytes in section .text
  
- 84 bytes of CODE memory
+ 132 bytes of CODE memory
+  12 bytes of DATA memory
 
 Errors: none
 Warnings: none

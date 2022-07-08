@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    01/Jul/2022  16:53:56 /
+// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    08/Jul/2022  12:00:03 /
 // Copyright 1999-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Cpu mode     =  thumb                                                   /
@@ -47,7 +47,22 @@
         PUBLIC LED_On_Green
         PUBLIC LED_On_Red
         PUBLIC LED_On_Yellow
+        PUBLIC green_status
+        PUBLIC red_status
+        PUBLIC yellow_status
 
+
+        SECTION `.bss`:DATA:REORDER:NOROOT(2)
+red_status:
+        DS8 4
+
+        SECTION `.bss`:DATA:REORDER:NOROOT(2)
+green_status:
+        DS8 4
+
+        SECTION `.bss`:DATA:REORDER:NOROOT(2)
+yellow_status:
+        DS8 4
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
@@ -56,6 +71,9 @@ LED_On_Red:
         MOV      R1,#+512
         LDR.N    R0,??DataTable5  ;; 0x40010c00
         BL       GPIO_SetBits
+        LDR.N    R0,??DataTable5_1
+        MOVS     R1,#+1
+        STR      R1,[R0, #+0]
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(1)
@@ -65,6 +83,9 @@ LED_Off_Red:
         MOV      R1,#+512
         LDR.N    R0,??DataTable5  ;; 0x40010c00
         BL       GPIO_ResetBits
+        LDR.N    R0,??DataTable5_1
+        MOVS     R1,#+0
+        STR      R1,[R0, #+0]
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(1)
@@ -74,6 +95,9 @@ LED_On_Green:
         MOV      R1,#+256
         LDR.N    R0,??DataTable5  ;; 0x40010c00
         BL       GPIO_SetBits
+        LDR.N    R0,??DataTable5_2
+        MOVS     R1,#+1
+        STR      R1,[R0, #+0]
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(1)
@@ -83,6 +107,9 @@ LED_Off_Green:
         MOV      R1,#+256
         LDR.N    R0,??DataTable5  ;; 0x40010c00
         BL       GPIO_ResetBits
+        LDR.N    R0,??DataTable5_2
+        MOVS     R1,#+0
+        STR      R1,[R0, #+0]
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(1)
@@ -92,6 +119,9 @@ LED_On_Yellow:
         MOVS     R1,#+32
         LDR.N    R0,??DataTable5  ;; 0x40010c00
         BL       GPIO_SetBits
+        LDR.N    R0,??DataTable5_3
+        MOVS     R1,#+1
+        STR      R1,[R0, #+0]
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(1)
@@ -101,6 +131,9 @@ LED_Off_Yellow:
         MOVS     R1,#+32
         LDR.N    R0,??DataTable5  ;; 0x40010c00
         BL       GPIO_ResetBits
+        LDR.N    R0,??DataTable5_3
+        MOVS     R1,#+0
+        STR      R1,[R0, #+0]
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(2)
@@ -108,6 +141,24 @@ LED_Off_Yellow:
         DATA
 ??DataTable5:
         DC32     0x40010c00
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable5_1:
+        DC32     red_status
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable5_2:
+        DC32     green_status
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable5_3:
+        DC32     yellow_status
 
         SECTION `.iar_vfe_header`:DATA:REORDER:NOALLOC:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
@@ -122,9 +173,11 @@ LED_Off_Yellow:
 
         END
 // 
-// 84 bytes in section .text
+//  12 bytes in section .bss
+// 132 bytes in section .text
 // 
-// 84 bytes of CODE memory
+// 132 bytes of CODE memory
+//  12 bytes of DATA memory
 //
 //Errors: none
 //Warnings: none

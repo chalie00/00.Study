@@ -15,6 +15,8 @@ ADC_InitTypeDef ADC_InitStructure;
 RCC_ClocksTypeDef  rcc_clocks;
 I2C_InitTypeDef	I2C_InitStructure;
 
+EXTI_InitTypeDef EXTI_initStructure;
+
 void I2C_Configuration(void);
 
 
@@ -40,6 +42,7 @@ void Dipswitch_Mode_Check(void)
 void Initial_Device(void)
 {
 	RCC_Configuration();
+	NVIC_Configuration();
 	RCC_GetClocksFreq(&rcc_clocks);
 	GPIO_Configuration();
 
@@ -629,32 +632,33 @@ void TIMER_Init(void)
 	//TIM4 (CH3): GPIOB 8 LED Green
 	//TIM4 (CH4): GPIOB 9 LED Red
 	
-	TIM_TimeBaseStructure.TIM_Period = 3600-1;
-	TIM_TimeBaseStructure.TIM_Prescaler = 60000-1;
-	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-	//TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
-	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
-
-	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Disable;
-	TIM_OC1Init(TIM4, &TIM_OCInitStructure);
-	TIM_OC2Init(TIM4, &TIM_OCInitStructure);
-
-	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStructure.TIM_Pulse = 1;
-	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
-	TIM_OC3Init(TIM4, &TIM_OCInitStructure);
-	TIM_Cmd(TIM4, ENABLE);
-	
-	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStructure.TIM_Pulse = 1;
-	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
-	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
-	TIM_OC4Init(TIM4, &TIM_OCInitStructure);
-	TIM_Cmd(TIM4, ENABLE);	
-
-
+//		TIM_TimeBaseStructure.TIM_Period = 3600-1;
+//		TIM_TimeBaseStructure.TIM_Prescaler = 60000-1;
+//		TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+//		TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+//		//TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
+//		TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
+//	
+//		TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Disable;
+//		TIM_OC1Init(TIM4, &TIM_OCInitStructure);
+//		TIM_OC2Init(TIM4, &TIM_OCInitStructure);
+//	
+//		TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+//		TIM_OCInitStructure.TIM_Pulse = 1;
+//		TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+//		TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
+//		TIM_OC3Init(TIM4, &TIM_OCInitStructure);
+//		TIM_Cmd(TIM4, ENABLE);
+//		
+//		TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+//		TIM_OCInitStructure.TIM_Pulse = 1;
+//		TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
+//		TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
+//		TIM_OC4Init(TIM4, &TIM_OCInitStructure);
+//		TIM_Cmd(TIM4, ENABLE);	
+//	
+//	
+//		TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE);
 	
 	//TIM_PrescalerConfig(TIM4, PrescalerValue, TIM_PSCReloadMode_Immediate);
 	//TIM_ClearFlag(TIM4, TIM_FLAG_Update); //s
@@ -674,27 +678,27 @@ void RCC_Configuration(void)
 	/* GPIOx clock enable */
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA |RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_AFIO, ENABLE);
 
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+//		RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
+//		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART4, ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART5, ENABLE);	
+//		RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART4, ENABLE);
+//		RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART5, ENABLE);	
 
 	/* I2C1,2 Periph clock enable */
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);	
-	
+//		RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
+//		RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);	
+
 	 /* Enable DMA1 clock */
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+	//RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 
 	/* ENABLE ADC1 and GPIO clock */
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+	//RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
 
 	/* TIM clock enable */
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);	
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);	
+//		RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
+//		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);	
+//		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
+//		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);	
 
 	
 }
@@ -705,57 +709,77 @@ void RCC_Configuration(void)
 void NVIC_Configuration(void)
 { 
 
-	//  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
-
-	NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;  
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
-
-	NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;  
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
-
-	/*
-	NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 4;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);  
-	*/
+	//2bit for pre-emption priority, 2bits for subpriority
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	
-	NVIC_InitStructure.NVIC_IRQChannel = UART4_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 4;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
-
-	NVIC_InitStructure.NVIC_IRQChannel = UART5_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 5;  
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 5;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);	
-
-	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
-
-	NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannel = EXTI0_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);  
+	NVIC_Init(&NVIC_InitStructure);
 
-	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 6;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 6;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);  
+	//Clear EXTI Line Prending Bit
+	EXTI_ClearITPendingBit(EXTI_Line0);
+
+	//Enable the key EXTI line interrupt
+	NVIC_ClearPendingIRQ(EXTI0_IRQn);
+
+	
+
+
+
+	
+	//  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
+
+//		NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+//		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;  
+//		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;
+//		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//		NVIC_Init(&NVIC_InitStructure);
+//	
+//		NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
+//		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;  
+//		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
+//		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//		NVIC_Init(&NVIC_InitStructure);
+//	
+//		/*
+//		NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
+//		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 4;
+//		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;
+//		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//		NVIC_Init(&NVIC_InitStructure);  
+//		*/
+//		
+//		NVIC_InitStructure.NVIC_IRQChannel = UART4_IRQn;
+//		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 4;
+//		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;
+//		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//		NVIC_Init(&NVIC_InitStructure);
+//	
+//		NVIC_InitStructure.NVIC_IRQChannel = UART5_IRQn;
+//		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 5;  
+//		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 5;
+//		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//		NVIC_Init(&NVIC_InitStructure);	
+//	
+//		NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
+//		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+//		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+//		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//		NVIC_Init(&NVIC_InitStructure);
+//	
+//		NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
+//		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+//		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+//		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//		NVIC_Init(&NVIC_InitStructure);  
+//	
+//		NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;
+//		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 6;
+//		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 6;
+//		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//		NVIC_Init(&NVIC_InitStructure);  
 	
 
 	//RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
@@ -819,6 +843,16 @@ void GPIO_Configuration(void)
 		GPIO_Init(GPIOA, &GPIO_InitStructure);
 
 
+		//Connect EXTI
+		//External Interrupt Configuration register (AFIO_EXTICR1)
+		GPIO_EXTILineConfig(GPIO_PortSourceGPIOA, GPIO_PinSource0);
+
+		//Configuration EXT1 to generate an interrupt on falling edge
+		EXTI_initStructure.EXTI_Line = EXTI_Line0;
+		EXTI_initStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+		EXTI_initStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+		EXTI_initStructure.EXTI_LineCmd = ENABLE;
+		EXTI_Init(&EXTI_initStructure);
 
 
 	// ========== GPIO B ===============================================
@@ -869,7 +903,7 @@ void GPIO_Configuration(void)
 
 			//GPIOB Pin5: Yellow, Pin8: Green, Pin9: Red
 			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_8 | GPIO_Pin_5;
-			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
 			GPIO_Init(GPIOB, &GPIO_InitStructure);
 

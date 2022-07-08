@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     01/Jul/2022  17:10:05 #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     08/Jul/2022  11:57:30 #
 # Copyright 1999-2011 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -52,1016 +52,1050 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
      15          RCC_ClocksTypeDef  rcc_clocks;
      16          I2C_InitTypeDef	I2C_InitStructure;
      17          
-     18          void I2C_Configuration(void);
+     18          EXTI_InitTypeDef EXTI_initStructure;
      19          
-     20          
-     21          /*******************************************************************************/
-     22          uint16_t PrescalerValue = 0;
-     23          
-     24          /*******************************************************************************
-     25          * Dipswitch_Mode_Check
-     26          1) MODE 1 
-     27          2) MODE 2
-     28          - 0x00 : IR LED
-     29          - 0x01 : LRF
-     30          *******************************************************************************/
-     31          void Dipswitch_Mode_Check(void)
-     32          {
-     33          	stDIP.MODE1 = DIP_MODE1;
-     34          	stDIP.MODE2 = DIP_MODE2;
-     35          }
-     36          
-     37          /*******************************************************************************
-     38          * Divece Initialization
-     39          *******************************************************************************/
-     40          void Initial_Device(void)
-     41          {
-     42          	RCC_Configuration();
-     43          	RCC_GetClocksFreq(&rcc_clocks);
-     44          	GPIO_Configuration();
-     45          
-     46          	TIMER_Init();
-     47          
-     48          	// =======================================
-     49          	// Dip Switch Check
-     50          	// =======================================	
-     51          	Dipswitch_Mode_Check();
-     52          	
-     53          	// MAIN <-> TILT
-     54          	USART1_Init(115200);
-     55          
-     56          	// MDIN <-> TILT
-     57          	USART2_Init(115200);
+     20          void I2C_Configuration(void);
+     21          
+     22          
+     23          /*******************************************************************************/
+     24          uint16_t PrescalerValue = 0;
+     25          
+     26          /*******************************************************************************
+     27          * Dipswitch_Mode_Check
+     28          1) MODE 1 
+     29          2) MODE 2
+     30          - 0x00 : IR LED
+     31          - 0x01 : LRF
+     32          *******************************************************************************/
+     33          void Dipswitch_Mode_Check(void)
+     34          {
+     35          	stDIP.MODE1 = DIP_MODE1;
+     36          	stDIP.MODE2 = DIP_MODE2;
+     37          }
+     38          
+     39          /*******************************************************************************
+     40          * Divece Initialization
+     41          *******************************************************************************/
+     42          void Initial_Device(void)
+     43          {
+     44          	RCC_Configuration();
+     45          	NVIC_Configuration();
+     46          	RCC_GetClocksFreq(&rcc_clocks);
+     47          	GPIO_Configuration();
+     48          
+     49          	TIMER_Init();
+     50          
+     51          	// =======================================
+     52          	// Dip Switch Check
+     53          	// =======================================	
+     54          	Dipswitch_Mode_Check();
+     55          	
+     56          	// MAIN <-> TILT
+     57          	USART1_Init(115200);
      58          
-     59          	// NONE
-     60          	//USART3_Init();
+     59          	// MDIN <-> TILT
+     60          	USART2_Init(115200);
      61          
-     62          	// CAMERA <-> TILT
-     63          	UART4_Init(38400);
+     62          	// NONE
+     63          	//USART3_Init();
      64          
-     65          	// IP B/D <-> TILT
-     66          	UART5_Init(115200);
-     67          	
-     68          	if (SysTick_Config(rcc_clocks.SYSCLK_Frequency / 1000)) {while (1);}
-     69          
-     70          	NVIC_Configuration();
-     71          	DMA_Configuration();
-     72          	ADC_Configuration();
-     73          	I2C_Configuration();		
-     74          }
-     75          
-     76          /*******************************************************************************
-     77          * Function : USART1_Init
-     78          *******************************************************************************/
-     79          void USART1_Init(u16 BRate)
-     80          {
-     81              USART_InitStructure.USART_BaudRate   = 115200;
-     82              USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-     83              USART_InitStructure.USART_StopBits   = USART_StopBits_1;
-     84              USART_InitStructure.USART_Parity     = USART_Parity_No ;
-     85              USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-     86              USART_InitStructure.USART_Mode       = USART_Mode_Rx | USART_Mode_Tx;
-     87          
-     88              USART_Init(USART1, &USART_InitStructure);
-     89          
-     90              USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
-     91              USART_ITConfig(USART1, USART_IT_TC, ENABLE);
+     65          	// CAMERA <-> TILT
+     66          	UART4_Init(38400);
+     67          
+     68          	// IP B/D <-> TILT
+     69          	UART5_Init(115200);
+     70          	
+     71          	if (SysTick_Config(rcc_clocks.SYSCLK_Frequency / 1000)) {while (1);}
+     72          
+     73          	NVIC_Configuration();
+     74          	DMA_Configuration();
+     75          	ADC_Configuration();
+     76          	I2C_Configuration();		
+     77          }
+     78          
+     79          /*******************************************************************************
+     80          * Function : USART1_Init
+     81          *******************************************************************************/
+     82          void USART1_Init(u16 BRate)
+     83          {
+     84              USART_InitStructure.USART_BaudRate   = 115200;
+     85              USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+     86              USART_InitStructure.USART_StopBits   = USART_StopBits_1;
+     87              USART_InitStructure.USART_Parity     = USART_Parity_No ;
+     88              USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+     89              USART_InitStructure.USART_Mode       = USART_Mode_Rx | USART_Mode_Tx;
+     90          
+     91              USART_Init(USART1, &USART_InitStructure);
      92          
-     93              USART_Cmd(USART1, ENABLE);
-     94          }
+     93              USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
+     94              USART_ITConfig(USART1, USART_IT_TC, ENABLE);
      95          
-     96          /*******************************************************************************
-     97          * Function : USART2_Init
-     98          *******************************************************************************/
-     99          void USART2_Init(u16 BRate)
-    100          {
-    101          /*
-    102          	switch(BRate)
-    103          	{
-    104          		case LRF_MODE:
-    105          			
-    106          			USART_InitStructure.USART_BaudRate   = 19200;
-    107          			
-    108          			break;
-    109          
-    110          		case IR_MODE:
-    111          
-    112          			USART_InitStructure.USART_BaudRate   = 9600;
-    113          			
-    114          			break;
-    115          	}
-    116          */
-    117          	USART_InitStructure.USART_BaudRate   = BRate;
-    118          	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-    119          	USART_InitStructure.USART_StopBits   = USART_StopBits_1;
-    120          	USART_InitStructure.USART_Parity     = USART_Parity_No ;
-    121          	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-    122          	USART_InitStructure.USART_Mode       = USART_Mode_Rx | USART_Mode_Tx;
-    123          
-    124          	USART_Init(USART2, &USART_InitStructure);
-    125          
-    126          	USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);
-    127          	USART_ITConfig(USART2, USART_IT_TC, ENABLE);
+     96              USART_Cmd(USART1, ENABLE);
+     97          }
+     98          
+     99          /*******************************************************************************
+    100          * Function : USART2_Init
+    101          *******************************************************************************/
+    102          void USART2_Init(u16 BRate)
+    103          {
+    104          /*
+    105          	switch(BRate)
+    106          	{
+    107          		case LRF_MODE:
+    108          			
+    109          			USART_InitStructure.USART_BaudRate   = 19200;
+    110          			
+    111          			break;
+    112          
+    113          		case IR_MODE:
+    114          
+    115          			USART_InitStructure.USART_BaudRate   = 9600;
+    116          			
+    117          			break;
+    118          	}
+    119          */
+    120          	USART_InitStructure.USART_BaudRate   = BRate;
+    121          	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+    122          	USART_InitStructure.USART_StopBits   = USART_StopBits_1;
+    123          	USART_InitStructure.USART_Parity     = USART_Parity_No ;
+    124          	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    125          	USART_InitStructure.USART_Mode       = USART_Mode_Rx | USART_Mode_Tx;
+    126          
+    127          	USART_Init(USART2, &USART_InitStructure);
     128          
-    129          	USART_Cmd(USART2, ENABLE);
-    130          }
+    129          	USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);
+    130          	USART_ITConfig(USART2, USART_IT_TC, ENABLE);
     131          
-    132          /*******************************************************************************
-    133          * Function : USART3_Init
-    134          *******************************************************************************/
-    135          void USART3_Init(void)
-    136          {
-    137              USART_InitStructure.USART_BaudRate   = 9600;//38400;
-    138              USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-    139              USART_InitStructure.USART_StopBits   = USART_StopBits_1;
-    140              USART_InitStructure.USART_Parity     = USART_Parity_No ;
-    141              USART_InitStructure.USART_HardwareFlowControl
-    142                                                   = USART_HardwareFlowControl_None;
-    143              USART_InitStructure.USART_Mode       = USART_Mode_Rx | USART_Mode_Tx;
-    144          
-    145              USART_Init(USART3, &USART_InitStructure);
-    146          
-    147              USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);
-    148              USART_ITConfig(USART3, USART_IT_TC, ENABLE);
+    132          	USART_Cmd(USART2, ENABLE);
+    133          }
+    134          
+    135          /*******************************************************************************
+    136          * Function : USART3_Init
+    137          *******************************************************************************/
+    138          void USART3_Init(void)
+    139          {
+    140              USART_InitStructure.USART_BaudRate   = 9600;//38400;
+    141              USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+    142              USART_InitStructure.USART_StopBits   = USART_StopBits_1;
+    143              USART_InitStructure.USART_Parity     = USART_Parity_No ;
+    144              USART_InitStructure.USART_HardwareFlowControl
+    145                                                   = USART_HardwareFlowControl_None;
+    146              USART_InitStructure.USART_Mode       = USART_Mode_Rx | USART_Mode_Tx;
+    147          
+    148              USART_Init(USART3, &USART_InitStructure);
     149          
-    150              USART_Cmd(USART3, ENABLE);
-    151          }
+    150              USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);
+    151              USART_ITConfig(USART3, USART_IT_TC, ENABLE);
     152          
-    153          /*******************************************************************************
-    154          * Function : UART4_Init
-    155          *******************************************************************************/
-    156          void UART4_Init(u32 BRate)
-    157          {
-    158          	USART_InitStructure.USART_BaudRate   	= BRate;
-    159          	USART_InitStructure.USART_WordLength 	= USART_WordLength_8b;
-    160          	USART_InitStructure.USART_StopBits   	= USART_StopBits_1;
-    161          	USART_InitStructure.USART_Parity     	= USART_Parity_No ;
-    162          	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-    163          	USART_InitStructure.USART_Mode       	= USART_Mode_Rx | USART_Mode_Tx;
-    164          
-    165          	USART_Init(UART4, &USART_InitStructure);
-    166          
-    167          	USART_ITConfig(UART4, USART_IT_RXNE, ENABLE);
-    168          	USART_ITConfig(UART4, USART_IT_TC, ENABLE);
+    153              USART_Cmd(USART3, ENABLE);
+    154          }
+    155          
+    156          /*******************************************************************************
+    157          * Function : UART4_Init
+    158          *******************************************************************************/
+    159          void UART4_Init(u32 BRate)
+    160          {
+    161          	USART_InitStructure.USART_BaudRate   	= BRate;
+    162          	USART_InitStructure.USART_WordLength 	= USART_WordLength_8b;
+    163          	USART_InitStructure.USART_StopBits   	= USART_StopBits_1;
+    164          	USART_InitStructure.USART_Parity     	= USART_Parity_No ;
+    165          	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    166          	USART_InitStructure.USART_Mode       	= USART_Mode_Rx | USART_Mode_Tx;
+    167          
+    168          	USART_Init(UART4, &USART_InitStructure);
     169          
-    170          	USART_Cmd(UART4, ENABLE);
-    171          }
+    170          	USART_ITConfig(UART4, USART_IT_RXNE, ENABLE);
+    171          	USART_ITConfig(UART4, USART_IT_TC, ENABLE);
     172          
-    173          /*******************************************************************************
-    174          * Function : UART5_Init
-    175          *******************************************************************************/
-    176          void UART5_Init(u32 BRate)
-    177          {
-    178          	USART_InitStructure.USART_BaudRate   	= BRate;
-    179          	USART_InitStructure.USART_WordLength 	= USART_WordLength_8b;
-    180          	USART_InitStructure.USART_StopBits   	= USART_StopBits_1;
-    181          	USART_InitStructure.USART_Parity     	= USART_Parity_No ;
-    182          	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-    183          	USART_InitStructure.USART_Mode       	= USART_Mode_Rx | USART_Mode_Tx;
-    184          
-    185          	USART_Init(UART5, &USART_InitStructure);
-    186          
-    187          	USART_ITConfig(UART5, USART_IT_RXNE, ENABLE);
-    188          	USART_ITConfig(UART5, USART_IT_TC, ENABLE);
+    173          	USART_Cmd(UART4, ENABLE);
+    174          }
+    175          
+    176          /*******************************************************************************
+    177          * Function : UART5_Init
+    178          *******************************************************************************/
+    179          void UART5_Init(u32 BRate)
+    180          {
+    181          	USART_InitStructure.USART_BaudRate   	= BRate;
+    182          	USART_InitStructure.USART_WordLength 	= USART_WordLength_8b;
+    183          	USART_InitStructure.USART_StopBits   	= USART_StopBits_1;
+    184          	USART_InitStructure.USART_Parity     	= USART_Parity_No ;
+    185          	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    186          	USART_InitStructure.USART_Mode       	= USART_Mode_Rx | USART_Mode_Tx;
+    187          
+    188          	USART_Init(UART5, &USART_InitStructure);
     189          
-    190          	USART_Cmd(UART5, ENABLE);
-    191          }
+    190          	USART_ITConfig(UART5, USART_IT_RXNE, ENABLE);
+    191          	USART_ITConfig(UART5, USART_IT_TC, ENABLE);
     192          
-    193          /*******************************************************************************
-    194          * Function : TIMER1_CH4_DutyPeriod
-    195          *******************************************************************************/
-    196          void TIMER1_CH4_DutyPeriod(uint16_t val) 
-    197          {
-    198          	uint16_t	period;
-    199          	uint16_t	pulse;
-    200          
-    201          	if(val == 0)
-    202          	{
-    203          		period = (SystemCoreClock / 1200 ) - 1;
-    204          		pulse = (uint16_t) (((uint32_t) val * (period - 1)) / 100); 
-    205          		
-    206          		TIM_OCInitStructure.TIM_Pulse = pulse;
-    207          		TIM_OC4Init(TIM1, &TIM_OCInitStructure);
-    208          
-    209          		/* TIM1 counter enable */
-    210          		//TIM_Cmd(TIM1, ENABLE);
-    211          		TIM_Cmd(TIM1, DISABLE);
-    212          		/* TIM1 Main Output Enable */
-    213          		TIM_CtrlPWMOutputs(TIM1, DISABLE);
-    214          	}
-    215          	else
-    216          	{
-    217          		period = (SystemCoreClock / 1200 ) - 1;
-    218          		pulse = (uint16_t) (((uint32_t) val * (period - 1)) / 100); 
-    219          		
-    220          		TIM_OCInitStructure.TIM_Pulse = pulse;
-    221          		TIM_OC4Init(TIM1, &TIM_OCInitStructure);
-    222          
-    223          		/* TIM1 counter enable */
-    224          		//TIM_Cmd(TIM1, ENABLE);
-    225          		TIM_Cmd(TIM1, ENABLE);
-    226          		/* TIM1 Main Output Enable */
-    227          		TIM_CtrlPWMOutputs(TIM1, ENABLE);
-    228          	}
-    229          }
-    230          
-    231          /*******************************************************************************
-    232          * Function : Wiper_Active
-    233          *******************************************************************************/
-    234          void Wiper_Active(void)
-    235          {
-    236          	if((stWIPER2.INITIALIZATION == 0x01) && (stWIPER2.FLAG == 0x01))
-    237          	{
-    238          		if(stWIPER2.COUNT)
-    239          		{
-    240          			stWIPER2.STATUS = 0x01;
-    241          			
-    242          			switch(stWIPER2.STEP)
-    243          			{
-    244          				case WIPER_READY:
-    245          					Run_Wiper(WIPER_ON, DIRECTION_CCW);			// Wiper On
-    246          					stWIPER2.STEP = WIPER_SENSOR1_OFF_CHECK;
-    247          					break;
-    248          
-    249          				case WIPER_SENSOR1_OFF_CHECK:
-    250          					
-    251          					if(stWIPER2.SENSOR_1 == WIPER_SENS1_OFF) 
-    252          					{
-    253          						stWIPER2.STEP = WIPER_SENSOR2_ON_CHECK;
-    254          					}
-    255          					
-    256          					break;
-    257          
-    258          				case WIPER_SENSOR2_ON_CHECK:
-    259          					
-    260          					if(stWIPER2.SENSOR_2 == WIPER_SENS2_ON) 
-    261          					{
-    262          						Run_Wiper(WIPER_OFF, DIRECTION_CCW);			// Wiper On
-    263          						Delay_1ms(1);
-    264          						Run_Wiper(WIPER_ON, DIRECTION_CW);				// Wiper On
-    265          						stWIPER2.STEP = WIPER_SENSOR2_OFF_CHECK;
-    266          					}
-    267          					
-    268          					break;
-    269          
-    270          				case WIPER_SENSOR2_OFF_CHECK:
-    271          
-    272          					if(stWIPER2.SENSOR_2 == WIPER_SENS2_OFF) 
-    273          					{
-    274          						stWIPER2.STEP = WIPER_END_CHECK;
-    275          					}
-    276          					
-    277          					break;
-    278          
-    279          				case WIPER_END_CHECK:
-    280          					
-    281          					if(stWIPER2.SENSOR_1 == WIPER_SENS1_ON) 
-    282          					{
-    283          						Run_Wiper(WIPER_OFF, DIRECTION_CW);			// Wiper Off
-    284          						stWIPER2.STEP = WIPER_DWELL_CHECK;
-    285          						stWIPER2.DWELL_TIMER_FLAG = 0x01;
-    286          
-    287          						if(stWIPER2.COUNT < 0x0F) stWIPER2.COUNT--;
-    288          					}
-    289          					
-    290          					break;
-    291          
-    292          				case WIPER_DWELL_CHECK:
-    293          
-    294          					if(stWIPER2.DWELL_TIME_DATA)
-    295          					{
-    296          						switch(stWIPER2.STOP_MODE)
-    297          						{
-    298          							case WIPER_STOP_READY:
-    299          								
-    300          								if(stWIPER2.DWELL_END_FLAG)
-    301          								{
-    302          									stWIPER2.STEP = WIPER_READY;
-    303          									stWIPER2.DWELL_END_FLAG = 0x00;
-    304          									stWIPER2.DWELL_TIMER_FLAG = 0x00;
-    305          								}								
-    306          
-    307          								break;
-    308          
-    309          							case WIPER_STOP_ORIGIN:
-    310          								
-    311          								stWIPER2.DWELL_TIMER_FLAG = 0x00;
-    312          
-    313          								if(stWIPER2.DWELL_TIMER_ms) stWIPER2.DWELL_TIMER_ms = 0;
-    314          								if(stWIPER2.DWELL_TIMER_s) stWIPER2.DWELL_TIMER_s = 0;
-    315          								if(stWIPER2.COUNT > 0x00) stWIPER2.COUNT = 0x00;
-    316          
-    317          								break;
-    318          						}
-    319          					}
-    320          					else
-    321          					{
-    322          						stWIPER2.STEP = WIPER_READY;
-    323          						stWIPER2.DWELL_END_FLAG = 0x00;
-    324          						stWIPER2.DWELL_TIMER_FLAG = 0x00;
-    325          
-    326          						if(stWIPER2.STOP_MODE == WIPER_STOP_ORIGIN)
-    327          						{
-    328          							if(stWIPER2.COUNT > 0x00) stWIPER2.COUNT = 0x00;
-    329          						}					
-    330          					}
-    331          
-    332          					break;
-    333          
-    334          				default:
+    193          	USART_Cmd(UART5, ENABLE);
+    194          }
+    195          
+    196          /*******************************************************************************
+    197          * Function : TIMER1_CH4_DutyPeriod
+    198          *******************************************************************************/
+    199          void TIMER1_CH4_DutyPeriod(uint16_t val) 
+    200          {
+    201          	uint16_t	period;
+    202          	uint16_t	pulse;
+    203          
+    204          	if(val == 0)
+    205          	{
+    206          		period = (SystemCoreClock / 1200 ) - 1;
+    207          		pulse = (uint16_t) (((uint32_t) val * (period - 1)) / 100); 
+    208          		
+    209          		TIM_OCInitStructure.TIM_Pulse = pulse;
+    210          		TIM_OC4Init(TIM1, &TIM_OCInitStructure);
+    211          
+    212          		/* TIM1 counter enable */
+    213          		//TIM_Cmd(TIM1, ENABLE);
+    214          		TIM_Cmd(TIM1, DISABLE);
+    215          		/* TIM1 Main Output Enable */
+    216          		TIM_CtrlPWMOutputs(TIM1, DISABLE);
+    217          	}
+    218          	else
+    219          	{
+    220          		period = (SystemCoreClock / 1200 ) - 1;
+    221          		pulse = (uint16_t) (((uint32_t) val * (period - 1)) / 100); 
+    222          		
+    223          		TIM_OCInitStructure.TIM_Pulse = pulse;
+    224          		TIM_OC4Init(TIM1, &TIM_OCInitStructure);
+    225          
+    226          		/* TIM1 counter enable */
+    227          		//TIM_Cmd(TIM1, ENABLE);
+    228          		TIM_Cmd(TIM1, ENABLE);
+    229          		/* TIM1 Main Output Enable */
+    230          		TIM_CtrlPWMOutputs(TIM1, ENABLE);
+    231          	}
+    232          }
+    233          
+    234          /*******************************************************************************
+    235          * Function : Wiper_Active
+    236          *******************************************************************************/
+    237          void Wiper_Active(void)
+    238          {
+    239          	if((stWIPER2.INITIALIZATION == 0x01) && (stWIPER2.FLAG == 0x01))
+    240          	{
+    241          		if(stWIPER2.COUNT)
+    242          		{
+    243          			stWIPER2.STATUS = 0x01;
+    244          			
+    245          			switch(stWIPER2.STEP)
+    246          			{
+    247          				case WIPER_READY:
+    248          					Run_Wiper(WIPER_ON, DIRECTION_CCW);			// Wiper On
+    249          					stWIPER2.STEP = WIPER_SENSOR1_OFF_CHECK;
+    250          					break;
+    251          
+    252          				case WIPER_SENSOR1_OFF_CHECK:
+    253          					
+    254          					if(stWIPER2.SENSOR_1 == WIPER_SENS1_OFF) 
+    255          					{
+    256          						stWIPER2.STEP = WIPER_SENSOR2_ON_CHECK;
+    257          					}
+    258          					
+    259          					break;
+    260          
+    261          				case WIPER_SENSOR2_ON_CHECK:
+    262          					
+    263          					if(stWIPER2.SENSOR_2 == WIPER_SENS2_ON) 
+    264          					{
+    265          						Run_Wiper(WIPER_OFF, DIRECTION_CCW);			// Wiper On
+    266          						Delay_1ms(1);
+    267          						Run_Wiper(WIPER_ON, DIRECTION_CW);				// Wiper On
+    268          						stWIPER2.STEP = WIPER_SENSOR2_OFF_CHECK;
+    269          					}
+    270          					
+    271          					break;
+    272          
+    273          				case WIPER_SENSOR2_OFF_CHECK:
+    274          
+    275          					if(stWIPER2.SENSOR_2 == WIPER_SENS2_OFF) 
+    276          					{
+    277          						stWIPER2.STEP = WIPER_END_CHECK;
+    278          					}
+    279          					
+    280          					break;
+    281          
+    282          				case WIPER_END_CHECK:
+    283          					
+    284          					if(stWIPER2.SENSOR_1 == WIPER_SENS1_ON) 
+    285          					{
+    286          						Run_Wiper(WIPER_OFF, DIRECTION_CW);			// Wiper Off
+    287          						stWIPER2.STEP = WIPER_DWELL_CHECK;
+    288          						stWIPER2.DWELL_TIMER_FLAG = 0x01;
+    289          
+    290          						if(stWIPER2.COUNT < 0x0F) stWIPER2.COUNT--;
+    291          					}
+    292          					
+    293          					break;
+    294          
+    295          				case WIPER_DWELL_CHECK:
+    296          
+    297          					if(stWIPER2.DWELL_TIME_DATA)
+    298          					{
+    299          						switch(stWIPER2.STOP_MODE)
+    300          						{
+    301          							case WIPER_STOP_READY:
+    302          								
+    303          								if(stWIPER2.DWELL_END_FLAG)
+    304          								{
+    305          									stWIPER2.STEP = WIPER_READY;
+    306          									stWIPER2.DWELL_END_FLAG = 0x00;
+    307          									stWIPER2.DWELL_TIMER_FLAG = 0x00;
+    308          								}								
+    309          
+    310          								break;
+    311          
+    312          							case WIPER_STOP_ORIGIN:
+    313          								
+    314          								stWIPER2.DWELL_TIMER_FLAG = 0x00;
+    315          
+    316          								if(stWIPER2.DWELL_TIMER_ms) stWIPER2.DWELL_TIMER_ms = 0;
+    317          								if(stWIPER2.DWELL_TIMER_s) stWIPER2.DWELL_TIMER_s = 0;
+    318          								if(stWIPER2.COUNT > 0x00) stWIPER2.COUNT = 0x00;
+    319          
+    320          								break;
+    321          						}
+    322          					}
+    323          					else
+    324          					{
+    325          						stWIPER2.STEP = WIPER_READY;
+    326          						stWIPER2.DWELL_END_FLAG = 0x00;
+    327          						stWIPER2.DWELL_TIMER_FLAG = 0x00;
+    328          
+    329          						if(stWIPER2.STOP_MODE == WIPER_STOP_ORIGIN)
+    330          						{
+    331          							if(stWIPER2.COUNT > 0x00) stWIPER2.COUNT = 0x00;
+    332          						}					
+    333          					}
+    334          
     335          					break;
-    336          			}
-    337          		}
-    338          		else
-    339          		{
-    340          			stWIPER2.STATUS = 0x00;
-    341          			stWIPER2.FLAG = 0x00;
-    342          			stWIPER2.COUNT = 0x00;
-    343          		}
-    344          	}	
-    345          }
-    346          
-    347          /*******************************************************************************
-    348          * Function : Wiper_Function
-    349          *******************************************************************************/
-    350          void Wiper_Function(u8 u_Type)
-    351          {
-    352          	switch(u_Type)
-    353          	{
-    354          		case 0x00:
-    355          
-    356          			if(stWIPER2.STOP_MODE == WIPER_STOP_EMERGENCY)
-    357          			{
-    358          				Run_Wiper(WIPER_OFF, 0xFF);			// Wiper Off
-    359          				
-    360          				stWIPER2.STATUS = 0x00;
-    361          				stWIPER2.FLAG = 0x00;
-    362          				stWIPER2.COUNT = 0x00;
-    363          			}
-    364          			else
-    365          			{
-    366          				Wiper_Active();
-    367          			}
-    368          			
-    369          			if(stWIPER2.CONTINUOUS_STOP_FLAG == 0x01)
-    370          			{
-    371          				stWIPER2.CONTINUOUS_STOP_FLAG = 0x00;
-    372          
-    373          				stWIPER2.STOP_MODE = WIPER_STOP_ORIGIN;
-    374          
-    375          				if(stWIPER2.DWELL_TIMER_FLAG) stWIPER2.DWELL_TIMER_FLAG = 0x00;
-    376          				if(stWIPER2.CONTINUOUS_FLAG == 0x01) 
-    377          				{
-    378          					stWIPER2.CONTINUOUS_FLAG = 0x00;
-    379          				}		
-    380          			}
-    381          			
-    382          			break;
-    383          
-    384          		case 0x01:
-    385          
-    386          			if(stWIPER1.INITIALIZATION == 0x01)
-    387          			{
-    388          				if((stWIPER1.ACTIVE_COUNT != 0) && (stWIPER2.SENSOR_1 == WIPER_SENS1_ON) && (stWIPER2.STATUS == WIPER_OFF) && (stWIPER1.DWELL_FLAG == 0x00))
-    389          				{
-    390          					Run_Wiper(WIPER_ON, DIRECTION_CW);				// Wiper On
-    391          				}
-    392          			}
-    393          
-    394          			break;
-    395          
-    396          		default:
+    336          
+    337          				default:
+    338          					break;
+    339          			}
+    340          		}
+    341          		else
+    342          		{
+    343          			stWIPER2.STATUS = 0x00;
+    344          			stWIPER2.FLAG = 0x00;
+    345          			stWIPER2.COUNT = 0x00;
+    346          		}
+    347          	}	
+    348          }
+    349          
+    350          /*******************************************************************************
+    351          * Function : Wiper_Function
+    352          *******************************************************************************/
+    353          void Wiper_Function(u8 u_Type)
+    354          {
+    355          	switch(u_Type)
+    356          	{
+    357          		case 0x00:
+    358          
+    359          			if(stWIPER2.STOP_MODE == WIPER_STOP_EMERGENCY)
+    360          			{
+    361          				Run_Wiper(WIPER_OFF, 0xFF);			// Wiper Off
+    362          				
+    363          				stWIPER2.STATUS = 0x00;
+    364          				stWIPER2.FLAG = 0x00;
+    365          				stWIPER2.COUNT = 0x00;
+    366          			}
+    367          			else
+    368          			{
+    369          				Wiper_Active();
+    370          			}
+    371          			
+    372          			if(stWIPER2.CONTINUOUS_STOP_FLAG == 0x01)
+    373          			{
+    374          				stWIPER2.CONTINUOUS_STOP_FLAG = 0x00;
+    375          
+    376          				stWIPER2.STOP_MODE = WIPER_STOP_ORIGIN;
+    377          
+    378          				if(stWIPER2.DWELL_TIMER_FLAG) stWIPER2.DWELL_TIMER_FLAG = 0x00;
+    379          				if(stWIPER2.CONTINUOUS_FLAG == 0x01) 
+    380          				{
+    381          					stWIPER2.CONTINUOUS_FLAG = 0x00;
+    382          				}		
+    383          			}
+    384          			
+    385          			break;
+    386          
+    387          		case 0x01:
+    388          
+    389          			if(stWIPER1.INITIALIZATION == 0x01)
+    390          			{
+    391          				if((stWIPER1.ACTIVE_COUNT != 0) && (stWIPER2.SENSOR_1 == WIPER_SENS1_ON) && (stWIPER2.STATUS == WIPER_OFF) && (stWIPER1.DWELL_FLAG == 0x00))
+    392          				{
+    393          					Run_Wiper(WIPER_ON, DIRECTION_CW);				// Wiper On
+    394          				}
+    395          			}
+    396          
     397          			break;
-    398          	}
-    399          
-    400          }
-    401          
-    402          /*******************************************************************************
-    403          * Function : Initial_Wiper
-    404          *******************************************************************************/
-    405          void Initial_Wiper(u8 u_Type)
-    406          {
-    407          	switch(u_Type)
-    408          	{
-    409          		case 0x00:
-    410          
-    411          			if(stWIPER2.INITIALIZATION == 0x00)
-    412          			{
-    413          				switch(stWIPER2.STEP)
-    414          				{
-    415          					// ① Wiper 초기화를 위한 모터 동작 : CW → Sensor 1
-    416          					case WIPER_INITIAL:
-    417          
-    418          						Run_Wiper(WIPER_ON, DIRECTION_CCW);			// Wiper On
-    419          						stWIPER2.STEP = WIPER_SENSOR1_ON_CHECK;
-    420          						
-    421          						break;
-    422          
-    423          
-    424          					// ② 초기화 위치 : Sensor 1 Stop
-    425          					case WIPER_SENSOR1_ON_CHECK:
+    398          
+    399          		default:
+    400          			break;
+    401          	}
+    402          
+    403          }
+    404          
+    405          /*******************************************************************************
+    406          * Function : Initial_Wiper
+    407          *******************************************************************************/
+    408          void Initial_Wiper(u8 u_Type)
+    409          {
+    410          	switch(u_Type)
+    411          	{
+    412          		case 0x00:
+    413          
+    414          			if(stWIPER2.INITIALIZATION == 0x00)
+    415          			{
+    416          				switch(stWIPER2.STEP)
+    417          				{
+    418          					// ① Wiper 초기화를 위한 모터 동작 : CW → Sensor 1
+    419          					case WIPER_INITIAL:
+    420          
+    421          						Run_Wiper(WIPER_ON, DIRECTION_CCW);			// Wiper On
+    422          						stWIPER2.STEP = WIPER_SENSOR1_ON_CHECK;
+    423          						
+    424          						break;
+    425          
     426          
-    427          						if(stWIPER2.SENSOR_1 == WIPER_SENS1_ON) 
-    428          						{
-    429          							Run_Wiper(WIPER_OFF, DIRECTION_CW);			// Wiper On
-    430          							stWIPER2.STEP = WIPER_READY;
-    431          							stWIPER2.INITIALIZATION = 0x01;
-    432          						}
-    433          
-    434          						if(stWIPER2.SENSOR_2 == WIPER_SENS2_ON) 
-    435          						{
-    436          							Run_Wiper(WIPER_OFF, DIRECTION_CCW);			// Wiper On
-    437          							Delay_1ms(1);
-    438          							Run_Wiper(WIPER_ON, DIRECTION_CW);				// Wiper On
-    439          							stWIPER2.STEP = WIPER_SENSOR2_OFF_CHECK;
-    440          						}
-    441          
-    442          						break;
-    443          
-    444          					case WIPER_SENSOR2_OFF_CHECK:
-    445          
-    446          						if(stWIPER2.SENSOR_2 == WIPER_SENS2_OFF) 
-    447          						{
-    448          							stWIPER2.STEP = WIPER_END_CHECK;
-    449          						}
-    450          						
-    451          						break;
-    452          
-    453          					case WIPER_END_CHECK:
-    454          						
-    455          						if(stWIPER2.SENSOR_1 == WIPER_SENS1_ON) 
-    456          						{
-    457          							Run_Wiper(WIPER_OFF, DIRECTION_CW);			// Wiper Off
-    458          							stWIPER2.STEP = WIPER_READY;
-    459          							stWIPER2.INITIALIZATION = 0x01;
-    460          						}
-    461          						
-    462          						break;
-    463          
-    464          					default:
+    427          					// ② 초기화 위치 : Sensor 1 Stop
+    428          					case WIPER_SENSOR1_ON_CHECK:
+    429          
+    430          						if(stWIPER2.SENSOR_1 == WIPER_SENS1_ON) 
+    431          						{
+    432          							Run_Wiper(WIPER_OFF, DIRECTION_CW);			// Wiper On
+    433          							stWIPER2.STEP = WIPER_READY;
+    434          							stWIPER2.INITIALIZATION = 0x01;
+    435          						}
+    436          
+    437          						if(stWIPER2.SENSOR_2 == WIPER_SENS2_ON) 
+    438          						{
+    439          							Run_Wiper(WIPER_OFF, DIRECTION_CCW);			// Wiper On
+    440          							Delay_1ms(1);
+    441          							Run_Wiper(WIPER_ON, DIRECTION_CW);				// Wiper On
+    442          							stWIPER2.STEP = WIPER_SENSOR2_OFF_CHECK;
+    443          						}
+    444          
+    445          						break;
+    446          
+    447          					case WIPER_SENSOR2_OFF_CHECK:
+    448          
+    449          						if(stWIPER2.SENSOR_2 == WIPER_SENS2_OFF) 
+    450          						{
+    451          							stWIPER2.STEP = WIPER_END_CHECK;
+    452          						}
+    453          						
+    454          						break;
+    455          
+    456          					case WIPER_END_CHECK:
+    457          						
+    458          						if(stWIPER2.SENSOR_1 == WIPER_SENS1_ON) 
+    459          						{
+    460          							Run_Wiper(WIPER_OFF, DIRECTION_CW);			// Wiper Off
+    461          							stWIPER2.STEP = WIPER_READY;
+    462          							stWIPER2.INITIALIZATION = 0x01;
+    463          						}
+    464          						
     465          						break;
-    466          				}
-    467          			}
-    468          	
-    469          			break;
-    470          
-    471          		case 0x01:
-    472          
-    473          			if(stWIPER1.INITIALIZATION == 0x00)
-    474          			{
-    475          				if(stWIPER2.SENSOR_1 == WIPER_SENS1_OFF) 
-    476          				{
-    477          					Run_Wiper(WIPER_ON, DIRECTION_CW);			// Wiper On
-    478          				}
-    479          				else
-    480          				{
-    481          					Run_Wiper(WIPER_OFF, DIRECTION_CW);			// Wiper Off
-    482          					stWIPER1.INITIALIZATION = 0x01;
-    483          				}
-    484          			}
-    485          			
-    486          			break;
-    487          
-    488          		default:
+    466          
+    467          					default:
+    468          						break;
+    469          				}
+    470          			}
+    471          	
+    472          			break;
+    473          
+    474          		case 0x01:
+    475          
+    476          			if(stWIPER1.INITIALIZATION == 0x00)
+    477          			{
+    478          				if(stWIPER2.SENSOR_1 == WIPER_SENS1_OFF) 
+    479          				{
+    480          					Run_Wiper(WIPER_ON, DIRECTION_CW);			// Wiper On
+    481          				}
+    482          				else
+    483          				{
+    484          					Run_Wiper(WIPER_OFF, DIRECTION_CW);			// Wiper Off
+    485          					stWIPER1.INITIALIZATION = 0x01;
+    486          				}
+    487          			}
+    488          			
     489          			break;
-    490          	}
-    491          	
-    492          
-    493          }
-    494          
-    495          /*******************************************************************************
-    496          * Function : Run_Wiper
-    497          *******************************************************************************/
-    498          void Run_Wiper(u8 u_Cmd, u8 u_Direction)
-    499          {
-    500          	switch(u_Cmd)
-    501          	{
-    502          		case WIPER_OFF:
-    503          		
-    504          			WIPER_STOP;			
-    505          			TIMER1_CH4_DutyPeriod(1);
-    506          
-    507          			stWIPER2.STATUS = WIPER_OFF;
-    508          
-    509          			Wiper_Active_Flag = 0;	// 동작 상태를 체크하기 위해 항상 정지 시에는 0으로 해줄 것.
-    510          			break;
-    511          			
-    512          		case WIPER_ON:
-    513          
-    514          			switch(u_Direction)
-    515          			{
-    516          				case 0x00:
-    517          					
-    518          					WIPER_CW;
-    519          					stWIPER2.DIRECTION = DIRECTION_CW;
-    520          
-    521          					break;
-    522          
-    523          				case 0x01:
-    524          					
-    525          					WIPER_CCW;
-    526          					stWIPER2.DIRECTION = DIRECTION_CCW;
-    527          
-    528          					break;
-    529          
-    530          				default:
+    490          
+    491          		default:
+    492          			break;
+    493          	}
+    494          	
+    495          
+    496          }
+    497          
+    498          /*******************************************************************************
+    499          * Function : Run_Wiper
+    500          *******************************************************************************/
+    501          void Run_Wiper(u8 u_Cmd, u8 u_Direction)
+    502          {
+    503          	switch(u_Cmd)
+    504          	{
+    505          		case WIPER_OFF:
+    506          		
+    507          			WIPER_STOP;			
+    508          			TIMER1_CH4_DutyPeriod(1);
+    509          
+    510          			stWIPER2.STATUS = WIPER_OFF;
+    511          
+    512          			Wiper_Active_Flag = 0;	// 동작 상태를 체크하기 위해 항상 정지 시에는 0으로 해줄 것.
+    513          			break;
+    514          			
+    515          		case WIPER_ON:
+    516          
+    517          			switch(u_Direction)
+    518          			{
+    519          				case 0x00:
+    520          					
+    521          					WIPER_CW;
+    522          					stWIPER2.DIRECTION = DIRECTION_CW;
+    523          
+    524          					break;
+    525          
+    526          				case 0x01:
+    527          					
+    528          					WIPER_CCW;
+    529          					stWIPER2.DIRECTION = DIRECTION_CCW;
+    530          
     531          					break;
-    532          			}
-    533          			
-    534          			WIPER_START;
-    535          			TIMER1_CH4_DutyPeriod(100);
-    536          
-    537          			stWIPER2.STATUS = WIPER_ON;
-    538          			
-    539          			if(!Wiper_Error_Status_Flag) Wiper_Active_Flag = 1;	// 동작 상태를 체크하기 위해 항상 동작 시에는 1로 해줄 것.
-    540          			
-    541          			break;
-    542          	}
-    543          }
-    544          
-    545          /*******************************************************************************
-    546          * Function : TIMER_Init
-    547          *******************************************************************************/
-    548          void TIMER_Init(void)
-    549          {
-    550          	uint16_t	period;
-    551          	//uint16_t	pulse;
-    552          	
-    553          	/* Timer Base configuration */
-    554          	/* Compute the value for the ARR register to have a period of 20 KHz */
-    555          	// 72000000/7200 = 10000 (10KHz)
-    556          	period = (SystemCoreClock / 1200 ) - 1;
-    557          	/* Compute the CCR1 value to generate a PWN signal with 50% duty cycle */
-    558          	//pulse = (uint16_t) (((uint32_t) 5 * (period - 1)) / 100);
-    559          	
-    560          	// TIMER1 TEST MODE !!!!
-    561          //		/* Time base configuration */
-    562          //		TIM_TimeBaseStructure.TIM_Period = period;
-    563          //		TIM_TimeBaseStructure.TIM_Prescaler = 0;
-    564          //		TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-    565          //		TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-    566          //	
-    567          //		TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
-    568          //	
-    569          //		/* PWM1 Mode configuration: Channel1 */
-    570          //		TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
-    571          //		TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-    572          //		TIM_OCInitStructure.TIM_Pulse = 0;//CCR1_Val;
-    573          //		TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-    574          //	
-    575          //		TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCNPolarity_Low;  
-    576          //		TIM_OCInitStructure.TIM_OCIdleState  = TIM_OCIdleState_Set;    
-    577          //		TIM_OCInitStructure.TIM_OCNIdleState  = TIM_OCIdleState_Reset;    
-    578          //	
-    579          //	
-    580          //		TIM_BDTRInitTypeDef TIM_BDTRInitStructure; 
-    581          //		// Automatic Output enable, Break, dead time and lock configuration    
-    582          //		TIM_BDTRInitStructure.TIM_OSSRState = TIM_OSSRState_Enable;   
-    583          //		TIM_BDTRInitStructure.TIM_OSSIState = TIM_OSSIState_Enable;   
-    584          //		TIM_BDTRInitStructure.TIM_LOCKLevel = TIM_LOCKLevel_1;   
-    585          //		TIM_BDTRInitStructure.TIM_DeadTime = 0x05;   
-    586          //		TIM_BDTRInitStructure.TIM_Break = TIM_Break_Disable;   
-    587          //		TIM_BDTRInitStructure.TIM_BreakPolarity = TIM_BreakPolarity_High;   
-    588          //		TIM_BDTRInitStructure.TIM_AutomaticOutput = TIM_AutomaticOutput_Enable;   
-    589          //	
-    590          //		TIM_BDTRConfig(TIM1, &TIM_BDTRInitStructure);  
-    591          //		TIM_OC1Init(TIM1, &TIM_OCInitStructure);
-    592          //		TIM_OC1PreloadConfig(TIM1, TIM_OCPreload_Enable);	
-    593          //	
-    594          //		/* TIM1 counter enable */
-    595          //		TIM_Cmd(TIM1, DISABLE);
-    596          //		//TIM_Cmd(TIM1, DISABLE);
-    597          //		/* TIM1 Main Output Enable */
-    598          //		TIM_CtrlPWMOutputs(TIM1, DISABLE);   
-    599          
-    600          	PrescalerValue = (uint16_t) (SystemCoreClock /120000);
-    601          	
-    602          //		TIM_TimeBaseStructure.TIM_Period = 9500;
-    603          //		TIM_TimeBaseStructure.TIM_Prescaler = 0;
-    604          //		TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-    605          //		TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-    606          //		//TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
-    607          //		TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
-    608          //	
-    609          //		TIM_PrescalerConfig(TIM2, PrescalerValue, TIM_PSCReloadMode_Immediate);
-    610          //		TIM_ClearFlag(TIM2, TIM_FLAG_Update);
-    611          //		TIM_ITConfig(TIM2, TIM_FLAG_Update, ENABLE);
-    612          //		TIM_Cmd(TIM2, ENABLE);
-    613          //	
-    614          //		TIM_TimeBaseStructure.TIM_Period = 950;
-    615          //		TIM_TimeBaseStructure.TIM_Prescaler = 0;
-    616          //		TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-    617          //		TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-    618          //		//TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
-    619          //		TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
-    620          //	
-    621          //		TIM_PrescalerConfig(TIM3, PrescalerValue, TIM_PSCReloadMode_Immediate);
-    622          //		TIM_ClearFlag(TIM3, TIM_FLAG_Update);
-    623          //		TIM_ITConfig(TIM3, TIM_FLAG_Update, ENABLE);
-    624          //		TIM_Cmd(TIM3, ENABLE);
-    625          
-    626          	
-    627          
+    532          
+    533          				default:
+    534          					break;
+    535          			}
+    536          			
+    537          			WIPER_START;
+    538          			TIMER1_CH4_DutyPeriod(100);
+    539          
+    540          			stWIPER2.STATUS = WIPER_ON;
+    541          			
+    542          			if(!Wiper_Error_Status_Flag) Wiper_Active_Flag = 1;	// 동작 상태를 체크하기 위해 항상 동작 시에는 1로 해줄 것.
+    543          			
+    544          			break;
+    545          	}
+    546          }
+    547          
+    548          /*******************************************************************************
+    549          * Function : TIMER_Init
+    550          *******************************************************************************/
+    551          void TIMER_Init(void)
+    552          {
+    553          	uint16_t	period;
+    554          	//uint16_t	pulse;
+    555          	
+    556          	/* Timer Base configuration */
+    557          	/* Compute the value for the ARR register to have a period of 20 KHz */
+    558          	// 72000000/7200 = 10000 (10KHz)
+    559          	period = (SystemCoreClock / 1200 ) - 1;
+    560          	/* Compute the CCR1 value to generate a PWN signal with 50% duty cycle */
+    561          	//pulse = (uint16_t) (((uint32_t) 5 * (period - 1)) / 100);
+    562          	
+    563          	// TIMER1 TEST MODE !!!!
+    564          //		/* Time base configuration */
+    565          //		TIM_TimeBaseStructure.TIM_Period = period;
+    566          //		TIM_TimeBaseStructure.TIM_Prescaler = 0;
+    567          //		TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+    568          //		TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    569          //	
+    570          //		TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
+    571          //	
+    572          //		/* PWM1 Mode configuration: Channel1 */
+    573          //		TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
+    574          //		TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    575          //		TIM_OCInitStructure.TIM_Pulse = 0;//CCR1_Val;
+    576          //		TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+    577          //	
+    578          //		TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCNPolarity_Low;  
+    579          //		TIM_OCInitStructure.TIM_OCIdleState  = TIM_OCIdleState_Set;    
+    580          //		TIM_OCInitStructure.TIM_OCNIdleState  = TIM_OCIdleState_Reset;    
+    581          //	
+    582          //	
+    583          //		TIM_BDTRInitTypeDef TIM_BDTRInitStructure; 
+    584          //		// Automatic Output enable, Break, dead time and lock configuration    
+    585          //		TIM_BDTRInitStructure.TIM_OSSRState = TIM_OSSRState_Enable;   
+    586          //		TIM_BDTRInitStructure.TIM_OSSIState = TIM_OSSIState_Enable;   
+    587          //		TIM_BDTRInitStructure.TIM_LOCKLevel = TIM_LOCKLevel_1;   
+    588          //		TIM_BDTRInitStructure.TIM_DeadTime = 0x05;   
+    589          //		TIM_BDTRInitStructure.TIM_Break = TIM_Break_Disable;   
+    590          //		TIM_BDTRInitStructure.TIM_BreakPolarity = TIM_BreakPolarity_High;   
+    591          //		TIM_BDTRInitStructure.TIM_AutomaticOutput = TIM_AutomaticOutput_Enable;   
+    592          //	
+    593          //		TIM_BDTRConfig(TIM1, &TIM_BDTRInitStructure);  
+    594          //		TIM_OC1Init(TIM1, &TIM_OCInitStructure);
+    595          //		TIM_OC1PreloadConfig(TIM1, TIM_OCPreload_Enable);	
+    596          //	
+    597          //		/* TIM1 counter enable */
+    598          //		TIM_Cmd(TIM1, DISABLE);
+    599          //		//TIM_Cmd(TIM1, DISABLE);
+    600          //		/* TIM1 Main Output Enable */
+    601          //		TIM_CtrlPWMOutputs(TIM1, DISABLE);   
+    602          
+    603          	PrescalerValue = (uint16_t) (SystemCoreClock /120000);
+    604          	
+    605          //		TIM_TimeBaseStructure.TIM_Period = 9500;
+    606          //		TIM_TimeBaseStructure.TIM_Prescaler = 0;
+    607          //		TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+    608          //		TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    609          //		//TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
+    610          //		TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+    611          //	
+    612          //		TIM_PrescalerConfig(TIM2, PrescalerValue, TIM_PSCReloadMode_Immediate);
+    613          //		TIM_ClearFlag(TIM2, TIM_FLAG_Update);
+    614          //		TIM_ITConfig(TIM2, TIM_FLAG_Update, ENABLE);
+    615          //		TIM_Cmd(TIM2, ENABLE);
+    616          //	
+    617          //		TIM_TimeBaseStructure.TIM_Period = 950;
+    618          //		TIM_TimeBaseStructure.TIM_Prescaler = 0;
+    619          //		TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+    620          //		TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    621          //		//TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
+    622          //		TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
+    623          //	
+    624          //		TIM_PrescalerConfig(TIM3, PrescalerValue, TIM_PSCReloadMode_Immediate);
+    625          //		TIM_ClearFlag(TIM3, TIM_FLAG_Update);
+    626          //		TIM_ITConfig(TIM3, TIM_FLAG_Update, ENABLE);
+    627          //		TIM_Cmd(TIM3, ENABLE);
     628          
-    629          	//TIM4 (CH3): GPIOB 8 LED Green
-    630          	//TIM4 (CH4): GPIOB 9 LED Red
-    631          	
-    632          	TIM_TimeBaseStructure.TIM_Period = 3600-1;
-    633          	TIM_TimeBaseStructure.TIM_Prescaler = 60000-1;
-    634          	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-    635          	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-    636          	//TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
-    637          	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
-    638          
-    639          	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Disable;
-    640          	TIM_OC1Init(TIM4, &TIM_OCInitStructure);
-    641          	TIM_OC2Init(TIM4, &TIM_OCInitStructure);
-    642          
-    643          	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-    644          	TIM_OCInitStructure.TIM_Pulse = 1;
-    645          	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-    646          	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
-    647          	TIM_OC3Init(TIM4, &TIM_OCInitStructure);
-    648          	TIM_Cmd(TIM4, ENABLE);
-    649          	
-    650          	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-    651          	TIM_OCInitStructure.TIM_Pulse = 1;
-    652          	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
-    653          	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
-    654          	TIM_OC4Init(TIM4, &TIM_OCInitStructure);
-    655          	TIM_Cmd(TIM4, ENABLE);	
-    656          
-    657          
-    658          	
-    659          	//TIM_PrescalerConfig(TIM4, PrescalerValue, TIM_PSCReloadMode_Immediate);
-    660          	//TIM_ClearFlag(TIM4, TIM_FLAG_Update); //s
-    661          	//TIM_ITConfig(TIM4, TIM_FLAG_Update, ENABLE);
-    662          
-    663          	
-    664          
-    665          }
+    629          	
+    630          
+    631          
+    632          	//TIM4 (CH3): GPIOB 8 LED Green
+    633          	//TIM4 (CH4): GPIOB 9 LED Red
+    634          	
+    635          //		TIM_TimeBaseStructure.TIM_Period = 3600-1;
+    636          //		TIM_TimeBaseStructure.TIM_Prescaler = 60000-1;
+    637          //		TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+    638          //		TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    639          //		//TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
+    640          //		TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
+    641          //	
+    642          //		TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Disable;
+    643          //		TIM_OC1Init(TIM4, &TIM_OCInitStructure);
+    644          //		TIM_OC2Init(TIM4, &TIM_OCInitStructure);
+    645          //	
+    646          //		TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    647          //		TIM_OCInitStructure.TIM_Pulse = 1;
+    648          //		TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+    649          //		TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
+    650          //		TIM_OC3Init(TIM4, &TIM_OCInitStructure);
+    651          //		TIM_Cmd(TIM4, ENABLE);
+    652          //		
+    653          //		TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+    654          //		TIM_OCInitStructure.TIM_Pulse = 1;
+    655          //		TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
+    656          //		TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
+    657          //		TIM_OC4Init(TIM4, &TIM_OCInitStructure);
+    658          //		TIM_Cmd(TIM4, ENABLE);	
+    659          //	
+    660          //	
+    661          //		TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE);
+    662          	
+    663          	//TIM_PrescalerConfig(TIM4, PrescalerValue, TIM_PSCReloadMode_Immediate);
+    664          	//TIM_ClearFlag(TIM4, TIM_FLAG_Update); //s
+    665          	//TIM_ITConfig(TIM4, TIM_FLAG_Update, ENABLE);
     666          
-    667          /*******************************************************************************
-    668          * Function : RCC_Configuration
-    669          *******************************************************************************/
-    670          void RCC_Configuration(void)
-    671          {
-    672          	SystemInit();
-    673          
-    674          	/* GPIOx clock enable */
-    675          	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA |RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_AFIO, ENABLE);
-    676          
-    677          	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
-    678          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
-    679          	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
-    680          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART4, ENABLE);
-    681          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART5, ENABLE);	
-    682          
-    683          	/* I2C1,2 Periph clock enable */
-    684          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
-    685          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);	
-    686          	
-    687          	 /* Enable DMA1 clock */
-    688          	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
-    689          
-    690          	/* ENABLE ADC1 and GPIO clock */
-    691          	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
-    692          
-    693          	/* TIM clock enable */
-    694          	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
-    695          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);	
-    696          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
-    697          	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);	
-    698          
-    699          	
-    700          }
-    701          
-    702          /*******************************************************************************
-    703          * Function : NVIC_Configuration
-    704          *******************************************************************************/
-    705          void NVIC_Configuration(void)
-    706          { 
-    707          
-    708          	//  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
-    709          
-    710          	NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
-    711          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;  
-    712          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;
-    713          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    714          	NVIC_Init(&NVIC_InitStructure);
-    715          
-    716          	NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
-    717          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;  
-    718          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
-    719          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    720          	NVIC_Init(&NVIC_InitStructure);
-    721          
-    722          	/*
-    723          	NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
-    724          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 4;
-    725          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;
-    726          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    727          	NVIC_Init(&NVIC_InitStructure);  
-    728          	*/
-    729          	
-    730          	NVIC_InitStructure.NVIC_IRQChannel = UART4_IRQn;
-    731          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 4;
-    732          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;
-    733          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    734          	NVIC_Init(&NVIC_InitStructure);
-    735          
-    736          	NVIC_InitStructure.NVIC_IRQChannel = UART5_IRQn;
-    737          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 5;  
-    738          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 5;
-    739          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    740          	NVIC_Init(&NVIC_InitStructure);	
-    741          
-    742          	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
-    743          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-    744          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-    745          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    746          	NVIC_Init(&NVIC_InitStructure);
-    747          
-    748          	NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
-    749          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
-    750          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
-    751          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    752          	NVIC_Init(&NVIC_InitStructure);  
-    753          
-    754          	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;
-    755          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 6;
-    756          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 6;
-    757          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    758          	NVIC_Init(&NVIC_InitStructure);  
-    759          	
-    760          
-    761          	//RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
-    762          }
-    763          
-    764          /*******************************************************************************
-    765          * Function : GPIO_Configuration
-    766          *******************************************************************************/
-    767          void GPIO_Configuration(void)
-    768          {
-    769          	// ========== GPIO A ===============================================
-    770          	// GPIO_Pin_0 : TEMPERATURE_ADC (IN)
-    771          	// GPIO_Pin_1 : MDIN_I550_INT
-    772          	// GPIO_Pin_2 : MDIN_I550_RX
-    773          	// GPIO_Pin_3 : MDIN_I550_TX
-    774          	// GPIO_Pin_4 : NC
-    775          	// GPIO_Pin_5 : NC
-    776          	// GPIO_Pin_6 : NC
-    777          	// GPIO_Pin_7 : NC
-    778          	// GPIO_Pin_8 : NC
-    779          	// GPIO_Pin_9 : USART1_Tx (OUT) : MAIN
-    780          	// GPIO_Pin_10 : USART1_Rx (IN) : MAIN
-    781          	// GPIO_Pin_11 : PWM (OUT)
-    782          	// GPIO_Pin_12 : NC
-    783          	// GPIO_Pin_13 : SWDIO
-    784          	// GPIO_Pin_14 : SWCLK
-    785          	// GPIO_Pin_15 : NC
-    786          	// ===============================================================
+    667          	
+    668          
+    669          }
+    670          
+    671          /*******************************************************************************
+    672          * Function : RCC_Configuration
+    673          *******************************************************************************/
+    674          void RCC_Configuration(void)
+    675          {
+    676          	SystemInit();
+    677          
+    678          	/* GPIOx clock enable */
+    679          	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA |RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_AFIO, ENABLE);
+    680          
+    681          //		RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
+    682          //		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+    683          	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+    684          //		RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART4, ENABLE);
+    685          //		RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART5, ENABLE);	
+    686          
+    687          	/* I2C1,2 Periph clock enable */
+    688          //		RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
+    689          //		RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);	
+    690          
+    691          	 /* Enable DMA1 clock */
+    692          	//RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+    693          
+    694          	/* ENABLE ADC1 and GPIO clock */
+    695          	//RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+    696          
+    697          	/* TIM clock enable */
+    698          //		RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
+    699          //		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);	
+    700          //		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
+    701          //		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);	
+    702          
+    703          	
+    704          }
+    705          
+    706          /*******************************************************************************
+    707          * Function : NVIC_Configuration
+    708          *******************************************************************************/
+    709          void NVIC_Configuration(void)
+    710          { 
+    711          
+    712          	//2bit for pre-emption priority, 2bits for subpriority
+    713          	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+    714          	
+    715          	NVIC_InitStructure.NVIC_IRQChannel = EXTI0_IRQn;
+    716          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+    717          	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+    718          	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    719          	NVIC_Init(&NVIC_InitStructure);
+    720          
+    721          	//Clear EXTI Line Prending Bit
+    722          	EXTI_ClearITPendingBit(EXTI_Line0);
+    723          
+    724          	//Enable the key EXTI line interrupt
+    725          	NVIC_ClearPendingIRQ(EXTI0_IRQn);
+    726          
+    727          	
+    728          
+    729          
+    730          
+    731          	
+    732          	//  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
+    733          
+    734          //		NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+    735          //		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;  
+    736          //		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;
+    737          //		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    738          //		NVIC_Init(&NVIC_InitStructure);
+    739          //	
+    740          //		NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
+    741          //		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;  
+    742          //		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
+    743          //		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    744          //		NVIC_Init(&NVIC_InitStructure);
+    745          //	
+    746          //		/*
+    747          //		NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
+    748          //		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 4;
+    749          //		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;
+    750          //		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    751          //		NVIC_Init(&NVIC_InitStructure);  
+    752          //		*/
+    753          //		
+    754          //		NVIC_InitStructure.NVIC_IRQChannel = UART4_IRQn;
+    755          //		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 4;
+    756          //		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;
+    757          //		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    758          //		NVIC_Init(&NVIC_InitStructure);
+    759          //	
+    760          //		NVIC_InitStructure.NVIC_IRQChannel = UART5_IRQn;
+    761          //		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 5;  
+    762          //		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 5;
+    763          //		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    764          //		NVIC_Init(&NVIC_InitStructure);	
+    765          //	
+    766          //		NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
+    767          //		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    768          //		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    769          //		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    770          //		NVIC_Init(&NVIC_InitStructure);
+    771          //	
+    772          //		NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
+    773          //		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+    774          //		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+    775          //		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    776          //		NVIC_Init(&NVIC_InitStructure);  
+    777          //	
+    778          //		NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;
+    779          //		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 6;
+    780          //		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 6;
+    781          //		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    782          //		NVIC_Init(&NVIC_InitStructure);  
+    783          	
+    784          
+    785          	//RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+    786          }
     787          
-    788          	// ----- Configure the INPUT-PIN --------------------
-    789          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
-    790          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
-    791          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-    792          //		GPIO_Init(GPIOA, &GPIO_InitStructure);
-    793          //		
-    794          //		// ----- Configure the INPUT-PIN --------------------
-    795          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10|GPIO_Pin_3|GPIO_Pin_1;
-    796          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    797          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    798          //		GPIO_Init(GPIOA, &GPIO_InitStructure);
-    799          //		
-    800          //		// ----- Configure the OUTPUT-PIN -------------------
-    801          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9|GPIO_Pin_11|GPIO_Pin_2;
-    802          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    803          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    804          //		GPIO_Init(GPIOA, &GPIO_InitStructure);
-    805          
-    806          
-    807          
-    808          
-    809          	    //GPIOA Pin 0: Set The WKUP SW Of Mango B'd
-    810          		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
-    811          		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
-    812          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-    813          		GPIO_Init(GPIOA, &GPIO_InitStructure);
-    814          		
-    815          	    //GPIOA Pin 1: Set The UserKey SW Of Mango B'd
-    816          		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
-    817          		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
-    818          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-    819          		GPIO_Init(GPIOA, &GPIO_InitStructure);
-    820          
-    821          
-    822          
-    823          
-    824          	// ========== GPIO B ===============================================
-    825          	// GPIO_Pin_0 : NC
-    826          	// GPIO_Pin_1 : NC
-    827          	// GPIO_Pin_2 : MDIN_I550_RSTN
-    828          	// GPIO_Pin_3 : NC
-    829          	// GPIO_Pin_4 : NC
-    830          	// GPIO_Pin_5 : NC
-    831          	// GPIO_Pin_6 : TW9900_SCL
-    832          	// GPIO_Pin_7 : TW9900_SDA
-    833          	// GPIO_Pin_8 : NC
-    834          	// GPIO_Pin_9 : NC
-    835          	// GPIO_Pin_10 : AT24C256C_SCL
-    836          	// GPIO_Pin_11 : AT24C256C_SDA
-    837          	// GPIO_Pin_12 : MODE1 (IN)
-    838          	// GPIO_Pin_13 : MODE2 (IN)
-    839          	// GPIO_Pin_14 : 12V_EN
-    840          	// GPIO_Pin_15 : NC
-    841          	// ===============================================================
-    842          
-    843          	// ----- Configure the INPUT-PIN --------------------
-    844          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_14|GPIO_Pin_15;
-    845          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    846          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    847          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
-    848          //	
-    849          //		// ----- Configure the OUTPUT-PIN -------------------
-    850          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
-    851          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
-    852          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    853          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
-    854          //	
-    855          //		// ----- Configure the OUTPUT-PIN -------------------
-    856          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;// | GPIO_Pin_10 | GPIO_Pin_11;
-    857          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
-    858          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    859          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
-    860          //		
-    861          //		// ----- Configure the OUTPUT-PIN -------------------
-    862          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2|GPIO_Pin_11;//|GPIO_Pin_7|GPIO_Pin_11;
-    863          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    864          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    865          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
-    866          
-    867          
-    868          
-    869          
-    870          			//GPIOB Pin5: Yellow, Pin8: Green, Pin9: Red
-    871          			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_8 | GPIO_Pin_5;
-    872          			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
-    873          			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-    874          			GPIO_Init(GPIOB, &GPIO_InitStructure);
-    875          
+    788          /*******************************************************************************
+    789          * Function : GPIO_Configuration
+    790          *******************************************************************************/
+    791          void GPIO_Configuration(void)
+    792          {
+    793          	// ========== GPIO A ===============================================
+    794          	// GPIO_Pin_0 : TEMPERATURE_ADC (IN)
+    795          	// GPIO_Pin_1 : MDIN_I550_INT
+    796          	// GPIO_Pin_2 : MDIN_I550_RX
+    797          	// GPIO_Pin_3 : MDIN_I550_TX
+    798          	// GPIO_Pin_4 : NC
+    799          	// GPIO_Pin_5 : NC
+    800          	// GPIO_Pin_6 : NC
+    801          	// GPIO_Pin_7 : NC
+    802          	// GPIO_Pin_8 : NC
+    803          	// GPIO_Pin_9 : USART1_Tx (OUT) : MAIN
+    804          	// GPIO_Pin_10 : USART1_Rx (IN) : MAIN
+    805          	// GPIO_Pin_11 : PWM (OUT)
+    806          	// GPIO_Pin_12 : NC
+    807          	// GPIO_Pin_13 : SWDIO
+    808          	// GPIO_Pin_14 : SWCLK
+    809          	// GPIO_Pin_15 : NC
+    810          	// ===============================================================
+    811          
+    812          	// ----- Configure the INPUT-PIN --------------------
+    813          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+    814          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
+    815          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+    816          //		GPIO_Init(GPIOA, &GPIO_InitStructure);
+    817          //		
+    818          //		// ----- Configure the INPUT-PIN --------------------
+    819          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10|GPIO_Pin_3|GPIO_Pin_1;
+    820          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    821          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    822          //		GPIO_Init(GPIOA, &GPIO_InitStructure);
+    823          //		
+    824          //		// ----- Configure the OUTPUT-PIN -------------------
+    825          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9|GPIO_Pin_11|GPIO_Pin_2;
+    826          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    827          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    828          //		GPIO_Init(GPIOA, &GPIO_InitStructure);
+    829          
+    830          
+    831          
+    832          
+    833          	    //GPIOA Pin 0: Set The WKUP SW Of Mango B'd
+    834          		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+    835          		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
+    836          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+    837          		GPIO_Init(GPIOA, &GPIO_InitStructure);
+    838          		
+    839          	    //GPIOA Pin 1: Set The UserKey SW Of Mango B'd
+    840          		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
+    841          		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
+    842          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+    843          		GPIO_Init(GPIOA, &GPIO_InitStructure);
+    844          
+    845          
+    846          		//Connect EXTI
+    847          		//External Interrupt Configuration register (AFIO_EXTICR1)
+    848          		GPIO_EXTILineConfig(GPIO_PortSourceGPIOA, GPIO_PinSource0);
+    849          
+    850          		//Configuration EXT1 to generate an interrupt on falling edge
+    851          		EXTI_initStructure.EXTI_Line = EXTI_Line0;
+    852          		EXTI_initStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+    853          		EXTI_initStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+    854          		EXTI_initStructure.EXTI_LineCmd = ENABLE;
+    855          		EXTI_Init(&EXTI_initStructure);
+    856          
+    857          
+    858          	// ========== GPIO B ===============================================
+    859          	// GPIO_Pin_0 : NC
+    860          	// GPIO_Pin_1 : NC
+    861          	// GPIO_Pin_2 : MDIN_I550_RSTN
+    862          	// GPIO_Pin_3 : NC
+    863          	// GPIO_Pin_4 : NC
+    864          	// GPIO_Pin_5 : NC
+    865          	// GPIO_Pin_6 : TW9900_SCL
+    866          	// GPIO_Pin_7 : TW9900_SDA
+    867          	// GPIO_Pin_8 : NC
+    868          	// GPIO_Pin_9 : NC
+    869          	// GPIO_Pin_10 : AT24C256C_SCL
+    870          	// GPIO_Pin_11 : AT24C256C_SDA
+    871          	// GPIO_Pin_12 : MODE1 (IN)
+    872          	// GPIO_Pin_13 : MODE2 (IN)
+    873          	// GPIO_Pin_14 : 12V_EN
+    874          	// GPIO_Pin_15 : NC
+    875          	// ===============================================================
     876          
-    877          
-    878          
-    879          	// ========== GPIO C ===============================================
-    880          	// GPIO_Pin_0 : WIPER1 SENSOR (IN)
-    881          	// GPIO_Pin_1 : WIPER2 SENSOR (IN)
-    882          	// GPIO_Pin_2 : NC
-    883          	// GPIO_Pin_3 : LED1 (OUT)
-    884          	// GPIO_Pin_4 : TW9900_IRQ
-    885          	// GPIO_Pin_5 : TW9900_RST
-    886          	// GPIO_Pin_6 : MOTOR START (OUT)
-    887          	// GPIO_Pin_7 : MOTOR FG (IN)
-    888          	// GPIO_Pin_8 : MOTOR CW/CCW (OUT)
-    889          	// GPIO_Pin_9 : NC
-    890          	// GPIO_Pin_10 : UART4_Tx (OUT) : CAMERA
-    891          	// GPIO_Pin_11 : UART4_Rx (IN) : CAMERA
-    892          	// GPIO_Pin_12 : UART5_Tx (OUT) : IP BOARD
-    893          	// GPIO_Pin_13 : HEATER (OUT)
-    894          	// GPIO_Pin_14 : NC
-    895          	// GPIO_Pin_15 : FAN (OUT)
-    896          	// ===============================================================
-    897          
-    898          	// ----- Configure the INPUT-PIN --------------------
-    899          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_4|GPIO_Pin_7|GPIO_Pin_11;
-    900          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    901          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    902          //		GPIO_Init(GPIOC, &GPIO_InitStructure);
+    877          	// ----- Configure the INPUT-PIN --------------------
+    878          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_14|GPIO_Pin_15;
+    879          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    880          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    881          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
+    882          //	
+    883          //		// ----- Configure the OUTPUT-PIN -------------------
+    884          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
+    885          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
+    886          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    887          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
+    888          //	
+    889          //		// ----- Configure the OUTPUT-PIN -------------------
+    890          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;// | GPIO_Pin_10 | GPIO_Pin_11;
+    891          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+    892          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    893          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
+    894          //		
+    895          //		// ----- Configure the OUTPUT-PIN -------------------
+    896          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2|GPIO_Pin_11;//|GPIO_Pin_7|GPIO_Pin_11;
+    897          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    898          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    899          //		GPIO_Init(GPIOB, &GPIO_InitStructure);
+    900          
+    901          
+    902          
     903          
-    904          	// ----- Configure the OUTPUT-PIN -------------------
-    905          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_8|GPIO_Pin_13|GPIO_Pin_15; 
-    906          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    907          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    908          //		GPIO_Init(GPIOC, &GPIO_InitStructure);
+    904          			//GPIOB Pin5: Yellow, Pin8: Green, Pin9: Red
+    905          			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_8 | GPIO_Pin_5;
+    906          			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    907          			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+    908          			GPIO_Init(GPIOB, &GPIO_InitStructure);
     909          
-    910          	// ----- Configure the OUTPUT-PIN -------------------
-    911          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10|GPIO_Pin_12;
-    912          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    913          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    914          //		GPIO_Init(GPIOC, &GPIO_InitStructure);
-    915          	
-    916          	// ========== GPIO D ===============================================
-    917          	// GPIO_Pin_0 : OSCI
-    918          	// GPIO_Pin_1 : OSCO
-    919          	// GPIO_Pin_2 : UART5_Rx (IN) : IP BOARD
-    920          	// ===============================================================
-    921          	// ----- Configure the INPUT-PIN --------------------
-    922          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
-    923          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    924          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    925          //		GPIO_Init(GPIOD, &GPIO_InitStructure);
-    926          }
-    927          
-    928          /*******************************************************************************
-    929          * Function : DMA_Configuration
-    930          *******************************************************************************/
-    931          void DMA_Configuration(void)
-    932          {
-    933          	DMA_DeInit(DMA1_Channel1);
-    934          	DMA_InitStructure.DMA_PeripheralBaseAddr = ADC1_DR_Address;
-    935          	DMA_InitStructure.DMA_MemoryBaseAddr = (u32)&stADC.DMA1_ADC_VALUE;
-    936          	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
-    937          	DMA_InitStructure.DMA_BufferSize = 2;
-    938          	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-    939          	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
-    940          	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Word;
-    941          	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Word;
-    942          	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
-    943          	DMA_InitStructure.DMA_Priority = DMA_Priority_High;
-    944          	DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
-    945          	DMA_Init(DMA1_Channel1, &DMA_InitStructure);
-    946          
-    947          	DMA_Cmd(DMA1_Channel1, ENABLE);
-    948          }
-    949          
-    950          /*******************************************************************************
-    951          * Function : ADC_Configuration
-    952          *******************************************************************************/
-    953          void ADC_Configuration(void)
-    954          {
-    955          	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
-    956          	ADC_InitStructure.ADC_ScanConvMode = ENABLE;
-    957          	ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
-    958          	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
-    959          	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
-    960          	ADC_InitStructure.ADC_NbrOfChannel = 2;
-    961          	ADC_Init(ADC1, &ADC_InitStructure);
-    962          	ADC_TempSensorVrefintCmd(ENABLE);
-    963          	
-    964          	// PA0, CH0, TEMP
-    965          	ADC_RegularChannelConfig(ADC1, ADC_Channel_0, 1, ADC_SampleTime_28Cycles5);
-    966          
-    967          	// PA4, CH4, CDS
-    968          	ADC_RegularChannelConfig(ADC1, ADC_Channel_4, 2, ADC_SampleTime_28Cycles5);
-    969          
-    970          	ADC_Cmd(ADC1, ENABLE);
-    971          	ADC_DMACmd(ADC1, ENABLE);
-    972          
-    973          	ADC_ResetCalibration(ADC1);  
-    974          	while(ADC_GetResetCalibrationStatus(ADC1));	
-    975          	ADC_StartCalibration(ADC1);  
-    976          	while(ADC_GetCalibrationStatus(ADC1));  
-    977          	ADC_SoftwareStartConvCmd(ADC1, ENABLE);  
-    978          }
-    979          
-    980          /*******************************************************************************
-    981          * Function : ADC_Configuration
-    982          *******************************************************************************/
-    983          void I2C_Configuration(void)
-    984          {
-    985          	/* I2C1,2 Periph clock enable */
-    986          	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
-    987          	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);	
-    988          
-    989          	//I2C1 Initial - TW9900 #1/#2 : PF0,1===========================================
-    990          	/* Reset sEE_I2C IP */
-    991          	//RCC_APB1PeriphResetCmd(RCC_APB1Periph_I2C1, ENABLE);
-    992          	/* Release reset signal of sEE_I2C IP */
-    993          	//RCC_APB1PeriphResetCmd(RCC_APB1Periph_I2C2, ENABLE);
-    994          	/* Connect PF1 to I2C_SCL*/
-    995          	//GPIO_PinAFConfig(GPIOF, GPIO_PinSource1, GPIO_AF_I2C1);
-    996          	/* Connect PF0 to I2C_SDA*/
-    997          	//GPIO_PinAFConfig(GPIOF, GPIO_PinSource0, GPIO_AF_I2C1);
-    998          
-    999          	// I2C1 Configuration	
-   1000          	#if(1)
-   1001          	I2C_InitStructure.I2C_ClockSpeed = 100000;	//100KB, 400000;
-   1002          	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
-   1003          	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
-   1004          	I2C_InitStructure.I2C_OwnAddress1 = TW9900_ADDR;
-   1005          	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
-   1006          	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-   1007          	I2C_Cmd(I2C1, ENABLE); /* I2C Peripheral Enable enable */
-   1008          	I2C_Init(I2C1, &I2C_InitStructure);	/* Apply I2C configuration after enabling it */
-   1009          	//======================================================== I2C1 Initial END
-   1010          	#endif
-   1011          	
-   1012          	#if(1)
-   1013          	// I2C2 Configuration	
-   1014          	I2C_InitStructure.I2C_ClockSpeed = 100000;	//100KB, 400000;
-   1015          	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
-   1016          	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
-   1017          	I2C_InitStructure.I2C_OwnAddress1 = AT24C256_ADDR;
-   1018          	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
-   1019          	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-   1020          	I2C_Cmd(I2C2, ENABLE); /* I2C Peripheral Enable enable */
-   1021          	I2C_Init(I2C2, &I2C_InitStructure);	/* Apply I2C configuration after enabling it */	
-   1022          	#endif	
-   1023          	//======================================================== I2C2 Initial END
-   1024          
-   1025          }
-   1026          
-   1027          
+    910          
+    911          
+    912          
+    913          	// ========== GPIO C ===============================================
+    914          	// GPIO_Pin_0 : WIPER1 SENSOR (IN)
+    915          	// GPIO_Pin_1 : WIPER2 SENSOR (IN)
+    916          	// GPIO_Pin_2 : NC
+    917          	// GPIO_Pin_3 : LED1 (OUT)
+    918          	// GPIO_Pin_4 : TW9900_IRQ
+    919          	// GPIO_Pin_5 : TW9900_RST
+    920          	// GPIO_Pin_6 : MOTOR START (OUT)
+    921          	// GPIO_Pin_7 : MOTOR FG (IN)
+    922          	// GPIO_Pin_8 : MOTOR CW/CCW (OUT)
+    923          	// GPIO_Pin_9 : NC
+    924          	// GPIO_Pin_10 : UART4_Tx (OUT) : CAMERA
+    925          	// GPIO_Pin_11 : UART4_Rx (IN) : CAMERA
+    926          	// GPIO_Pin_12 : UART5_Tx (OUT) : IP BOARD
+    927          	// GPIO_Pin_13 : HEATER (OUT)
+    928          	// GPIO_Pin_14 : NC
+    929          	// GPIO_Pin_15 : FAN (OUT)
+    930          	// ===============================================================
+    931          
+    932          	// ----- Configure the INPUT-PIN --------------------
+    933          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_4|GPIO_Pin_7|GPIO_Pin_11;
+    934          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    935          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    936          //		GPIO_Init(GPIOC, &GPIO_InitStructure);
+    937          
+    938          	// ----- Configure the OUTPUT-PIN -------------------
+    939          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_8|GPIO_Pin_13|GPIO_Pin_15; 
+    940          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    941          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    942          //		GPIO_Init(GPIOC, &GPIO_InitStructure);
+    943          
+    944          	// ----- Configure the OUTPUT-PIN -------------------
+    945          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10|GPIO_Pin_12;
+    946          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    947          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    948          //		GPIO_Init(GPIOC, &GPIO_InitStructure);
+    949          	
+    950          	// ========== GPIO D ===============================================
+    951          	// GPIO_Pin_0 : OSCI
+    952          	// GPIO_Pin_1 : OSCO
+    953          	// GPIO_Pin_2 : UART5_Rx (IN) : IP BOARD
+    954          	// ===============================================================
+    955          	// ----- Configure the INPUT-PIN --------------------
+    956          //		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+    957          //		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    958          //		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    959          //		GPIO_Init(GPIOD, &GPIO_InitStructure);
+    960          }
+    961          
+    962          /*******************************************************************************
+    963          * Function : DMA_Configuration
+    964          *******************************************************************************/
+    965          void DMA_Configuration(void)
+    966          {
+    967          	DMA_DeInit(DMA1_Channel1);
+    968          	DMA_InitStructure.DMA_PeripheralBaseAddr = ADC1_DR_Address;
+    969          	DMA_InitStructure.DMA_MemoryBaseAddr = (u32)&stADC.DMA1_ADC_VALUE;
+    970          	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
+    971          	DMA_InitStructure.DMA_BufferSize = 2;
+    972          	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+    973          	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+    974          	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Word;
+    975          	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Word;
+    976          	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
+    977          	DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+    978          	DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
+    979          	DMA_Init(DMA1_Channel1, &DMA_InitStructure);
+    980          
+    981          	DMA_Cmd(DMA1_Channel1, ENABLE);
+    982          }
+    983          
+    984          /*******************************************************************************
+    985          * Function : ADC_Configuration
+    986          *******************************************************************************/
+    987          void ADC_Configuration(void)
+    988          {
+    989          	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
+    990          	ADC_InitStructure.ADC_ScanConvMode = ENABLE;
+    991          	ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
+    992          	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
+    993          	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
+    994          	ADC_InitStructure.ADC_NbrOfChannel = 2;
+    995          	ADC_Init(ADC1, &ADC_InitStructure);
+    996          	ADC_TempSensorVrefintCmd(ENABLE);
+    997          	
+    998          	// PA0, CH0, TEMP
+    999          	ADC_RegularChannelConfig(ADC1, ADC_Channel_0, 1, ADC_SampleTime_28Cycles5);
+   1000          
+   1001          	// PA4, CH4, CDS
+   1002          	ADC_RegularChannelConfig(ADC1, ADC_Channel_4, 2, ADC_SampleTime_28Cycles5);
+   1003          
+   1004          	ADC_Cmd(ADC1, ENABLE);
+   1005          	ADC_DMACmd(ADC1, ENABLE);
+   1006          
+   1007          	ADC_ResetCalibration(ADC1);  
+   1008          	while(ADC_GetResetCalibrationStatus(ADC1));	
+   1009          	ADC_StartCalibration(ADC1);  
+   1010          	while(ADC_GetCalibrationStatus(ADC1));  
+   1011          	ADC_SoftwareStartConvCmd(ADC1, ENABLE);  
+   1012          }
+   1013          
+   1014          /*******************************************************************************
+   1015          * Function : ADC_Configuration
+   1016          *******************************************************************************/
+   1017          void I2C_Configuration(void)
+   1018          {
+   1019          	/* I2C1,2 Periph clock enable */
+   1020          	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
+   1021          	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);	
+   1022          
+   1023          	//I2C1 Initial - TW9900 #1/#2 : PF0,1===========================================
+   1024          	/* Reset sEE_I2C IP */
+   1025          	//RCC_APB1PeriphResetCmd(RCC_APB1Periph_I2C1, ENABLE);
+   1026          	/* Release reset signal of sEE_I2C IP */
+   1027          	//RCC_APB1PeriphResetCmd(RCC_APB1Periph_I2C2, ENABLE);
+   1028          	/* Connect PF1 to I2C_SCL*/
+   1029          	//GPIO_PinAFConfig(GPIOF, GPIO_PinSource1, GPIO_AF_I2C1);
+   1030          	/* Connect PF0 to I2C_SDA*/
+   1031          	//GPIO_PinAFConfig(GPIOF, GPIO_PinSource0, GPIO_AF_I2C1);
+   1032          
+   1033          	// I2C1 Configuration	
+   1034          	#if(1)
+   1035          	I2C_InitStructure.I2C_ClockSpeed = 100000;	//100KB, 400000;
+   1036          	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+   1037          	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+   1038          	I2C_InitStructure.I2C_OwnAddress1 = TW9900_ADDR;
+   1039          	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+   1040          	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+   1041          	I2C_Cmd(I2C1, ENABLE); /* I2C Peripheral Enable enable */
+   1042          	I2C_Init(I2C1, &I2C_InitStructure);	/* Apply I2C configuration after enabling it */
+   1043          	//======================================================== I2C1 Initial END
+   1044          	#endif
+   1045          	
+   1046          	#if(1)
+   1047          	// I2C2 Configuration	
+   1048          	I2C_InitStructure.I2C_ClockSpeed = 100000;	//100KB, 400000;
+   1049          	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+   1050          	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+   1051          	I2C_InitStructure.I2C_OwnAddress1 = AT24C256_ADDR;
+   1052          	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+   1053          	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+   1054          	I2C_Cmd(I2C2, ENABLE); /* I2C Peripheral Enable enable */
+   1055          	I2C_Init(I2C2, &I2C_InitStructure);	/* Apply I2C configuration after enabling it */	
+   1056          	#endif	
+   1057          	//======================================================== I2C2 Initial END
+   1058          
+   1059          }
+   1060          
+   1061          
 
    Maximum stack usage in bytes:
 
@@ -1085,6 +1119,8 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
         8  Dipswitch_Mode_Check
               8 -> GPIO_ReadInputDataBit
         8  GPIO_Configuration
+              8 -> EXTI_Init
+              8 -> GPIO_EXTILineConfig
               8 -> GPIO_Init
         8  I2C_Configuration
               8 -> I2C_Cmd
@@ -1107,12 +1143,14 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
         8  Initial_Wiper
               8 -> Delay_1ms
               8 -> Run_Wiper
+        4  NVIC_ClearPendingIRQ
         8  NVIC_Configuration
+              8 -> EXTI_ClearITPendingBit
+              8 -> NVIC_ClearPendingIRQ
               8 -> NVIC_Init
+              8 -> NVIC_PriorityGroupConfig
         0  NVIC_SetPriority
         8  RCC_Configuration
-              8 -> RCC_AHBPeriphClockCmd
-              8 -> RCC_APB1PeriphClockCmd
               8 -> RCC_APB2PeriphClockCmd
               8 -> SystemInit
        16  Run_Wiper
@@ -1125,13 +1163,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
              16 -> TIM_Cmd
              16 -> TIM_CtrlPWMOutputs
              16 -> TIM_OC4Init
-        8  TIMER_Init
-              8 -> TIM_Cmd
-              8 -> TIM_OC1Init
-              8 -> TIM_OC2Init
-              8 -> TIM_OC3Init
-              8 -> TIM_OC4Init
-              8 -> TIM_TimeBaseInit
+        0  TIMER_Init
         8  UART4_Init
               8 -> USART_Cmd
               8 -> USART_ITConfig
@@ -1164,65 +1196,67 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
 
    Bytes  Function/Label
    -----  --------------
-       4  ??DataTable19
-       4  ??DataTable19_1
-       4  ??DataTable19_10
-       4  ??DataTable19_11
-       4  ??DataTable19_12
-       4  ??DataTable19_13
-       4  ??DataTable19_14
-       4  ??DataTable19_15
-       4  ??DataTable19_16
-       4  ??DataTable19_17
-       4  ??DataTable19_18
-       4  ??DataTable19_19
-       4  ??DataTable19_2
-       4  ??DataTable19_20
-       4  ??DataTable19_21
-       4  ??DataTable19_22
-       4  ??DataTable19_23
-       4  ??DataTable19_24
-       4  ??DataTable19_25
-       4  ??DataTable19_26
-       4  ??DataTable19_27
-       4  ??DataTable19_28
-       4  ??DataTable19_29
-       4  ??DataTable19_3
-       4  ??DataTable19_30
-       4  ??DataTable19_31
-       4  ??DataTable19_32
-       4  ??DataTable19_33
-       4  ??DataTable19_34
-       4  ??DataTable19_35
-       4  ??DataTable19_36
-       4  ??DataTable19_37
-       4  ??DataTable19_38
-       4  ??DataTable19_4
-       4  ??DataTable19_5
-       4  ??DataTable19_6
-       4  ??DataTable19_7
-       4  ??DataTable19_8
-       4  ??DataTable19_9
+       4  ??DataTable20
+       4  ??DataTable20_1
+       4  ??DataTable20_10
+       4  ??DataTable20_11
+       4  ??DataTable20_12
+       4  ??DataTable20_13
+       4  ??DataTable20_14
+       4  ??DataTable20_15
+       4  ??DataTable20_16
+       4  ??DataTable20_17
+       4  ??DataTable20_18
+       4  ??DataTable20_19
+       4  ??DataTable20_2
+       4  ??DataTable20_20
+       4  ??DataTable20_21
+       4  ??DataTable20_22
+       4  ??DataTable20_23
+       4  ??DataTable20_24
+       4  ??DataTable20_25
+       4  ??DataTable20_26
+       4  ??DataTable20_27
+       4  ??DataTable20_28
+       4  ??DataTable20_29
+       4  ??DataTable20_3
+       4  ??DataTable20_30
+       4  ??DataTable20_31
+       4  ??DataTable20_32
+       4  ??DataTable20_33
+       4  ??DataTable20_34
+       4  ??DataTable20_35
+       4  ??DataTable20_36
+       4  ??DataTable20_37
+       4  ??DataTable20_38
+       4  ??DataTable20_4
+       4  ??DataTable20_5
+       4  ??DataTable20_6
+       4  ??DataTable20_7
+       4  ??DataTable20_8
+       4  ??DataTable20_9
      136  ADC_Configuration
       20  ADC_InitStructure
       98  DMA_Configuration
       44  DMA_InitStructure
       40  Dipswitch_Mode_Check
-      84  GPIO_Configuration
+       8  EXTI_initStructure
+     122  GPIO_Configuration
        4  GPIO_InitStructure
      120  I2C_Configuration
       16  I2C_InitStructure
-     100  Initial_Device
+     104  Initial_Device
      252  Initial_Wiper
-     214  NVIC_Configuration
+      26  NVIC_ClearPendingIRQ
+      54  NVIC_Configuration
        4  NVIC_InitStructure
       38  NVIC_SetPriority
        2  PrescalerValue
-     128  RCC_Configuration
-     152  Run_Wiper
+      16  RCC_Configuration
+     130  Run_Wiper
       56  SysTick_Config
      162  TIMER1_CH4_DutyPeriod
-     230  TIMER_Init
+      32  TIMER_Init
       16  TIM_OCInitStructure
       12  TIM_TimeBaseStructure
      102  UART4_Init
@@ -1236,11 +1270,11 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
       20  rcc_clocks
 
  
-   154 bytes in section .bss
- 3 118 bytes in section .text
+   162 bytes in section .bss
+ 2 694 bytes in section .text
  
- 3 118 bytes of CODE memory
-   154 bytes of DATA memory
+ 2 694 bytes of CODE memory
+   162 bytes of DATA memory
 
 Errors: none
 Warnings: 1

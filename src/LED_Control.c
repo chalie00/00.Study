@@ -14,6 +14,15 @@
 //	#include "stm32f10x_adc.h"
 //	#include "stm32f10x_dma.h"
 
+
+
+/*Type Define*/
+int red_status = 0;
+int green_status = 0;
+int yellow_status = 0;
+
+
+
 /* Functions */
 /*
  * GPIOB Pin9 // Red
@@ -33,26 +42,32 @@ void LED_Off_Yellow (void);
 
 void LED_On_Red (void) {
 	GPIO_SetBits(GPIOB, GPIO_Pin_9);
+	red_status = 1;
 }
 
 void LED_Off_Red (void) {
 	GPIO_ResetBits(GPIOB, GPIO_Pin_9);
+	red_status = 0;
 }
 
 void LED_On_Green (void) {
 	GPIO_SetBits(GPIOB, GPIO_Pin_8);
+	green_status = 1;
 }
 
 void LED_Off_Green (void) {
 	GPIO_ResetBits(GPIOB, GPIO_Pin_8);
+	green_status = 0;
 }
 
 void LED_On_Yellow (void) {
 	GPIO_SetBits(GPIOB, GPIO_Pin_5);
+	yellow_status = 1;
 }
 
 void LED_Off_Yellow (void) {
 	GPIO_ResetBits(GPIOB, GPIO_Pin_5);
+	yellow_status = 0;
 }
 
 
