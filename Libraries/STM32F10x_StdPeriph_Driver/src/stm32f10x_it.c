@@ -13,6 +13,14 @@ Author			:	phs@tbtsys.com
 #include "Define.h"
 #include "Common.h"
 
+
+/* External Varible */
+extern int red_status;
+extern int green_status;
+extern int yellow_status;
+
+
+
 /*******************************************************************************
 * Function Name  : assert_failed
 * Description    : Reports the name of the source file and the source line number
@@ -1150,6 +1158,26 @@ void TIM4_IRQHandler(void)
 	}
 
 }//End Of The TIM4_IRQ_Handler
+
+
+
+void EXTI0_IRQHandler(void) {
+	if(EXTI_GetITStatus(EXTI_Line0) != RESET)
+	{
+		EXTI_ClearITPendingBit(EXTI_Line0);
+		if (red_status) {
+			LED_Off_Red();
+	    	Delay_1ms(1000);
+		} else {
+			LED_On_Red();
+			Delay_1ms(1000);
+		}
+	}
+}
+
+
+
+
 
 /*******************************************************************************
 * Function Name  : I2C1_EV_IRQHandler
