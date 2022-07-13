@@ -1137,16 +1137,10 @@ void Boot_Status_Data_Trans(void)
 *******************************************************************************/
 void TIM4_IRQHandler(void)
 {
-	if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)
-	{
+	if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET){
 		
 		TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
-		LED_On_Red();
 		LED_Off_Red();
-		
-
-
-
 //			if(stSYS.START == ACTIVE)
 //			{
 //				SYSTEM_Data_Parser(USART1_INDEX);
@@ -1155,6 +1149,11 @@ void TIM4_IRQHandler(void)
 //			{
 //				Boot_Status_Data_Trans();
 //			}
+	}
+
+	if(TIM_GetITStatus(TIM4, TIM_IT_CC1) != RESET){ 
+		TIM_ClearITPendingBit(TIM4, TIM_IT_CC1);
+		LED_On_Red();
 	}
 
 }//End Of The TIM4_IRQ_Handler

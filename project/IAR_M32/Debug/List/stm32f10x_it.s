@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    08/Jul/2022  12:01:43 /
+// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    13/Jul/2022  18:47:25 /
 // Copyright 1999-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Cpu mode     =  thumb                                                   /
@@ -548,48 +548,48 @@ TIM2_IRQHandler:
         MOVS     R1,#+0
         STRB     R1,[R0, #+15]
 ??TIM2_IRQHandler_14:
-        LDR.W    R0,??DataTable18
+        LDR.W    R0,??DataTable17
         LDRB     R0,[R0, #+0]
         CMP      R0,#+1
         BNE.N    ??TIM2_IRQHandler_15
-        LDR.W    R0,??DataTable18
+        LDR.W    R0,??DataTable17
         LDR      R0,[R0, #+4]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable18
+        LDR.W    R1,??DataTable17
         STR      R0,[R1, #+4]
-        LDR.W    R0,??DataTable18
+        LDR.W    R0,??DataTable17
         LDR      R0,[R0, #+4]
         CMP      R0,#+200
         BCC.N    ??TIM2_IRQHandler_15
-        LDR.W    R0,??DataTable18
+        LDR.W    R0,??DataTable17
         MOVS     R1,#+1
         STRB     R1,[R0, #+8]
-        LDR.W    R0,??DataTable18
+        LDR.W    R0,??DataTable17
         MOVS     R1,#+0
         STR      R1,[R0, #+4]
-        LDR.W    R0,??DataTable18
+        LDR.W    R0,??DataTable17
         MOVS     R1,#+0
         STRB     R1,[R0, #+0]
 ??TIM2_IRQHandler_15:
-        LDR.W    R0,??DataTable18
+        LDR.W    R0,??DataTable17
         LDRB     R0,[R0, #+9]
         CMP      R0,#+1
         BNE.N    ??TIM2_IRQHandler_16
-        LDR.W    R0,??DataTable18
+        LDR.W    R0,??DataTable17
         LDR      R0,[R0, #+12]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable18
+        LDR.W    R1,??DataTable17
         STR      R0,[R1, #+12]
-        LDR.W    R0,??DataTable18
+        LDR.W    R0,??DataTable17
         LDR      R0,[R0, #+16]
-        LDR.W    R1,??DataTable18
+        LDR.W    R1,??DataTable17
         LDR      R1,[R1, #+12]
         CMP      R0,R1
         BCS.N    ??TIM2_IRQHandler_16
-        LDR.W    R0,??DataTable18
+        LDR.W    R0,??DataTable17
         MOVS     R1,#+1
         STRB     R1,[R0, #+20]
-        LDR.W    R0,??DataTable18
+        LDR.W    R0,??DataTable17
         MOVS     R1,#+0
         STR      R1,[R0, #+12]
 ??TIM2_IRQHandler_16:
@@ -1187,9 +1187,18 @@ TIM4_IRQHandler:
         MOVS     R1,#+1
         LDR.W    R0,??DataTable19_2  ;; 0x40000800
         BL       TIM_ClearITPendingBit
-        BL       LED_On_Red
         BL       LED_Off_Red
 ??TIM4_IRQHandler_0:
+        MOVS     R1,#+2
+        LDR.W    R0,??DataTable19_2  ;; 0x40000800
+        BL       TIM_GetITStatus
+        CMP      R0,#+0
+        BEQ.N    ??TIM4_IRQHandler_1
+        MOVS     R1,#+2
+        LDR.W    R0,??DataTable19_2  ;; 0x40000800
+        BL       TIM_ClearITPendingBit
+        BL       LED_On_Red
+??TIM4_IRQHandler_1:
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(1)
@@ -1753,7 +1762,7 @@ LRF_Data_Clear:
         CMP      R0,#+22
         BCS.N    ??LRF_Data_Clear_1
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
-        LDR.N    R1,??DataTable18
+        LDR.N    R1,??DataTable17
         ADDS     R1,R0,R1
         MOVS     R2,#+0
         STRB     R2,[R1, #+21]
@@ -1792,7 +1801,7 @@ LRF_Trans_Data:
         LDR.N    R0,??DataTable19_4
         ADDS     R0,R4,R0
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
-        LDR.N    R1,??DataTable18
+        LDR.N    R1,??DataTable17
         ADDS     R1,R4,R1
         LDRB     R1,[R1, #+21]
         STRB     R1,[R0, #+31]
@@ -1853,93 +1862,93 @@ LRF_Data_Pasher:
         LDRB     R0,[R0, #+1]
         CMP      R0,#+1
         BNE.N    ??LRF_Data_Pasher_0
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         LDRB     R0,[R0, #+43]
         CMP      R0,#+20
         BNE.N    ??LRF_Data_Pasher_1
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         LDRB     R0,[R0, #+21]
         CMP      R0,#+68
         BNE.N    ??LRF_Data_Pasher_2
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         LDRB     R0,[R0, #+22]
         CMP      R0,#+77
         BNE.N    ??LRF_Data_Pasher_2
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         LDRB     R0,[R0, #+40]
         CMP      R0,#+13
         BNE.N    ??LRF_Data_Pasher_2
         BL       LRF_Trans_Data
 ??LRF_Data_Pasher_2:
         BL       LRF_Data_Clear
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         MOVS     R1,#+0
         STRB     R1,[R0, #+43]
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         MOVS     R1,#+1
         STRB     R1,[R0, #+44]
 ??LRF_Data_Pasher_1:
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         LDRB     R0,[R0, #+43]
         CMP      R0,#+2
         BCC.N    ??LRF_Data_Pasher_3
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         LDRB     R0,[R0, #+43]
-        LDR.N    R1,??DataTable18
+        LDR.N    R1,??DataTable17
         ADDS     R0,R0,R1
         STRB     R4,[R0, #+21]
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         LDRB     R0,[R0, #+43]
         ADDS     R0,R0,#+1
-        LDR.N    R1,??DataTable18
+        LDR.N    R1,??DataTable17
         STRB     R0,[R1, #+43]
 ??LRF_Data_Pasher_3:
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         LDRB     R0,[R0, #+44]
         CMP      R0,#+0
         BNE.N    ??LRF_Data_Pasher_4
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
         CMP      R4,#+77
         BNE.N    ??LRF_Data_Pasher_5
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         LDRB     R0,[R0, #+43]
         CMP      R0,#+1
         BNE.N    ??LRF_Data_Pasher_5
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         MOVS     R1,#+77
         STRB     R1,[R0, #+22]
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         LDRB     R0,[R0, #+43]
         ADDS     R0,R0,#+1
-        LDR.N    R1,??DataTable18
+        LDR.N    R1,??DataTable17
         STRB     R0,[R1, #+43]
 ??LRF_Data_Pasher_5:
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
         CMP      R4,#+68
         BNE.N    ??LRF_Data_Pasher_6
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         LDRB     R0,[R0, #+43]
         CMP      R0,#+0
         BNE.N    ??LRF_Data_Pasher_6
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         MOVS     R1,#+68
         STRB     R1,[R0, #+21]
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         LDRB     R0,[R0, #+43]
         ADDS     R0,R0,#+1
-        LDR.N    R1,??DataTable18
+        LDR.N    R1,??DataTable17
         STRB     R0,[R1, #+43]
         B.N      ??LRF_Data_Pasher_6
 ??LRF_Data_Pasher_4:
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         MOVS     R1,#+0
         STRB     R1,[R0, #+44]
 ??LRF_Data_Pasher_6:
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         LDRB     R0,[R0, #+43]
         CMP      R0,#+22
         BCC.N    ??LRF_Data_Pasher_7
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable17
         MOVS     R1,#+0
         STRB     R1,[R0, #+43]
         BL       LRF_Data_Clear
@@ -2004,6 +2013,12 @@ USART2_IRQHandler:
 ??USART2_IRQHandler_3:
         POP      {R0,R4,R5,PC}    ;; return
 
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable17:
+        DC32     stLRF
+
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
 USART3_IRQHandler:
@@ -2034,12 +2049,6 @@ USART3_IRQHandler:
         MOVS     R4,R0
 ??USART3_IRQHandler_1:
         POP      {R0,R4,R5,PC}    ;; return
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable18:
-        DC32     stLRF
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
@@ -3698,9 +3707,9 @@ UART5_IRQHandler:
         END
 // 
 //     1 byte  in section .bss
-// 7 648 bytes in section .text
+// 7 672 bytes in section .text
 // 
-// 7 648 bytes of CODE memory
+// 7 672 bytes of CODE memory
 //     1 byte  of DATA memory
 //
 //Errors: none

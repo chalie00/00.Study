@@ -20,6 +20,10 @@ EXTI_InitTypeDef EXTI_initStructure;
 void I2C_Configuration(void);
 
 
+
+volatile unsigned int Timer2_Counter = 0;
+
+
 /*******************************************************************************/
 uint16_t PrescalerValue = 0;
 
@@ -631,14 +635,35 @@ void TIMER_Init(void)
 
 	//TIM4 (CH3): GPIOB 8 LED Green
 	//TIM4 (CH4): GPIOB 9 LED Red
+
+
+	//TIM4 Initialize
+	TIM_TimeBaseStructure.TIM_Period = 12-1;
+	TIM_TimeBaseStructure.TIM_Prescaler = 60000-1;
+	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+	//TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
+	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
+
+
+	//TIM4 PWM Initialize
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+	TIM_OCInitStructure.TIM_OutputNState = TIM_OutputNState_Enable;
+	TIM_OCInitStructure.TIM_Pulse = 50 -1; //50% Duty Ratio
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
+	TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCNPolarity_High;
+	TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Set;
+	TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCIdleState_Reset;
+	TIM_OC1Init(TIM4, &TIM_OCInitStructure);
+
+
+	//TIM4 Enable
+	TIM_Cmd(TIM4, ENABLE);
+	TIM_ITConfig(TIM4, TIM_IT_Update | TIM_IT_CC1, ENABLE); //Interrupt Enable
+
+
 	
-//		TIM_TimeBaseStructure.TIM_Period = 3600-1;
-//		TIM_TimeBaseStructure.TIM_Prescaler = 60000-1;
-//		TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-//		TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-//		//TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
-//		TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
-//	
 //		TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Disable;
 //		TIM_OC1Init(TIM4, &TIM_OCInitStructure);
 //		TIM_OC2Init(TIM4, &TIM_OCInitStructure);
@@ -661,12 +686,34 @@ void TIMER_Init(void)
 //		TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE);
 	
 	//TIM_PrescalerConfig(TIM4, PrescalerValue, TIM_PSCReloadMode_Immediate);
-	//TIM_ClearFlag(TIM4, TIM_FLAG_Update); //s
+	//TIM_ClearFlag(TIM4, TIM_FLAG_Update); //
 	//TIM_ITConfig(TIM4, TIM_FLAG_Update, ENABLE);
 
 	
 
 }
+
+	void make_pwm(u16 val) {
+	TIM_OCInitTypeDef OutputChannel;
+
+	OutputChannel.TIM_OCMode = TIM_OCMode_PWM1;
+	OutputChannel.TIM_OutputState = TIM_OutputState_Enable;
+	OutputChannel.TIM_OutputNState = TIM_OutputNState_Enable;
+	OutputChannel.TIM_Pulse = val;
+	OutputChannel.TIM_OCPolarity = TIM_OCPolarity_Low;
+	OutputChannel.TIM_OCNPolarity = TIM_OCNPolarity_High;
+	OutputChannel.TIM_OCIdleState = TIM_OCIdleState_Set;
+	OutputChannel.TIM_OCNIdleState = TIM_OCIdleState_Reset;
+	TIM_OC1Init(TIM4, &OutputChannel);
+
+
+	}
+
+	void delayR(unsigned int del) {
+   	Timer2_Counter = 0;
+	while(Timer2_Counter < del);
+
+   }
 
 /*******************************************************************************
 * Function : RCC_Configuration
@@ -698,7 +745,7 @@ void RCC_Configuration(void)
 //		RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
 //		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);	
 //		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
-//		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);	
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);	
 
 	
 }
@@ -710,10 +757,10 @@ void NVIC_Configuration(void)
 { 
 
 	//2bit for pre-emption priority, 2bits for subpriority
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+	//NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	
-	NVIC_InitStructure.NVIC_IRQChannel = EXTI0_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
@@ -903,7 +950,7 @@ void GPIO_Configuration(void)
 
 			//GPIOB Pin5: Yellow, Pin8: Green, Pin9: Red
 			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_8 | GPIO_Pin_5;
-			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
 			GPIO_Init(GPIOB, &GPIO_InitStructure);
 
