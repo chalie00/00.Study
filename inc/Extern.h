@@ -54,7 +54,7 @@ extern void IR_Check(void);
 extern void CDS_ADC_Test(u8 Position);
 extern void CDS_Check(void);
 extern void IR_Duty_Set(u8 num);
-extern void Run_Wiper(u8 u_Cmd, u8 u_Direction);
+//extern void Run_Wiper(u8 u_Cmd, u8 u_Direction);
 
 extern void Wiper_Origin_Protocol(void);
 extern void Wiper_Active_Protocol(void);

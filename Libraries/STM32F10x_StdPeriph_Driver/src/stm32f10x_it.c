@@ -615,13 +615,13 @@ void TIM2_IRQHandler(void)
 						
 						if(stWIPER1.ACTIVE_COUNT == 0) 
 						{
-							Run_Wiper(WIPER_OFF, DIRECTION_CW);				// Wiper Off
+							//Run_Wiper(WIPER_OFF, DIRECTION_CW);				// Wiper Off
 						}
 						else
 						{
 							if((stWIPER1.DWELL_FLAG == 0x00) && (stWIPER1.DWELL_TIME != 0))
 							{
-								Run_Wiper(WIPER_OFF, DIRECTION_CW);				// Wiper off
+								//Run_Wiper(WIPER_OFF, DIRECTION_CW);				// Wiper off
 								stWIPER1.DWELL_FLAG = 0x01;
 							}
 						}
@@ -655,7 +655,7 @@ void TIM2_IRQHandler(void)
 					stWIPER1.DWELL_FLAG = 0x00;
 					if(stWIPER1.ACTIVE_COUNT != 0)
 					{
-						Run_Wiper(WIPER_ON, DIRECTION_CW);				// Wiper On
+						//Run_Wiper(WIPER_ON, DIRECTION_CW);				// Wiper On
 					}
 
 					stWIPER1.DWELL_TIME_1s = 0;

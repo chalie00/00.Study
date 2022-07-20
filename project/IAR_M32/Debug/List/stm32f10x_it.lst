@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     01/Jul/2022  16:57:33 #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     20/Jul/2022  18:34:54 #
 # Copyright 1999-2011 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -654,13 +654,13 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\
     615          						
     616          						if(stWIPER1.ACTIVE_COUNT == 0) 
     617          						{
-    618          							Run_Wiper(WIPER_OFF, DIRECTION_CW);				// Wiper Off
+    618          							//Run_Wiper(WIPER_OFF, DIRECTION_CW);				// Wiper Off
     619          						}
     620          						else
     621          						{
     622          							if((stWIPER1.DWELL_FLAG == 0x00) && (stWIPER1.DWELL_TIME != 0))
     623          							{
-    624          								Run_Wiper(WIPER_OFF, DIRECTION_CW);				// Wiper off
+    624          								//Run_Wiper(WIPER_OFF, DIRECTION_CW);				// Wiper off
     625          								stWIPER1.DWELL_FLAG = 0x01;
     626          							}
     627          						}
@@ -694,7 +694,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\
     655          					stWIPER1.DWELL_FLAG = 0x00;
     656          					if(stWIPER1.ACTIVE_COUNT != 0)
     657          					{
-    658          						Run_Wiper(WIPER_ON, DIRECTION_CW);				// Wiper On
+    658          						//Run_Wiper(WIPER_ON, DIRECTION_CW);				// Wiper On
     659          					}
     660          
     661          					stWIPER1.DWELL_TIME_1s = 0;
@@ -2798,7 +2798,6 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\
         0  TIM1_UP_IRQHandler
         8  TIM2_IRQHandler
               8 -> GPIO_ReadInputDataBit
-              8 -> Run_Wiper
               8 -> TIM_ClearITPendingBit
               8 -> TIM_GetITStatus
         8  TIM3_IRQHandler
@@ -2858,7 +2857,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\
        4  ??DataTable14_2
        4  ??DataTable14_3
        4  ??DataTable14_4
-       4  ??DataTable14_5
+       4  ??DataTable15
        4  ??DataTable18
        4  ??DataTable18_1
        4  ??DataTable18_2
@@ -2933,7 +2932,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\
        2  TIM1_CC_IRQHandler
        2  TIM1_TRG_COM_IRQHandler
        2  TIM1_UP_IRQHandler
-    1010  TIM2_IRQHandler
+     974  TIM2_IRQHandler
       36  TIM3_IRQHandler
       36  TIM4_IRQHandler
     1440  TSM_Data_Pasher
@@ -2951,9 +2950,9 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\
 
  
      1 byte  in section .bss
- 7 588 bytes in section .text
+ 7 552 bytes in section .text
  
- 7 588 bytes of CODE memory
+ 7 552 bytes of CODE memory
      1 byte  of DATA memory
 
 Errors: none
