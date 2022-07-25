@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     20/Jul/2022  18:34:54 #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     25/Jul/2022  18:01:38 #
 # Copyright 1999-2011 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -601,2123 +601,2112 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\
     562          	{
     563          		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);	
     564          
-    565          		// =======================================
-    566          		// LED Control : 1s
-    567          		// =======================================
-    568          		stLED_SET.LED_COUNT++;
-    569          		if(stLED_SET.LED_COUNT >= 100)
-    570          		{
-    571          			stLED_SET.LED_COUNT = 0;
-    572          			stLED_SET.LED_FLAG ^= 0xFF;
+    565          		if(GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1) != RESET) {
+    566          			LED_On_Red();
+    567          			delay(1000);
+    568          		}
+    569          		
+    570          		
+    571          
+    572          
     573          
-    574          			//if(stLED_SET.LED_FLAG) LED1_ON;
-    575          			//else LED1_OFF;
-    576          		}
+    574          
+    575          
+    576          		
     577          
-    578          		if(stINFO.BOOT_FLAG == 0x01)
-    579          		{
-    580          			stINFO.BOOT_CHECK_LIMIT_ms++;
+    578          		// ================================================================
+    579          		// Wiper Sensor Check
+    580          		// ================================================================
     581          
-    582          			if(stINFO.BOOT_CHECK_LIMIT_ms >= 1000)
-    583          			{
-    584          				stINFO.BOOT_CHECK_LIMIT_ms = 0;
-    585          				stINFO.BOOT_FLAG = 0x00;
-    586          			}
-    587          		}
-    588          
-    589          		// ================================================================
-    590          		// Wiper Sensor Check
-    591          		// ================================================================
+    582          		switch(stDIP.MODE2)
+    583          		{
+    584          			case 0x00:
+    585          
+    586          				stWIPER2.SENSOR_1 = WIPER_SENSOR_1;
+    587          				stWIPER2.SENSOR_2 = WIPER_SENSOR_2;
+    588          				
+    589          				break;
+    590          
+    591          			case 0x01:
     592          
-    593          		switch(stDIP.MODE2)
-    594          		{
-    595          			case 0x00:
-    596          
-    597          				stWIPER2.SENSOR_1 = WIPER_SENSOR_1;
-    598          				stWIPER2.SENSOR_2 = WIPER_SENSOR_2;
-    599          				
-    600          				break;
-    601          
-    602          			case 0x01:
-    603          
-    604          				stWIPER2.SENSOR_1 = WIPER_SENSOR_1;
-    605          				
-    606          				if(stWIPER1.SENSOR_TEMP != stWIPER2.SENSOR_1) 
-    607          				{
-    608          
-    609          					if((stWIPER2.SENSOR_1 == WIPER_SENS1_ON) && (stWIPER1.SENSOR_TEMP == WIPER_SENS1_OFF))
-    610          					{
-    611          						if((stWIPER1.ACTIVE_COUNT > 0) && (stWIPER1.ACTIVE_COUNT < 0x0F)) 
-    612          						{
-    613          							stWIPER1.ACTIVE_COUNT--;
-    614          						}
-    615          						
-    616          						if(stWIPER1.ACTIVE_COUNT == 0) 
-    617          						{
-    618          							//Run_Wiper(WIPER_OFF, DIRECTION_CW);				// Wiper Off
-    619          						}
-    620          						else
-    621          						{
-    622          							if((stWIPER1.DWELL_FLAG == 0x00) && (stWIPER1.DWELL_TIME != 0))
-    623          							{
-    624          								//Run_Wiper(WIPER_OFF, DIRECTION_CW);				// Wiper off
-    625          								stWIPER1.DWELL_FLAG = 0x01;
-    626          							}
-    627          						}
-    628          					}
-    629          
-    630          					stWIPER1.SENSOR_TEMP = WIPER_SENSOR_1;
-    631          					
-    632          				}
-    633          				stWIPER2.SENSOR_2 = WIPER_SENSOR_2;
-    634          
-    635          
-    636          				break;
-    637          
-    638          			default:
-    639          				break;
-    640          		}
+    593          				stWIPER2.SENSOR_1 = WIPER_SENSOR_1;
+    594          				
+    595          				if(stWIPER1.SENSOR_TEMP != stWIPER2.SENSOR_1) 
+    596          				{
+    597          
+    598          					if((stWIPER2.SENSOR_1 == WIPER_SENS1_ON) && (stWIPER1.SENSOR_TEMP == WIPER_SENS1_OFF))
+    599          					{
+    600          						if((stWIPER1.ACTIVE_COUNT > 0) && (stWIPER1.ACTIVE_COUNT < 0x0F)) 
+    601          						{
+    602          							stWIPER1.ACTIVE_COUNT--;
+    603          						}
+    604          						
+    605          						if(stWIPER1.ACTIVE_COUNT == 0) 
+    606          						{
+    607          							//Run_Wiper(WIPER_OFF, DIRECTION_CW);				// Wiper Off
+    608          						}
+    609          						else
+    610          						{
+    611          							if((stWIPER1.DWELL_FLAG == 0x00) && (stWIPER1.DWELL_TIME != 0))
+    612          							{
+    613          								//Run_Wiper(WIPER_OFF, DIRECTION_CW);				// Wiper off
+    614          								stWIPER1.DWELL_FLAG = 0x01;
+    615          							}
+    616          						}
+    617          					}
+    618          
+    619          					stWIPER1.SENSOR_TEMP = WIPER_SENSOR_1;
+    620          					
+    621          				}
+    622          				stWIPER2.SENSOR_2 = WIPER_SENSOR_2;
+    623          
+    624          
+    625          				break;
+    626          
+    627          			default:
+    628          				break;
+    629          		}
+    630          
+    631          		// =======================================
+    632          		// Wiper1 Dwell Timer
+    633          		// =======================================
+    634          		if(stWIPER1.DWELL_FLAG == 0x01)
+    635          		{
+    636          			stWIPER1.DWELL_TIME_10ms++;
+    637          			if(stWIPER1.DWELL_TIME_10ms > 100)
+    638          			{
+    639          				stWIPER1.DWELL_TIME_10ms = 0;
+    640          				stWIPER1.DWELL_TIME_1s++;
     641          
-    642          		// =======================================
-    643          		// Wiper1 Dwell Timer
-    644          		// =======================================
-    645          		if(stWIPER1.DWELL_FLAG == 0x01)
-    646          		{
-    647          			stWIPER1.DWELL_TIME_10ms++;
-    648          			if(stWIPER1.DWELL_TIME_10ms > 100)
-    649          			{
-    650          				stWIPER1.DWELL_TIME_10ms = 0;
-    651          				stWIPER1.DWELL_TIME_1s++;
-    652          
-    653          				if(stWIPER1.DWELL_TIME <= stWIPER1.DWELL_TIME_1s)
-    654          				{
-    655          					stWIPER1.DWELL_FLAG = 0x00;
-    656          					if(stWIPER1.ACTIVE_COUNT != 0)
-    657          					{
-    658          						//Run_Wiper(WIPER_ON, DIRECTION_CW);				// Wiper On
-    659          					}
-    660          
-    661          					stWIPER1.DWELL_TIME_1s = 0;
-    662          				}
-    663          			}
-    664          		}
-    665          		
-    666          		// ================================================================
-    667          		// Wiper2 Dwell Timer
-    668          		// ================================================================
-    669          		if(stWIPER2.DWELL_TIMER_FLAG)
-    670          		{
-    671          			stWIPER2.DWELL_TIMER_ms++;
-    672          
-    673          			if(stWIPER2.DWELL_TIMER_ms >= 100)	// 1s
-    674          			{
-    675          				stWIPER2.DWELL_TIMER_s++;
-    676          				stWIPER2.DWELL_TIMER_ms = 0x00;
-    677          		
-    678          				if(stWIPER2.DWELL_TIMER_s >= stWIPER2.DWELL_TIME_DATA)
-    679          				{
-    680          					stWIPER2.DWELL_END_FLAG = 0x01;
-    681          					stWIPER2.DWELL_TIMER_s = 0x00;
-    682          					stWIPER2.DWELL_TIMER_FLAG = 0x00;
-    683          				}
-    684          			}
-    685          		}
-    686          
-    687          		if((stWIPER2.COUNT == 0x00) && (stWIPER2.DWELL_TIMER_FLAG != 0x00))
-    688          		{
-    689          			stWIPER2.DWELL_TIMER_FLAG = 0x00;
-    690          			stWIPER2.DWELL_TIMER_ms = 0;
-    691          			stWIPER2.DWELL_TIMER_s = 0;
-    692          		}
+    642          				if(stWIPER1.DWELL_TIME <= stWIPER1.DWELL_TIME_1s)
+    643          				{
+    644          					stWIPER1.DWELL_FLAG = 0x00;
+    645          					if(stWIPER1.ACTIVE_COUNT != 0)
+    646          					{
+    647          						//Run_Wiper(WIPER_ON, DIRECTION_CW);				// Wiper On
+    648          					}
+    649          
+    650          					stWIPER1.DWELL_TIME_1s = 0;
+    651          				}
+    652          			}
+    653          		}
+    654          		
+    655          		// ================================================================
+    656          		// Wiper2 Dwell Timer
+    657          		// ================================================================
+    658          		if(stWIPER2.DWELL_TIMER_FLAG)
+    659          		{
+    660          			stWIPER2.DWELL_TIMER_ms++;
+    661          
+    662          			if(stWIPER2.DWELL_TIMER_ms >= 100)	// 1s
+    663          			{
+    664          				stWIPER2.DWELL_TIMER_s++;
+    665          				stWIPER2.DWELL_TIMER_ms = 0x00;
+    666          		
+    667          				if(stWIPER2.DWELL_TIMER_s >= stWIPER2.DWELL_TIME_DATA)
+    668          				{
+    669          					stWIPER2.DWELL_END_FLAG = 0x01;
+    670          					stWIPER2.DWELL_TIMER_s = 0x00;
+    671          					stWIPER2.DWELL_TIMER_FLAG = 0x00;
+    672          				}
+    673          			}
+    674          		}
+    675          
+    676          		if((stWIPER2.COUNT == 0x00) && (stWIPER2.DWELL_TIMER_FLAG != 0x00))
+    677          		{
+    678          			stWIPER2.DWELL_TIMER_FLAG = 0x00;
+    679          			stWIPER2.DWELL_TIMER_ms = 0;
+    680          			stWIPER2.DWELL_TIMER_s = 0;
+    681          		}
+    682          
+    683          		// ================================================================
+    684          		// LRF Booting Check Time
+    685          		// ================================================================
+    686          		if(stLRF.INIT_FLAG == 0x01)
+    687          		{
+    688          			stLRF.INIT_TIME++;
+    689          
+    690          			if(stLRF.INIT_TIME >= LRF_BOOTING_TIME)
+    691          			{
+    692          				stLRF.INIT_ACTIVE = 0x01;
     693          
-    694          		// ================================================================
-    695          		// LRF Booting Check Time
-    696          		// ================================================================
-    697          		if(stLRF.INIT_FLAG == 0x01)
-    698          		{
-    699          			stLRF.INIT_TIME++;
-    700          
-    701          			if(stLRF.INIT_TIME >= LRF_BOOTING_TIME)
-    702          			{
-    703          				stLRF.INIT_ACTIVE = 0x01;
-    704          
-    705          				stLRF.INIT_TIME = 0x00;
-    706          				stLRF.INIT_FLAG = 0x00;
-    707          			}
-    708          		}
-    709          
-    710          		if(stLRF.CONTINUOUS_FLAG == 0x01)
-    711          		{
-    712          			stLRF.CONTINUOUS_TIME++;
-    713          
-    714          			if(stLRF.CONTINUOUS_TIME > stLRF.CONTINUOUS_TIME_MAX)
-    715          			{
-    716          				stLRF.CONTINUOUS_ACTIVE = 0x01;
-    717          				
-    718          				stLRF.CONTINUOUS_TIME = 0;
-    719          			}
-    720          		}
-    721          
-    722          		// ================================================================
-    723          		// BYPASS Tx Check (전송 후 500ms 후 Clear)
-    724          		// ================================================================
-    725          		if(stBYPASS.TX_FLAG == 0x01)
-    726          		{
-    727          			stBYPASS.TX_TIMER++;
-    728          
-    729          			if(stBYPASS.TX_TIMER >= 50)
-    730          			{
-    731          				stBYPASS.TX_TIMER = 0;
-    732          				stBYPASS.TX_FLAG = 0x00;
-    733          			}
-    734          		}
-    735          
-    736          		// ================================================================
-    737          		// WIPER CONTINUOUS TIMER
-    738          		// ================================================================
-    739          		if(stWIPER2.CONTINUOUS_FLAG == 0x00)
+    694          				stLRF.INIT_TIME = 0x00;
+    695          				stLRF.INIT_FLAG = 0x00;
+    696          			}
+    697          		}
+    698          
+    699          		if(stLRF.CONTINUOUS_FLAG == 0x01)
+    700          		{
+    701          			stLRF.CONTINUOUS_TIME++;
+    702          
+    703          			if(stLRF.CONTINUOUS_TIME > stLRF.CONTINUOUS_TIME_MAX)
+    704          			{
+    705          				stLRF.CONTINUOUS_ACTIVE = 0x01;
+    706          				
+    707          				stLRF.CONTINUOUS_TIME = 0;
+    708          			}
+    709          		}
+    710          
+    711          		// ================================================================
+    712          		// BYPASS Tx Check (전송 후 500ms 후 Clear)
+    713          		// ================================================================
+    714          		if(stBYPASS.TX_FLAG == 0x01)
+    715          		{
+    716          			stBYPASS.TX_TIMER++;
+    717          
+    718          			if(stBYPASS.TX_TIMER >= 50)
+    719          			{
+    720          				stBYPASS.TX_TIMER = 0;
+    721          				stBYPASS.TX_FLAG = 0x00;
+    722          			}
+    723          		}
+    724          
+    725          		// ================================================================
+    726          		// WIPER CONTINUOUS TIMER
+    727          		// ================================================================
+    728          		if(stWIPER2.CONTINUOUS_FLAG == 0x00)
+    729          		{
+    730          			if((stWIPER2.CONTINUOUS_ms != 0) || (stWIPER2.CONTINUOUS_s != 0) || (stWIPER2.CONTINUOUS_m != 0) || (stWIPER2.CONTINUOUS_h != 0))
+    731          			{
+    732          				stWIPER2.CONTINUOUS_ms = 0;
+    733          				stWIPER2.CONTINUOUS_s = 0;
+    734          				stWIPER2.CONTINUOUS_m = 0;
+    735          				stWIPER2.CONTINUOUS_h = 0;
+    736          			}
+    737          		}
+    738          			
+    739          		if(stWIPER2.CONTINUOUS_FLAG == 0x01)
     740          		{
-    741          			if((stWIPER2.CONTINUOUS_ms != 0) || (stWIPER2.CONTINUOUS_s != 0) || (stWIPER2.CONTINUOUS_m != 0) || (stWIPER2.CONTINUOUS_h != 0))
-    742          			{
-    743          				stWIPER2.CONTINUOUS_ms = 0;
-    744          				stWIPER2.CONTINUOUS_s = 0;
-    745          				stWIPER2.CONTINUOUS_m = 0;
-    746          				stWIPER2.CONTINUOUS_h = 0;
-    747          			}
-    748          		}
-    749          			
-    750          		if(stWIPER2.CONTINUOUS_FLAG == 0x01)
-    751          		{
-    752          			stWIPER2.CONTINUOUS_ms++;
-    753          			
-    754          			if(stWIPER2.CONTINUOUS_ms >= 100)
-    755          			{
-    756          				stWIPER2.CONTINUOUS_ms = 0;
-    757          				stWIPER2.CONTINUOUS_s++;
-    758          				
-    759          				if(stWIPER2.CONTINUOUS_s >= 60)
-    760          				{
-    761          					stWIPER2.CONTINUOUS_s = 0;
-    762          					stWIPER2.CONTINUOUS_m++;
-    763          
-    764          					if(stWIPER2.CONTINUOUS_m >= 60)
-    765          					{
-    766          						stWIPER2.CONTINUOUS_m = 0;
-    767          						stWIPER2.CONTINUOUS_h++;
+    741          			stWIPER2.CONTINUOUS_ms++;
+    742          			
+    743          			if(stWIPER2.CONTINUOUS_ms >= 100)
+    744          			{
+    745          				stWIPER2.CONTINUOUS_ms = 0;
+    746          				stWIPER2.CONTINUOUS_s++;
+    747          				
+    748          				if(stWIPER2.CONTINUOUS_s >= 60)
+    749          				{
+    750          					stWIPER2.CONTINUOUS_s = 0;
+    751          					stWIPER2.CONTINUOUS_m++;
+    752          
+    753          					if(stWIPER2.CONTINUOUS_m >= 60)
+    754          					{
+    755          						stWIPER2.CONTINUOUS_m = 0;
+    756          						stWIPER2.CONTINUOUS_h++;
+    757          
+    758          						if(stWIPER2.CONTINUOUS_h >= stWIPER2.CONTINUOUS_TIME)
+    759          						{
+    760          							stWIPER2.CONTINUOUS_h = 0;
+    761          							stWIPER2.CONTINUOUS_FLAG = 0x00;
+    762          							stWIPER2.CONTINUOUS_STOP_FLAG = 0x01;
+    763          						}
+    764          					}
+    765          				}
+    766          			}
+    767          		}
     768          
-    769          						if(stWIPER2.CONTINUOUS_h >= stWIPER2.CONTINUOUS_TIME)
-    770          						{
-    771          							stWIPER2.CONTINUOUS_h = 0;
-    772          							stWIPER2.CONTINUOUS_FLAG = 0x00;
-    773          							stWIPER2.CONTINUOUS_STOP_FLAG = 0x01;
-    774          						}
-    775          					}
-    776          				}
-    777          			}
-    778          		}
-    779          
-    780          		// ================================================================
-    781          		// TEST TIMER
-    782          		// ================================================================
-    783          /*
-    784          		if(stUSART2.TX_CNT < stUSART2.TX_MAX)
-    785          		{
-    786          			g_Tx_Buf = stUSART2.TX_BUF[stUSART2.TX_CNT];
-    787          			stUSART2.TX_CNT++;				
+    769          		// ================================================================
+    770          		// TEST TIMER
+    771          		// ================================================================
+    772          /*
+    773          		if(stUSART2.TX_CNT < stUSART2.TX_MAX)
+    774          		{
+    775          			g_Tx_Buf = stUSART2.TX_BUF[stUSART2.TX_CNT];
+    776          			stUSART2.TX_CNT++;				
+    777          
+    778          			USART_SendData(USART2, g_Tx_Buf);
+    779          		}
+    780          		else
+    781          		{
+    782          			stUSART2.TX_CNT = 0x00;
+    783          			stUSART2.TX_MAX = 0x00;
+    784          		
+    785          			//USART_SendData(USART2, Tx_Buf);
+    786          		}
+    787          */
     788          
-    789          			USART_SendData(USART2, g_Tx_Buf);
-    790          		}
-    791          		else
-    792          		{
-    793          			stUSART2.TX_CNT = 0x00;
-    794          			stUSART2.TX_MAX = 0x00;
-    795          		
-    796          			//USART_SendData(USART2, Tx_Buf);
-    797          		}
-    798          */
-    799          
-    800          	}	
-    801          }
-    802          
-    803          /*******************************************************************************
-    804          * Function Name  : TIM3_IRQHandler
-    805          * Description    : This function handles TIM3 global interrupt request.
-    806          * Input          : None
-    807          * Output         : None
-    808          * Return         : None
-    809          * Timer		: 1ms
-    810          *******************************************************************************/
-    811          void TIM3_IRQHandler(void)
-    812          {
-    813          	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
-    814          	{
-    815          
-    816          				TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
-    817          				LED_Off_Green();
-    818          				LED_On_Green();
-    819          				
-    820          
-    821          		
-    822          //			TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+    789          	}	
+    790          }
+    791          
+    792          /*******************************************************************************
+    793          * Function Name  : TIM3_IRQHandler
+    794          * Description    : This function handles TIM3 global interrupt request.
+    795          * Input          : None
+    796          * Output         : None
+    797          * Return         : None
+    798          * Timer		: 1ms
+    799          *******************************************************************************/
+    800          void TIM3_IRQHandler(void)
+    801          {
+    802          	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
+    803          	{
+    804          
+    805          				TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
+    806          				LED_Off_Green();
+    807          				LED_On_Green();
+    808          				
+    809          
+    810          		
+    811          //			TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+    812          //	
+    813          //			// ================================================================
+    814          //			// Sony-Zoom & Light-Zoom Sync
+    815          //			// ================================================================
+    816          //			//Zoom_Data_Sync();
+    817          //	
+    818          //			// ================================================================
+    819          //			// TEMPERATURE (DC-103JU)
+    820          //			// ================================================================
+    821          //			Temperature_Data_Check();
+    822          //			Temperature_Boot_Mode();
     823          //	
-    824          //			// ================================================================
-    825          //			// Sony-Zoom & Light-Zoom Sync
-    826          //			// ================================================================
-    827          //			//Zoom_Data_Sync();
-    828          //	
-    829          //			// ================================================================
-    830          //			// TEMPERATURE (DC-103JU)
-    831          //			// ================================================================
-    832          //			Temperature_Data_Check();
-    833          //			Temperature_Boot_Mode();
-    834          //	
-    835          //			// =======================================
-    836          //			// Temperature Control
-    837          //			// =======================================
-    838          //			if(stTEMP.STARTING_MODE == 0x00)
-    839          //			{
-    840          //				Fan_Heater_Control(BOOT_MODE);
-    841          //			}
-    842          //			else
-    843          //			{
-    844          //				Fan_Heater_Control(NORMAL_MODE);
-    845          //			}
-    846          //			
-    847          //			// ================================================================
-    848          //			// CDS CHECK
-    849          //			// ================================================================
-    850          //			//CDS_Data_Check();
-    851          //			//Auto_Day_And_Night_Control();
-    852          	}	
-    853          }
-    854          
-    855          /*******************************************************************************
-    856          * Function Name  : SYSTEM_Data_Reordering
-    857          *******************************************************************************/
-    858          void SYSTEM_Data_Reordering(void)
-    859          {
-    860          	u8 i = 0x00, j = 0x00, u_buf = 0x00, u_length = 0x00, u_max = 0x00;
-    861          	
-    862          	if((stSYS.RX_PARITY == 0x00) && (stSYS.RX_REORDERING == 0x01))
-    863          	{
-    864          		if(stSYS.RX_INDEX == 0x00)
-    865          		{
-    866          			u_buf = stSYS.RX_BUF[0][1];
-    867          		
-    868          			switch(u_buf)
-    869          			{
-    870          				case TILT_FIRST_BYTE:
-    871          				case IP_SONY_FIRST_BYTE:
-    872          				case IP_TSM_FIRST_BYTE:
-    873          				case IP_DRS_FIRST_BYTE:
-    874          				case IP_PTZ_FIRST_BYTE:
-    875          				case IP_DATA_FIRST_BYTE:
-    876          				case IP_OPTION_FIRST_BYTE:
-    877          
-    878          					u_length = stSYS.RX_BUF[i][3];		// Length Byte Check
+    824          //			// =======================================
+    825          //			// Temperature Control
+    826          //			// =======================================
+    827          //			if(stTEMP.STARTING_MODE == 0x00)
+    828          //			{
+    829          //				Fan_Heater_Control(BOOT_MODE);
+    830          //			}
+    831          //			else
+    832          //			{
+    833          //				Fan_Heater_Control(NORMAL_MODE);
+    834          //			}
+    835          //			
+    836          //			// ================================================================
+    837          //			// CDS CHECK
+    838          //			// ================================================================
+    839          //			//CDS_Data_Check();
+    840          //			//Auto_Day_And_Night_Control();
+    841          	}	
+    842          }
+    843          
+    844          /*******************************************************************************
+    845          * Function Name  : SYSTEM_Data_Reordering
+    846          *******************************************************************************/
+    847          void SYSTEM_Data_Reordering(void)
+    848          {
+    849          	u8 i = 0x00, j = 0x00, u_buf = 0x00, u_length = 0x00, u_max = 0x00;
+    850          	
+    851          	if((stSYS.RX_PARITY == 0x00) && (stSYS.RX_REORDERING == 0x01))
+    852          	{
+    853          		if(stSYS.RX_INDEX == 0x00)
+    854          		{
+    855          			u_buf = stSYS.RX_BUF[0][1];
+    856          		
+    857          			switch(u_buf)
+    858          			{
+    859          				case TILT_FIRST_BYTE:
+    860          				case IP_SONY_FIRST_BYTE:
+    861          				case IP_TSM_FIRST_BYTE:
+    862          				case IP_DRS_FIRST_BYTE:
+    863          				case IP_PTZ_FIRST_BYTE:
+    864          				case IP_DATA_FIRST_BYTE:
+    865          				case IP_OPTION_FIRST_BYTE:
+    866          
+    867          					u_length = stSYS.RX_BUF[i][3];		// Length Byte Check
+    868          
+    869          					u_max = u_length + 6;
+    870          					
+    871          					for(j=0; j<u_max; j++)
+    872          					{
+    873          						stSYS.RX_BUF[0][j] = 0x00;
+    874          					}
+    875          
+    876          					stSYS.RX_REORDERING = 0x00;
+    877          					
+    878          					break;
     879          
-    880          					u_max = u_length + 6;
-    881          					
-    882          					for(j=0; j<u_max; j++)
-    883          					{
-    884          						stSYS.RX_BUF[0][j] = 0x00;
-    885          					}
-    886          
-    887          					stSYS.RX_REORDERING = 0x00;
-    888          					
-    889          					break;
-    890          
-    891          				default:
-    892          					break;
-    893          			}			
-    894          		}
-    895          		else
-    896          		{
-    897          			for(i=1; i<SYS_RX_BUF_CNT; i++)
-    898          			{
-    899          				if(stSYS.RX_BUF[i][0] != 0x00)
-    900          				{
-    901          					u_buf = stSYS.RX_BUF[i][1];	// Command Byte Check
-    902          					
-    903          					switch(u_buf)
-    904          					{
-    905          						case TILT_FIRST_BYTE:
-    906          						case IP_SONY_FIRST_BYTE:
-    907          						case IP_TSM_FIRST_BYTE:
-    908          						case IP_DRS_FIRST_BYTE:
-    909          						case IP_PTZ_FIRST_BYTE:
-    910          						case IP_DATA_FIRST_BYTE:
-    911          						case IP_OPTION_FIRST_BYTE:
-    912          
-    913          							u_length = stSYS.RX_BUF[i][3];		// Length Byte Check
-    914          
-    915          							u_max = u_length + 6;
-    916          							
-    917          							for(j=0; j<u_max; j++)
-    918          							{
-    919          								stSYS.RX_BUF[i-1][j] = stSYS.RX_BUF[i][j];
-    920          								if(stSYS.RX_INDEX > 0) stSYS.RX_BUF[stSYS.RX_INDEX - 1][j] = 0x00;
-    921          							}
-    922          
-    923          							stSYS.RX_REORDERING = 0x00;
-    924          							
-    925          							break;
-    926          
-    927          						default:
-    928          							break;
+    880          				default:
+    881          					break;
+    882          			}			
+    883          		}
+    884          		else
+    885          		{
+    886          			for(i=1; i<SYS_RX_BUF_CNT; i++)
+    887          			{
+    888          				if(stSYS.RX_BUF[i][0] != 0x00)
+    889          				{
+    890          					u_buf = stSYS.RX_BUF[i][1];	// Command Byte Check
+    891          					
+    892          					switch(u_buf)
+    893          					{
+    894          						case TILT_FIRST_BYTE:
+    895          						case IP_SONY_FIRST_BYTE:
+    896          						case IP_TSM_FIRST_BYTE:
+    897          						case IP_DRS_FIRST_BYTE:
+    898          						case IP_PTZ_FIRST_BYTE:
+    899          						case IP_DATA_FIRST_BYTE:
+    900          						case IP_OPTION_FIRST_BYTE:
+    901          
+    902          							u_length = stSYS.RX_BUF[i][3];		// Length Byte Check
+    903          
+    904          							u_max = u_length + 6;
+    905          							
+    906          							for(j=0; j<u_max; j++)
+    907          							{
+    908          								stSYS.RX_BUF[i-1][j] = stSYS.RX_BUF[i][j];
+    909          								if(stSYS.RX_INDEX > 0) stSYS.RX_BUF[stSYS.RX_INDEX - 1][j] = 0x00;
+    910          							}
+    911          
+    912          							stSYS.RX_REORDERING = 0x00;
+    913          							
+    914          							break;
+    915          
+    916          						default:
+    917          							break;
+    918          
+    919          					}
+    920          				}
+    921          			}
+    922          		}
+    923          		
+    924          		stSYS.RX_COMPLETE = 0x00;
+    925          		if(stSYS.RX_INDEX > 0) stSYS.RX_INDEX--;
+    926          		
+    927          	}
+    928          }
     929          
-    930          					}
-    931          				}
-    932          			}
-    933          		}
-    934          		
-    935          		stSYS.RX_COMPLETE = 0x00;
-    936          		if(stSYS.RX_INDEX > 0) stSYS.RX_INDEX--;
-    937          		
+    930          /*******************************************************************************
+    931          * Function Name  : SYSTEM_Data_Handling
+    932          *******************************************************************************/
+    933          void SYSTEM_Data_Handling(void)
+    934          {
+    935          	if((stSYS.RX_BUF[0][0] != 0x00) && (stSYS.RX_COMPLETE == 0x00) && (stSYS.RX_PARITY == 0x00) && (stSYS.RX_REORDERING == 0x00))
+    936          	{
+    937          		stSYS.RX_PARITY = 0x01;
     938          	}
     939          }
     940          
     941          /*******************************************************************************
     942          * Function Name  : SYSTEM_Data_Handling
     943          *******************************************************************************/
-    944          void SYSTEM_Data_Handling(void)
+    944          void SYSTEM_Data_Buffer(void)
     945          {
-    946          	if((stSYS.RX_BUF[0][0] != 0x00) && (stSYS.RX_COMPLETE == 0x00) && (stSYS.RX_PARITY == 0x00) && (stSYS.RX_REORDERING == 0x00))
-    947          	{
-    948          		stSYS.RX_PARITY = 0x01;
-    949          	}
-    950          }
+    946          	u8 i = 0x00, u_buf = 0x00, u_length = 0x00, u_max = 0x00;
+    947          
+    948          	if(stUSART1.RX_PARITY == 0x01)
+    949          	{
+    950          		u_buf = stUSART1.RX_BUF[0];
     951          
-    952          /*******************************************************************************
-    953          * Function Name  : SYSTEM_Data_Handling
-    954          *******************************************************************************/
-    955          void SYSTEM_Data_Buffer(void)
-    956          {
-    957          	u8 i = 0x00, u_buf = 0x00, u_length = 0x00, u_max = 0x00;
+    952          		switch(u_buf)
+    953          		{
+    954          /*
+    955          			case TILT_FIRST_BYTE:
+    956          
+    957          				u_length = stUSART1.RX_BUF[2];
     958          
-    959          	if(stUSART1.RX_PARITY == 0x01)
-    960          	{
-    961          		u_buf = stUSART1.RX_BUF[0];
+    959          				u_max = u_length + 5;
+    960          
+    961          				stCOOR.RX_BUF[stCOOR.RX_INDEX][0] = stCOOR.RX_INDEX + 1;
     962          
-    963          		switch(u_buf)
-    964          		{
-    965          /*
-    966          			case TILT_FIRST_BYTE:
-    967          
-    968          				u_length = stUSART1.RX_BUF[2];
-    969          
-    970          				u_max = u_length + 5;
-    971          
-    972          				stCOOR.RX_BUF[stCOOR.RX_INDEX][0] = stCOOR.RX_INDEX + 1;
-    973          
-    974          				for(i=0; i<u_max; i++)
-    975          				{
-    976          					stCOOR.RX_BUF[stCOOR.RX_INDEX][i+1] =  stUSART1.RX_BUF[i];
-    977          					stUSART1.RX_BUF[i] = 0x00;
-    978          				}
-    979          
-    980          				stCOOR.RX_INDEX++;
-    981          				
-    982          				break;
-    983          */				
-    984          			case TILT_FIRST_BYTE:
-    985          			case IP_SONY_FIRST_BYTE:
-    986          			case IP_TSM_FIRST_BYTE:
-    987          			case IP_DRS_FIRST_BYTE:
-    988          			case IP_PTZ_FIRST_BYTE:
-    989          			case IP_DATA_FIRST_BYTE:
-    990          			case IP_OPTION_FIRST_BYTE:
-    991          
-    992          				u_length = stUSART1.RX_BUF[2];
-    993          
-    994          				u_max = u_length + 5;
-    995          
-    996          				stSYS.RX_BUF[stSYS.RX_INDEX][0] = stSYS.RX_INDEX + 1;
-    997          
-    998          				for(i=0; i<u_max; i++)
-    999          				{
-   1000          					stSYS.RX_BUF[stSYS.RX_INDEX][i+1] =  stUSART1.RX_BUF[i];
-   1001          					stUSART1.RX_BUF[i] = 0x00;
-   1002          				}
-   1003          
-   1004          				stSYS.RX_INDEX++;
+    963          				for(i=0; i<u_max; i++)
+    964          				{
+    965          					stCOOR.RX_BUF[stCOOR.RX_INDEX][i+1] =  stUSART1.RX_BUF[i];
+    966          					stUSART1.RX_BUF[i] = 0x00;
+    967          				}
+    968          
+    969          				stCOOR.RX_INDEX++;
+    970          				
+    971          				break;
+    972          */				
+    973          			case TILT_FIRST_BYTE:
+    974          			case IP_SONY_FIRST_BYTE:
+    975          			case IP_TSM_FIRST_BYTE:
+    976          			case IP_DRS_FIRST_BYTE:
+    977          			case IP_PTZ_FIRST_BYTE:
+    978          			case IP_DATA_FIRST_BYTE:
+    979          			case IP_OPTION_FIRST_BYTE:
+    980          
+    981          				u_length = stUSART1.RX_BUF[2];
+    982          
+    983          				u_max = u_length + 5;
+    984          
+    985          				stSYS.RX_BUF[stSYS.RX_INDEX][0] = stSYS.RX_INDEX + 1;
+    986          
+    987          				for(i=0; i<u_max; i++)
+    988          				{
+    989          					stSYS.RX_BUF[stSYS.RX_INDEX][i+1] =  stUSART1.RX_BUF[i];
+    990          					stUSART1.RX_BUF[i] = 0x00;
+    991          				}
+    992          
+    993          				stSYS.RX_INDEX++;
+    994          
+    995          				break;
+    996          
+    997          			default:
+    998          				break;
+    999          		}
+   1000          
+   1001          		stUSART1.RX_PARITY = 0x00;
+   1002          
+   1003          	}
+   1004          }
    1005          
-   1006          				break;
-   1007          
-   1008          			default:
-   1009          				break;
-   1010          		}
-   1011          
-   1012          		stUSART1.RX_PARITY = 0x00;
-   1013          
-   1014          	}
-   1015          }
-   1016          
-   1017          /*******************************************************************************
-   1018          * Function Name  : SYSTEM_Data_Parser
-   1019          *******************************************************************************/
-   1020          void SYSTEM_Data_Parser(u8 u_port)
-   1021          {
-   1022          	switch(u_port)
-   1023          	{
-   1024          		case USART1_INDEX:
-   1025          
-   1026          			// =======================================
-   1027          			// System Data Reordering
-   1028          			// =======================================
-   1029          			SYSTEM_Data_Reordering();
-   1030          
-   1031          			// =======================================
-   1032          			// System Data Handling
-   1033          			// =======================================
-   1034          			SYSTEM_Data_Handling();
-   1035          
-   1036          			// =======================================
-   1037          			// Rx Buffer Check & Data Trans
-   1038          			// =======================================
-   1039          			SYSTEM_Data_Buffer();
-   1040          
-   1041          			break;
-   1042          
-   1043          		default:
-   1044          			break;
-   1045          	}
-   1046          }
-   1047          
-   1048          /****************************************************************************************************
-   1049          * Function Name  : Boot_Status_Data_Trans
-   1050          * Data Architecture :
-   1051          BYTE1[0]		BYTE2[1]		BYTE3[2]		BYTE4[3]		BYTE5[4]		BYTE5[5]		BYTE5[LENGTH+4]
-   1052          0xCA		0xAC		LENGTH		ADDR		COMM		DATA...		CS
-   1053          0xCA		0xAC		0x04		0x01		0xD1		DATA...		CS
-   1054          
-   1055          DATA : 0x00: Nondata, 0x01: ACTIVE Status, 0x02 : Boot Ready Status
-   1056          *****************************************************************************************************/
-   1057          void Boot_Status_Data_Trans(void)
-   1058          {
-   1059          	u8 u_Cmd = TILT_BOOT_STATUS, u_Leng = 0x04, u_ID = MDIN_LAYER_CENTER_MSG;
-   1060          
-   1061          	switch(stSYS.BOOT_STATUS)
-   1062          	{
-   1063          		// TILT B/D 가 POWER OFF 인 경우
-   1064          		case STOP:
-   1065          			break;
-   1066          
-   1067          		// TILT B/D 가 MODULE 을 정상 경우
-   1068          		case ACTIVE:
+   1006          /*******************************************************************************
+   1007          * Function Name  : SYSTEM_Data_Parser
+   1008          *******************************************************************************/
+   1009          void SYSTEM_Data_Parser(u8 u_port)
+   1010          {
+   1011          	switch(u_port)
+   1012          	{
+   1013          		case USART1_INDEX:
+   1014          
+   1015          			// =======================================
+   1016          			// System Data Reordering
+   1017          			// =======================================
+   1018          			SYSTEM_Data_Reordering();
+   1019          
+   1020          			// =======================================
+   1021          			// System Data Handling
+   1022          			// =======================================
+   1023          			SYSTEM_Data_Handling();
+   1024          
+   1025          			// =======================================
+   1026          			// Rx Buffer Check & Data Trans
+   1027          			// =======================================
+   1028          			SYSTEM_Data_Buffer();
+   1029          
+   1030          			break;
+   1031          
+   1032          		default:
+   1033          			break;
+   1034          	}
+   1035          }
+   1036          
+   1037          /****************************************************************************************************
+   1038          * Function Name  : Boot_Status_Data_Trans
+   1039          * Data Architecture :
+   1040          BYTE1[0]		BYTE2[1]		BYTE3[2]		BYTE4[3]		BYTE5[4]		BYTE5[5]		BYTE5[LENGTH+4]
+   1041          0xCA		0xAC		LENGTH		ADDR		COMM		DATA...		CS
+   1042          0xCA		0xAC		0x04		0x01		0xD1		DATA...		CS
+   1043          
+   1044          DATA : 0x00: Nondata, 0x01: ACTIVE Status, 0x02 : Boot Ready Status
+   1045          *****************************************************************************************************/
+   1046          void Boot_Status_Data_Trans(void)
+   1047          {
+   1048          	u8 u_Cmd = TILT_BOOT_STATUS, u_Leng = 0x04, u_ID = MDIN_LAYER_CENTER_MSG;
+   1049          
+   1050          	switch(stSYS.BOOT_STATUS)
+   1051          	{
+   1052          		// TILT B/D 가 POWER OFF 인 경우
+   1053          		case STOP:
+   1054          			break;
+   1055          
+   1056          		// TILT B/D 가 MODULE 을 정상 경우
+   1057          		case ACTIVE:
+   1058          
+   1059          			stUSART1.TX_BUF[0] = TILT_FIRST_BYTE;
+   1060          			stUSART1.TX_BUF[1] = TILT_SECOND_BYTE;
+   1061          			stUSART1.TX_BUF[2] = u_Leng;
+   1062          			stUSART1.TX_BUF[3] = u_ID;
+   1063          			stUSART1.TX_BUF[4] = u_Cmd;
+   1064          			stUSART1.TX_BUF[5] = ACTIVE;
+   1065          			stUSART1.TX_BUF[6] = 0x00;
+   1066          			
+   1067          			stUSART1.TX_BUF[7] = 0x00;		
+   1068          			stUSART1.TX_BUF[7] = stUSART1.TX_BUF[3] + stUSART1.TX_BUF[4] + stUSART1.TX_BUF[5] + stUSART1.TX_BUF[6];
    1069          
-   1070          			stUSART1.TX_BUF[0] = TILT_FIRST_BYTE;
-   1071          			stUSART1.TX_BUF[1] = TILT_SECOND_BYTE;
-   1072          			stUSART1.TX_BUF[2] = u_Leng;
-   1073          			stUSART1.TX_BUF[3] = u_ID;
-   1074          			stUSART1.TX_BUF[4] = u_Cmd;
-   1075          			stUSART1.TX_BUF[5] = ACTIVE;
-   1076          			stUSART1.TX_BUF[6] = 0x00;
-   1077          			
-   1078          			stUSART1.TX_BUF[7] = 0x00;		
-   1079          			stUSART1.TX_BUF[7] = stUSART1.TX_BUF[3] + stUSART1.TX_BUF[4] + stUSART1.TX_BUF[5] + stUSART1.TX_BUF[6];
+   1070          			stUSART1.TX_BUF[8] = 0xCF;
+   1071          			
+   1072          			stUSART1.TX_CNT = 0;
+   1073          			stUSART1.TX_MAX = u_Leng + 5;
+   1074          
+   1075          			USART_SendData(USART1, stUSART1.TX_BUF[stUSART1.TX_CNT++]);
+   1076          
+   1077          			stSYS.BOOT_STATUS = STOP;
+   1078          			
+   1079          			break;
    1080          
-   1081          			stUSART1.TX_BUF[8] = 0xCF;
-   1082          			
-   1083          			stUSART1.TX_CNT = 0;
-   1084          			stUSART1.TX_MAX = u_Leng + 5;
-   1085          
-   1086          			USART_SendData(USART1, stUSART1.TX_BUF[stUSART1.TX_CNT++]);
-   1087          
-   1088          			stSYS.BOOT_STATUS = STOP;
-   1089          			
-   1090          			break;
-   1091          
-   1092          		// TILT B/D 가 MODULE 을 정상 부팅 못하였을 경우 (MAIN으로 부터 체크 송신을 받았으나 MODULE 미인식, 데이터 비정상)
-   1093          		case READY:
+   1081          		// TILT B/D 가 MODULE 을 정상 부팅 못하였을 경우 (MAIN으로 부터 체크 송신을 받았으나 MODULE 미인식, 데이터 비정상)
+   1082          		case READY:
+   1083          
+   1084          			stUSART1.TX_BUF[0] = TILT_FIRST_BYTE;
+   1085          			stUSART1.TX_BUF[1] = TILT_SECOND_BYTE;
+   1086          			stUSART1.TX_BUF[2] = u_Leng;
+   1087          			stUSART1.TX_BUF[3] = u_ID;
+   1088          			stUSART1.TX_BUF[4] = u_Cmd;
+   1089          			stUSART1.TX_BUF[5] = READY;
+   1090          			stUSART1.TX_BUF[6] = 0x00;
+   1091          			
+   1092          			stUSART1.TX_BUF[7] = 0x00;		
+   1093          			stUSART1.TX_BUF[7] = stUSART1.TX_BUF[3] + stUSART1.TX_BUF[4] + stUSART1.TX_BUF[5] + stUSART1.TX_BUF[6];
    1094          
-   1095          			stUSART1.TX_BUF[0] = TILT_FIRST_BYTE;
-   1096          			stUSART1.TX_BUF[1] = TILT_SECOND_BYTE;
-   1097          			stUSART1.TX_BUF[2] = u_Leng;
-   1098          			stUSART1.TX_BUF[3] = u_ID;
-   1099          			stUSART1.TX_BUF[4] = u_Cmd;
-   1100          			stUSART1.TX_BUF[5] = READY;
-   1101          			stUSART1.TX_BUF[6] = 0x00;
-   1102          			
-   1103          			stUSART1.TX_BUF[7] = 0x00;		
-   1104          			stUSART1.TX_BUF[7] = stUSART1.TX_BUF[3] + stUSART1.TX_BUF[4] + stUSART1.TX_BUF[5] + stUSART1.TX_BUF[6];
+   1095          			stUSART1.TX_BUF[8] = 0xCF;
+   1096          
+   1097          			stUSART1.TX_CNT = 0;
+   1098          			stUSART1.TX_MAX = u_Leng + 5;
+   1099          
+   1100          			USART_SendData(USART1, stUSART1.TX_BUF[stUSART1.TX_CNT++]);
+   1101          
+   1102          			stSYS.BOOT_STATUS = STOP;
+   1103          		
+   1104          			break;
    1105          
-   1106          			stUSART1.TX_BUF[8] = 0xCF;
-   1107          
-   1108          			stUSART1.TX_CNT = 0;
-   1109          			stUSART1.TX_MAX = u_Leng + 5;
+   1106          		default:
+   1107          			break;
+   1108          	}
+   1109          }
    1110          
-   1111          			USART_SendData(USART1, stUSART1.TX_BUF[stUSART1.TX_CNT++]);
-   1112          
-   1113          			stSYS.BOOT_STATUS = STOP;
-   1114          		
-   1115          			break;
-   1116          
-   1117          		default:
-   1118          			break;
-   1119          	}
-   1120          }
-   1121          
-   1122          /*******************************************************************************
-   1123          * Function Name  : TIM4_IRQHandler
-   1124          * Description    : This function handles TIM4 global interrupt request.
-   1125          * Input          : None
-   1126          * Output         : None
-   1127          * Return         : None
-   1128          * Timer		: 1ms
-   1129          *******************************************************************************/
-   1130          void TIM4_IRQHandler(void)
-   1131          {
-   1132          	if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)
-   1133          	{
-   1134          		
-   1135          		TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
-   1136          		LED_On_Red();
-   1137          		LED_Off_Red();
-   1138          		
-   1139          
+   1111          /*******************************************************************************
+   1112          * Function Name  : TIM4_IRQHandler
+   1113          * Description    : This function handles TIM4 global interrupt request.
+   1114          * Input          : None
+   1115          * Output         : None
+   1116          * Return         : None
+   1117          * Timer		: 1ms
+   1118          *******************************************************************************/
+   1119          void TIM4_IRQHandler(void)
+   1120          {
+   1121          	if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)
+   1122          	{
+   1123          		
+   1124          		TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
+   1125          		LED_On_Red();
+   1126          		LED_Off_Red();
+   1127          		
+   1128          
+   1129          
+   1130          
+   1131          //			if(stSYS.START == ACTIVE)
+   1132          //			{
+   1133          //				SYSTEM_Data_Parser(USART1_INDEX);
+   1134          //			}
+   1135          //			else
+   1136          //			{
+   1137          //				Boot_Status_Data_Trans();
+   1138          //			}
+   1139          	}
    1140          
-   1141          
-   1142          //			if(stSYS.START == ACTIVE)
-   1143          //			{
-   1144          //				SYSTEM_Data_Parser(USART1_INDEX);
-   1145          //			}
-   1146          //			else
-   1147          //			{
-   1148          //				Boot_Status_Data_Trans();
-   1149          //			}
-   1150          	}
-   1151          
-   1152          }//End Of The TIM4_IRQ_Handler
+   1141          }//End Of The TIM4_IRQ_Handler
+   1142          
+   1143          /*******************************************************************************
+   1144          * Function Name  : I2C1_EV_IRQHandler
+   1145          * Description    : This function handles I2C1 Event interrupt request.
+   1146          * Input          : None
+   1147          * Output         : None
+   1148          * Return         : None
+   1149          *******************************************************************************/
+   1150          void I2C1_EV_IRQHandler(void)
+   1151          {
+   1152          }
    1153          
    1154          /*******************************************************************************
-   1155          * Function Name  : I2C1_EV_IRQHandler
-   1156          * Description    : This function handles I2C1 Event interrupt request.
+   1155          * Function Name  : I2C1_ER_IRQHandler
+   1156          * Description    : This function handles I2C1 Error interrupt request.
    1157          * Input          : None
    1158          * Output         : None
-   1159          * Return         : None
-   1160          *******************************************************************************/
-   1161          void I2C1_EV_IRQHandler(void)
-   1162          {
-   1163          }
-   1164          
-   1165          /*******************************************************************************
-   1166          * Function Name  : I2C1_ER_IRQHandler
-   1167          * Description    : This function handles I2C1 Error interrupt request.
-   1168          * Input          : None
-   1169          * Output         : None
-   1170          
+   1159          
+   1160          * Return         : None
+   1161          *******************************************************************************/
+   1162          void I2C1_ER_IRQHandler(void)
+   1163          {
+   1164          }
+   1165          
+   1166          /*******************************************************************************
+   1167          * Function Name  : I2C2_EV_IRQHandler
+   1168          * Description    : This function handles I2C2 Event interrupt request.
+   1169          * Input          : None
+   1170          * Output         : None
    1171          * Return         : None
    1172          *******************************************************************************/
-   1173          void I2C1_ER_IRQHandler(void)
+   1173          void I2C2_EV_IRQHandler(void)
    1174          {
    1175          }
    1176          
    1177          /*******************************************************************************
-   1178          * Function Name  : I2C2_EV_IRQHandler
-   1179          * Description    : This function handles I2C2 Event interrupt request.
+   1178          * Function Name  : I2C2_ER_IRQHandler
+   1179          * Description    : This function handles I2C2 Error interrupt request.
    1180          * Input          : None
    1181          * Output         : None
    1182          * Return         : None
    1183          *******************************************************************************/
-   1184          void I2C2_EV_IRQHandler(void)
+   1184          void I2C2_ER_IRQHandler(void)
    1185          {
    1186          }
    1187          
    1188          /*******************************************************************************
-   1189          * Function Name  : I2C2_ER_IRQHandler
-   1190          * Description    : This function handles I2C2 Error interrupt request.
+   1189          * Function Name  : SPI1_IRQHandler
+   1190          * Description    : This function handles SPI1 global interrupt request.
    1191          * Input          : None
    1192          * Output         : None
    1193          * Return         : None
    1194          *******************************************************************************/
-   1195          void I2C2_ER_IRQHandler(void)
+   1195          void SPI1_IRQHandler(void)
    1196          {
    1197          }
    1198          
    1199          /*******************************************************************************
-   1200          * Function Name  : SPI1_IRQHandler
-   1201          * Description    : This function handles SPI1 global interrupt request.
+   1200          * Function Name  : SPI2_IRQHandler
+   1201          * Description    : This function handles SPI2 global interrupt request.
    1202          * Input          : None
    1203          * Output         : None
    1204          * Return         : None
    1205          *******************************************************************************/
-   1206          void SPI1_IRQHandler(void)
+   1206          void SPI2_IRQHandler(void)
    1207          {
    1208          }
    1209          
    1210          /*******************************************************************************
-   1211          * Function Name  : SPI2_IRQHandler
-   1212          * Description    : This function handles SPI2 global interrupt request.
+   1211          * Function Name  : USART1_IRQHandler
+   1212          * Description    : This function handles USART1 global interrupt request.
    1213          * Input          : None
    1214          * Output         : None
    1215          * Return         : None
    1216          *******************************************************************************/
-   1217          void SPI2_IRQHandler(void)
-   1218          {
-   1219          }
-   1220          
-   1221          /*******************************************************************************
-   1222          * Function Name  : USART1_IRQHandler
-   1223          * Description    : This function handles USART1 global interrupt request.
-   1224          * Input          : None
-   1225          * Output         : None
-   1226          * Return         : None
-   1227          *******************************************************************************/
-   1228          /*******************************************************************************
-   1229          * Function Name  : USART2_IRQHandler
-   1230          * Description    : This function handles USART2 global interrupt request.
-   1231          * Input          : None
-   1232          * Output         : None
-   1233          * Return         : None
-   1234          *******************************************************************************/
-   1235          /*******************************************************************************
-   1236          * Function Name  : USART3_IRQHandler
-   1237          * Description    : This function handles USART3 global interrupt request.
-   1238          * Input          : None
-   1239          * Output         : None
-   1240          * Return         : None
-   1241          *******************************************************************************/
+   1217          /*******************************************************************************
+   1218          * Function Name  : USART2_IRQHandler
+   1219          * Description    : This function handles USART2 global interrupt request.
+   1220          * Input          : None
+   1221          * Output         : None
+   1222          * Return         : None
+   1223          *******************************************************************************/
+   1224          /*******************************************************************************
+   1225          * Function Name  : USART3_IRQHandler
+   1226          * Description    : This function handles USART3 global interrupt request.
+   1227          * Input          : None
+   1228          * Output         : None
+   1229          * Return         : None
+   1230          *******************************************************************************/
+   1231          /*******************************************************************************
+   1232          * Function Name  : EXTI15_10_IRQHandler
+   1233          * Description    : This function handles External lines 15 to 10 interrupt request.
+   1234          * Input          : None
+   1235          * Output         : None
+   1236          * Return         : None
+   1237          *******************************************************************************/
+   1238          void EXTI15_10_IRQHandler(void)
+   1239          {
+   1240          }
+   1241          
    1242          /*******************************************************************************
-   1243          * Function Name  : EXTI15_10_IRQHandler
-   1244          * Description    : This function handles External lines 15 to 10 interrupt request.
+   1243          * Function Name  : RTCAlarm_IRQHandler
+   1244          * Description    : This function handles RTC Alarm interrupt request.
    1245          * Input          : None
    1246          * Output         : None
    1247          * Return         : None
    1248          *******************************************************************************/
-   1249          void EXTI15_10_IRQHandler(void)
+   1249          void RTCAlarm_IRQHandler(void)
    1250          {
    1251          }
    1252          
    1253          /*******************************************************************************
-   1254          * Function Name  : RTCAlarm_IRQHandler
-   1255          * Description    : This function handles RTC Alarm interrupt request.
+   1254          * Function Name  : USBWakeUp_IRQHandler
+   1255          * Description    : This function handles USB WakeUp interrupt request.
    1256          * Input          : None
    1257          * Output         : None
    1258          * Return         : None
    1259          *******************************************************************************/
-   1260          void RTCAlarm_IRQHandler(void)
-   1261          {
-   1262          }
-   1263          
-   1264          /*******************************************************************************
-   1265          * Function Name  : USBWakeUp_IRQHandler
-   1266          * Description    : This function handles USB WakeUp interrupt request.
-   1267          * Input          : None
-   1268          * Output         : None
-   1269          * Return         : None
-   1270          *******************************************************************************/
-   1271          /*
-   1272          void USBWakeUp_IRQHandler(void)
-   1273          {
-   1274          #if 1
-   1275              EXTI_ClearITPendingBit(EXTI_Line18);
-   1276          #endif
-   1277          }
-   1278          */
-   1279          
-   1280          
-   1281          /*******************************************************************************
-   1282          * Function Name  : Rx_Second_Comm_Check
-   1283          *******************************************************************************/
-   1284          void Rx_Main_Second_Comm_Check(u8 u_buf, u8 u_andbyte)
-   1285          {
-   1286          	if(u_buf == u_andbyte)
-   1287          	{
-   1288          		stUSART1.RX_BUF[1] =  u_buf;
-   1289          		stUSART1.RX_BUF_INDEX++;
-   1290          		stUSART1.RX_BUF_LENGTH = 0x01;
-   1291          	}
-   1292          	else
-   1293          	{
-   1294          		stUSART1.RX_BUF_INDEX = 0x00;					// Index Clear
-   1295          		stUSART1.RX_BUF[0] = 0x00;						// Buffer Clear
-   1296          		stUSART1.RX_ENABLE = 0x00;						// Command Check Byte Clear
-   1297          	}	
-   1298          }
-   1299          
-   1300          /*******************************************************************************
-   1301          * Function Name  : Boot_Status_Check_Parser
-   1302          *******************************************************************************/
-   1303          void Boot_Status_Check_Parser(void)
-   1304          {
-   1305          	if((stUSART1.RX_BUF[0] == TILT_FIRST_BYTE) && (stUSART1.RX_BUF[4] == TILT_BOOT_STATUS))
-   1306          	{
-   1307          		if(stSYS.START == STOP)
-   1308          		{
-   1309          			stSYS.BOOT_STATUS = READY;
-   1310          		}
-   1311          		/*
-   1312          		else
-   1313          		{
-   1314          			stSYS.BOOT_STATUS = ACTIVE;
-   1315          		}
-   1316          		*/
-   1317          	}
-   1318          }
-   1319          
-   1320          /*******************************************************************************
-   1321          * Function Name  : Rx_Main_Comm_Handling
-   1322          *******************************************************************************/
-   1323          void Rx_Main_Comm_Handling(u8 u_sync, u8 u_buf)	// u_port : Uart Port, u_sync : Sync Byte Check (0 : First Byte, 1 : Second Byte)
-   1324          {
-   1325          	// 첫번째 바이트 체크 (Sync Byte Check)
-   1326          	if(u_sync == Rx_SYNC_BYTE)	
-   1327          	{
-   1328          		stUSART1.RX_BUF_INDEX = 0x00;	// Index Init
-   1329          		stUSART1.RX_BUF[stUSART1.RX_BUF_INDEX] = u_buf;
-   1330          		stUSART1.RX_BUF_INDEX++;
-   1331          		
-   1332          		#if(ERROR_CHECK_BUF)
-   1333          		stERROR.RX_BUF[stERROR.RX_CNT++] = u_buf;
-   1334          		if(stERROR.RX_CNT >= ERROR_DATA_MAX) stERROR.RX_CNT = 0;
-   1335          		#endif
-   1336          	}
-   1337          
-   1338          	// 두번째 바이트 체크 (Sync & Byte Check)
-   1339          	if(u_sync == Rx_SYNC_AND_BYTE)
-   1340          	{
-   1341          		#if(ERROR_CHECK_BUF)	
-   1342          		stERROR.RX_BUF[stERROR.RX_CNT++] = u_buf;
-   1343          		if(stERROR.RX_CNT >= ERROR_DATA_MAX) stERROR.RX_CNT = 0;
-   1344          		#endif		
-   1345          		
-   1346          		// 두번째 명령어 체크 (Sync & Byte Check)
-   1347          		if(stUSART1.RX_BUF_INDEX == 0x01)
-   1348          		{
-   1349          			switch(stUSART1.RX_ENABLE)
-   1350          			{
-   1351          				case TILT_SECOND_BYTE:
-   1352          					Rx_Main_Second_Comm_Check(u_buf, TILT_SECOND_BYTE);
+   1260          /*
+   1261          void USBWakeUp_IRQHandler(void)
+   1262          {
+   1263          #if 1
+   1264              EXTI_ClearITPendingBit(EXTI_Line18);
+   1265          #endif
+   1266          }
+   1267          */
+   1268          
+   1269          
+   1270          /*******************************************************************************
+   1271          * Function Name  : Rx_Second_Comm_Check
+   1272          *******************************************************************************/
+   1273          void Rx_Main_Second_Comm_Check(u8 u_buf, u8 u_andbyte)
+   1274          {
+   1275          	if(u_buf == u_andbyte)
+   1276          	{
+   1277          		stUSART1.RX_BUF[1] =  u_buf;
+   1278          		stUSART1.RX_BUF_INDEX++;
+   1279          		stUSART1.RX_BUF_LENGTH = 0x01;
+   1280          	}
+   1281          	else
+   1282          	{
+   1283          		stUSART1.RX_BUF_INDEX = 0x00;					// Index Clear
+   1284          		stUSART1.RX_BUF[0] = 0x00;						// Buffer Clear
+   1285          		stUSART1.RX_ENABLE = 0x00;						// Command Check Byte Clear
+   1286          	}	
+   1287          }
+   1288          
+   1289          /*******************************************************************************
+   1290          * Function Name  : Boot_Status_Check_Parser
+   1291          *******************************************************************************/
+   1292          void Boot_Status_Check_Parser(void)
+   1293          {
+   1294          	if((stUSART1.RX_BUF[0] == TILT_FIRST_BYTE) && (stUSART1.RX_BUF[4] == TILT_BOOT_STATUS))
+   1295          	{
+   1296          		if(stSYS.START == STOP)
+   1297          		{
+   1298          			stSYS.BOOT_STATUS = READY;
+   1299          		}
+   1300          		/*
+   1301          		else
+   1302          		{
+   1303          			stSYS.BOOT_STATUS = ACTIVE;
+   1304          		}
+   1305          		*/
+   1306          	}
+   1307          }
+   1308          
+   1309          /*******************************************************************************
+   1310          * Function Name  : Rx_Main_Comm_Handling
+   1311          *******************************************************************************/
+   1312          void Rx_Main_Comm_Handling(u8 u_sync, u8 u_buf)	// u_port : Uart Port, u_sync : Sync Byte Check (0 : First Byte, 1 : Second Byte)
+   1313          {
+   1314          	// 첫번째 바이트 체크 (Sync Byte Check)
+   1315          	if(u_sync == Rx_SYNC_BYTE)	
+   1316          	{
+   1317          		stUSART1.RX_BUF_INDEX = 0x00;	// Index Init
+   1318          		stUSART1.RX_BUF[stUSART1.RX_BUF_INDEX] = u_buf;
+   1319          		stUSART1.RX_BUF_INDEX++;
+   1320          		
+   1321          		#if(ERROR_CHECK_BUF)
+   1322          		stERROR.RX_BUF[stERROR.RX_CNT++] = u_buf;
+   1323          		if(stERROR.RX_CNT >= ERROR_DATA_MAX) stERROR.RX_CNT = 0;
+   1324          		#endif
+   1325          	}
+   1326          
+   1327          	// 두번째 바이트 체크 (Sync & Byte Check)
+   1328          	if(u_sync == Rx_SYNC_AND_BYTE)
+   1329          	{
+   1330          		#if(ERROR_CHECK_BUF)	
+   1331          		stERROR.RX_BUF[stERROR.RX_CNT++] = u_buf;
+   1332          		if(stERROR.RX_CNT >= ERROR_DATA_MAX) stERROR.RX_CNT = 0;
+   1333          		#endif		
+   1334          		
+   1335          		// 두번째 명령어 체크 (Sync & Byte Check)
+   1336          		if(stUSART1.RX_BUF_INDEX == 0x01)
+   1337          		{
+   1338          			switch(stUSART1.RX_ENABLE)
+   1339          			{
+   1340          				case TILT_SECOND_BYTE:
+   1341          					Rx_Main_Second_Comm_Check(u_buf, TILT_SECOND_BYTE);
+   1342          					break;
+   1343          
+   1344          				case IP_SONY_SECOND_BYTE:
+   1345          					Rx_Main_Second_Comm_Check(u_buf, IP_SONY_SECOND_BYTE);
+   1346          					break;
+   1347          					
+   1348          				case IP_TSM_SECOND_BYTE:
+   1349          					Rx_Main_Second_Comm_Check(u_buf, IP_TSM_SECOND_BYTE);
+   1350          					break;
+   1351          
+   1352          				default:
    1353          					break;
-   1354          
-   1355          				case IP_SONY_SECOND_BYTE:
-   1356          					Rx_Main_Second_Comm_Check(u_buf, IP_SONY_SECOND_BYTE);
-   1357          					break;
-   1358          					
-   1359          				case IP_TSM_SECOND_BYTE:
-   1360          					Rx_Main_Second_Comm_Check(u_buf, IP_TSM_SECOND_BYTE);
-   1361          					break;
-   1362          
-   1363          				default:
-   1364          					break;
-   1365          			}
-   1366          		}	
-   1367          	}
-   1368          
-   1369          	// 세번째 바이트 체크 (Data Length)
-   1370          	if(u_sync == Rx_LENGTH_BYTE)
-   1371          	{
-   1372          		#if(ERROR_CHECK_BUF)	
-   1373          		stERROR.RX_BUF[stERROR.RX_CNT++] = u_buf;
-   1374          		if(stERROR.RX_CNT >= ERROR_DATA_MAX) stERROR.RX_CNT = 0;
-   1375          		#endif
-   1376          		
-   1377          		if(stUSART1.RX_ENABLE == IP_PELCO_CHK_BYTE)
-   1378          		{
-   1379          			// PELCO-D Command 예외처리
-   1380          			if(stUSART1.RX_BUF_INDEX == 0x02)
-   1381          			{
-   1382          				stUSART1.RX_BUF_LENGTH = 0x02;
-   1383          				stUSART1.RX_BUF_MAX = stUSART1.RX_BUF_LENGTH + 5;
-   1384          				
-   1385          				stUSART1.RX_BUF[2] =  u_buf;
+   1354          			}
+   1355          		}	
+   1356          	}
+   1357          
+   1358          	// 세번째 바이트 체크 (Data Length)
+   1359          	if(u_sync == Rx_LENGTH_BYTE)
+   1360          	{
+   1361          		#if(ERROR_CHECK_BUF)	
+   1362          		stERROR.RX_BUF[stERROR.RX_CNT++] = u_buf;
+   1363          		if(stERROR.RX_CNT >= ERROR_DATA_MAX) stERROR.RX_CNT = 0;
+   1364          		#endif
+   1365          		
+   1366          		if(stUSART1.RX_ENABLE == IP_PELCO_CHK_BYTE)
+   1367          		{
+   1368          			// PELCO-D Command 예외처리
+   1369          			if(stUSART1.RX_BUF_INDEX == 0x02)
+   1370          			{
+   1371          				stUSART1.RX_BUF_LENGTH = 0x02;
+   1372          				stUSART1.RX_BUF_MAX = stUSART1.RX_BUF_LENGTH + 5;
+   1373          				
+   1374          				stUSART1.RX_BUF[2] =  u_buf;
+   1375          				
+   1376          				stUSART1.RX_BUF_INDEX++;
+   1377          			}					
+   1378          		}
+   1379          		else
+   1380          		{
+   1381          			// 세번째 데이터 길이 체크 (Sync & Byte Check)
+   1382          			if(stUSART1.RX_BUF_INDEX == 0x02)
+   1383          			{
+   1384          				stUSART1.RX_BUF_LENGTH = u_buf;
+   1385          				stUSART1.RX_BUF_MAX = stUSART1.RX_BUF_LENGTH + 5;
    1386          				
-   1387          				stUSART1.RX_BUF_INDEX++;
-   1388          			}					
-   1389          		}
-   1390          		else
-   1391          		{
-   1392          			// 세번째 데이터 길이 체크 (Sync & Byte Check)
-   1393          			if(stUSART1.RX_BUF_INDEX == 0x02)
-   1394          			{
-   1395          				stUSART1.RX_BUF_LENGTH = u_buf;
-   1396          				stUSART1.RX_BUF_MAX = stUSART1.RX_BUF_LENGTH + 5;
-   1397          				
-   1398          				stUSART1.RX_BUF[2] =  u_buf;
-   1399          				
-   1400          				stUSART1.RX_BUF_INDEX++;
-   1401          			}
-   1402          		}
-   1403          	}	
-   1404          
-   1405          	// 데이터 누적
-   1406          	if(u_sync == Rx_DATA_BYTE)
-   1407          	{
-   1408          		#if(ERROR_CHECK_BUF)
-   1409          		stERROR.RX_BUF[stERROR.RX_CNT++] = u_buf;
-   1410          		if(stERROR.RX_CNT >= ERROR_DATA_MAX) stERROR.RX_CNT = 0;
-   1411          		#endif		
-   1412          		
-   1413          		stUSART1.RX_BUF[stUSART1.RX_BUF_INDEX] = u_buf;
-   1414          
-   1415          		stUSART1.RX_BUF_INDEX++;	
-   1416          		
-   1417          		if(stUSART1.RX_BUF_INDEX == stUSART1.RX_BUF_MAX)
-   1418          		{
-   1419          			// PELCO-D Command 예외처리
-   1420          			if(stUSART1.RX_ENABLE == IP_PELCO_CHK_BYTE)
-   1421          			{
-   1422          				Rx_Pelco_Data_Check();
-   1423          			}
-   1424          			else
-   1425          			{
-   1426          				if((stUSART1.RX_BUF[stUSART1.RX_BUF_INDEX - 1]&0x0F) == 0x0F)		// End Byte Check
-   1427          				{
-   1428          					if(stSYS.START == ACTIVE)
-   1429          					{
-   1430          						stUSART1.RX_PARITY = 0x01;	// 정상 데이터 수신 (0x00: Nondata(수신대기), 0x01: 정상데이터, 0xFF, 비정상 데이터, 0xFE = Boot Check)
-   1431          						stUSART1.RX_PARITY_CNT++;
-   1432          						
-   1433          						// DEBUG 데이터 체크 ======================================================/
-   1434          						//stERROR.PARITY_CNT_CHECK++;
-   1435          						//if(stERROR.PARITY_CNT_CHECK == 0x01) stERROR.TIMER_CHECK_FLAG = 0x01;
-   1436          						//if(stERROR.PARITY_CNT_CHECK == 0x02) stERROR.TIMER_CHECK_FLAG = 0x00;
-   1437          						// DEBUG 데이터 체크 ===================================================END/
-   1438          						
-   1439          						//if(stUSART1.RX_PRIORITY == 0x00) stUSART1.RX_PRIORITY = 0x01;
-   1440          					}
-   1441          					else
-   1442          					{
-   1443          						Boot_Status_Check_Parser();
-   1444          					}
-   1445          
-   1446          					stUSART1.RX_BUF_INDEX = 0x00;	// Index Init
-   1447          					//stUSART1.RX_BUF[stUSART1.RX_BUF_INDEX] = stUSART1.RX_PRIORITY++;
-   1448          				}
-   1449          				else
-   1450          				{
-   1451          					stUSART1.RX_PARITY = 0xFF;	// 비정상 데이터 수신 (0x00: Nondata(수신대기), 0x01: 정상데이터, 0xFF, 비정상 데이터, 0xFE = Boot Check)
-   1452          					stUSART1.RX_ERROR_CNT++;
-   1453          				}
-   1454          			}
-   1455          			
-   1456          			stUSART1.RX_BUF_INDEX = 0x00;
-   1457          			stUSART1.RX_BUF_LENGTH = 0x00;
-   1458          			
-   1459          			stUSART1.RX_ENABLE = 0x00;
-   1460          		}
-   1461          	}		
-   1462          }
-   1463          
-   1464          /*******************************************************************************
-   1465          * Function Name  : Main_Protocol_Data_Pasher
-   1466          * Description    : This function handles USART1 interrupt request.
-   1467          * Input           : Main - PA10 USART1_RX
-   1468          * Output         : Main - PA9 USART1_TX
-   1469          *******************************************************************************/
-   1470          void Main_Protocol_Data_Pasher(u8 u_buf)
-   1471          {
-   1472          	u8 u_Index_Chk = 0;
-   1473          
-   1474          	if(stUSART1.RX_ENABLE == 0x00)
-   1475          	{
-   1476          		// 첫번째 바이트 체크 (Sync Byte Check)
-   1477          		switch(u_buf)
-   1478          		{
-   1479          			case TILT_FIRST_BYTE:
-   1480          				Rx_Main_Comm_Handling(Rx_SYNC_BYTE, TILT_FIRST_BYTE);
-   1481          				stUSART1.RX_ENABLE = TILT_SECOND_BYTE;
-   1482          				break;
-   1483          
-   1484          			case IP_SONY_FIRST_BYTE:
-   1485          				Rx_Main_Comm_Handling(Rx_SYNC_BYTE, IP_SONY_FIRST_BYTE);
-   1486          				stUSART1.RX_ENABLE = IP_SONY_SECOND_BYTE;
-   1487          				break;
-   1488          
-   1489          			case IP_TSM_FIRST_BYTE:
-   1490          				Rx_Main_Comm_Handling(Rx_SYNC_BYTE, IP_TSM_FIRST_BYTE);
-   1491          				stUSART1.RX_ENABLE = IP_TSM_SECOND_BYTE;
-   1492          				break;
-   1493          
-   1494          			default:
-   1495          				break;
-   1496          		}
-   1497          	}
-   1498          	else
-   1499          	{
-   1500          		if(stUSART1.RX_BUF_LENGTH == 0x00) u_Index_Chk = Rx_SYNC_AND_BYTE;
-   1501          		else 
-   1502          		{
-   1503          			if(stUSART1.RX_BUF_INDEX >= 0x03)
-   1504          			{
-   1505          				u_Index_Chk = Rx_DATA_BYTE;
-   1506          			}
-   1507          			else
-   1508          			{
-   1509          				if(stUSART1.RX_STATUS == 0x00)
-   1510          				{
-   1511          					u_Index_Chk = Rx_LENGTH_BYTE;
-   1512          				}
-   1513          			}
-   1514          		}
-   1515          
-   1516          		// 두번째, 세번째 바이트 체크 (Rx_SYNC_AND_BYTE : Sync & Byte Check, Rx_LENGTH_BYTE : Length Check)
-   1517          		Rx_Main_Comm_Handling(u_Index_Chk, u_buf);
-   1518          	}
-   1519          }
-   1520          
-   1521          /*******************************************************************************
-   1522          * Function Name  : Sony_Data_Pasher
-   1523          * Description    : This function handles USART1 interrupt request.
-   1524          * Input           : Main - PA10 USART1_RX
-   1525          * Output         : Main - PA9 USART1_TX
-   1526          *******************************************************************************/
-   1527          void Sony_Data_Pasher(u8 u_buf)
-   1528          {
-   1529          	if(stBYPASS.RX_STATUS)
+   1387          				stUSART1.RX_BUF[2] =  u_buf;
+   1388          				
+   1389          				stUSART1.RX_BUF_INDEX++;
+   1390          			}
+   1391          		}
+   1392          	}	
+   1393          
+   1394          	// 데이터 누적
+   1395          	if(u_sync == Rx_DATA_BYTE)
+   1396          	{
+   1397          		#if(ERROR_CHECK_BUF)
+   1398          		stERROR.RX_BUF[stERROR.RX_CNT++] = u_buf;
+   1399          		if(stERROR.RX_CNT >= ERROR_DATA_MAX) stERROR.RX_CNT = 0;
+   1400          		#endif		
+   1401          		
+   1402          		stUSART1.RX_BUF[stUSART1.RX_BUF_INDEX] = u_buf;
+   1403          
+   1404          		stUSART1.RX_BUF_INDEX++;	
+   1405          		
+   1406          		if(stUSART1.RX_BUF_INDEX == stUSART1.RX_BUF_MAX)
+   1407          		{
+   1408          			// PELCO-D Command 예외처리
+   1409          			if(stUSART1.RX_ENABLE == IP_PELCO_CHK_BYTE)
+   1410          			{
+   1411          				Rx_Pelco_Data_Check();
+   1412          			}
+   1413          			else
+   1414          			{
+   1415          				if((stUSART1.RX_BUF[stUSART1.RX_BUF_INDEX - 1]&0x0F) == 0x0F)		// End Byte Check
+   1416          				{
+   1417          					if(stSYS.START == ACTIVE)
+   1418          					{
+   1419          						stUSART1.RX_PARITY = 0x01;	// 정상 데이터 수신 (0x00: Nondata(수신대기), 0x01: 정상데이터, 0xFF, 비정상 데이터, 0xFE = Boot Check)
+   1420          						stUSART1.RX_PARITY_CNT++;
+   1421          						
+   1422          						// DEBUG 데이터 체크 ======================================================/
+   1423          						//stERROR.PARITY_CNT_CHECK++;
+   1424          						//if(stERROR.PARITY_CNT_CHECK == 0x01) stERROR.TIMER_CHECK_FLAG = 0x01;
+   1425          						//if(stERROR.PARITY_CNT_CHECK == 0x02) stERROR.TIMER_CHECK_FLAG = 0x00;
+   1426          						// DEBUG 데이터 체크 ===================================================END/
+   1427          						
+   1428          						//if(stUSART1.RX_PRIORITY == 0x00) stUSART1.RX_PRIORITY = 0x01;
+   1429          					}
+   1430          					else
+   1431          					{
+   1432          						Boot_Status_Check_Parser();
+   1433          					}
+   1434          
+   1435          					stUSART1.RX_BUF_INDEX = 0x00;	// Index Init
+   1436          					//stUSART1.RX_BUF[stUSART1.RX_BUF_INDEX] = stUSART1.RX_PRIORITY++;
+   1437          				}
+   1438          				else
+   1439          				{
+   1440          					stUSART1.RX_PARITY = 0xFF;	// 비정상 데이터 수신 (0x00: Nondata(수신대기), 0x01: 정상데이터, 0xFF, 비정상 데이터, 0xFE = Boot Check)
+   1441          					stUSART1.RX_ERROR_CNT++;
+   1442          				}
+   1443          			}
+   1444          			
+   1445          			stUSART1.RX_BUF_INDEX = 0x00;
+   1446          			stUSART1.RX_BUF_LENGTH = 0x00;
+   1447          			
+   1448          			stUSART1.RX_ENABLE = 0x00;
+   1449          		}
+   1450          	}		
+   1451          }
+   1452          
+   1453          /*******************************************************************************
+   1454          * Function Name  : Main_Protocol_Data_Pasher
+   1455          * Description    : This function handles USART1 interrupt request.
+   1456          * Input           : Main - PA10 USART1_RX
+   1457          * Output         : Main - PA9 USART1_TX
+   1458          *******************************************************************************/
+   1459          void Main_Protocol_Data_Pasher(u8 u_buf)
+   1460          {
+   1461          	u8 u_Index_Chk = 0;
+   1462          
+   1463          	if(stUSART1.RX_ENABLE == 0x00)
+   1464          	{
+   1465          		// 첫번째 바이트 체크 (Sync Byte Check)
+   1466          		switch(u_buf)
+   1467          		{
+   1468          			case TILT_FIRST_BYTE:
+   1469          				Rx_Main_Comm_Handling(Rx_SYNC_BYTE, TILT_FIRST_BYTE);
+   1470          				stUSART1.RX_ENABLE = TILT_SECOND_BYTE;
+   1471          				break;
+   1472          
+   1473          			case IP_SONY_FIRST_BYTE:
+   1474          				Rx_Main_Comm_Handling(Rx_SYNC_BYTE, IP_SONY_FIRST_BYTE);
+   1475          				stUSART1.RX_ENABLE = IP_SONY_SECOND_BYTE;
+   1476          				break;
+   1477          
+   1478          			case IP_TSM_FIRST_BYTE:
+   1479          				Rx_Main_Comm_Handling(Rx_SYNC_BYTE, IP_TSM_FIRST_BYTE);
+   1480          				stUSART1.RX_ENABLE = IP_TSM_SECOND_BYTE;
+   1481          				break;
+   1482          
+   1483          			default:
+   1484          				break;
+   1485          		}
+   1486          	}
+   1487          	else
+   1488          	{
+   1489          		if(stUSART1.RX_BUF_LENGTH == 0x00) u_Index_Chk = Rx_SYNC_AND_BYTE;
+   1490          		else 
+   1491          		{
+   1492          			if(stUSART1.RX_BUF_INDEX >= 0x03)
+   1493          			{
+   1494          				u_Index_Chk = Rx_DATA_BYTE;
+   1495          			}
+   1496          			else
+   1497          			{
+   1498          				if(stUSART1.RX_STATUS == 0x00)
+   1499          				{
+   1500          					u_Index_Chk = Rx_LENGTH_BYTE;
+   1501          				}
+   1502          			}
+   1503          		}
+   1504          
+   1505          		// 두번째, 세번째 바이트 체크 (Rx_SYNC_AND_BYTE : Sync & Byte Check, Rx_LENGTH_BYTE : Length Check)
+   1506          		Rx_Main_Comm_Handling(u_Index_Chk, u_buf);
+   1507          	}
+   1508          }
+   1509          
+   1510          /*******************************************************************************
+   1511          * Function Name  : Sony_Data_Pasher
+   1512          * Description    : This function handles USART1 interrupt request.
+   1513          * Input           : Main - PA10 USART1_RX
+   1514          * Output         : Main - PA9 USART1_TX
+   1515          *******************************************************************************/
+   1516          void Sony_Data_Pasher(u8 u_buf)
+   1517          {
+   1518          	if(stBYPASS.RX_STATUS)
+   1519          	{
+   1520          		stBYPASS.RX_BUF[stBYPASS.RX_CNT++] = u_buf;
+   1521          
+   1522          		if(u_buf == 0xFF)
+   1523          		{
+   1524          			stBYPASS.RX_STATUS = 0x00;
+   1525          			stBYPASS.RX_CNT = 0x00;
+   1526          			stBYPASS.RX_PARITY = 0x01;			
+   1527          		}
+   1528          	}
+   1529          	else
    1530          	{
-   1531          		stBYPASS.RX_BUF[stBYPASS.RX_CNT++] = u_buf;
-   1532          
-   1533          		if(u_buf == 0xFF)
-   1534          		{
-   1535          			stBYPASS.RX_STATUS = 0x00;
-   1536          			stBYPASS.RX_CNT = 0x00;
-   1537          			stBYPASS.RX_PARITY = 0x01;			
-   1538          		}
-   1539          	}
-   1540          	else
-   1541          	{
-   1542          		if(u_buf == SONY_FIRST_BYTE)
-   1543          		{
-   1544          			stBYPASS.RX_STATUS = 0x01;
-   1545          			stBYPASS.RX_BUF[0] = u_buf;
-   1546          			stBYPASS.RX_CNT++;
-   1547          			
-   1548          		}
-   1549          	}
-   1550          }
-   1551          
-   1552          /*******************************************************************************
-   1553          * Function Name  : USART1_IRQHandler
-   1554          * Description    : This function handles USART1 interrupt request.
-   1555          * Input           : Main - PA10 USART1_RX
-   1556          * Output         : Main - PA9 USART1_TX
-   1557          *******************************************************************************/
-   1558          void USART1_IRQHandler(void)
-   1559          {
-   1560          	u8 Rx_Buf = 0x00;
-   1561          	
-   1562            	// =======================================
-   1563            	// USART1 TX Process : TILT -> MAIN Board
-   1564            	// =======================================
-   1565          	if (USART_GetITStatus(USART1, USART_IT_TC) != RESET)
-   1566          	{
-   1567          		if (stUSART1.TX_CNT < stUSART1.TX_MAX) 
-   1568          		{
-   1569          			USART_SendData(USART1, stUSART1.TX_BUF[stUSART1.TX_CNT++]);
-   1570          		}
-   1571          		else 
-   1572          		{
-   1573          			stUSART1.TX_MAX = 0;
-   1574          			stUSART1.TX_CNT = 0;
-   1575          		}
-   1576          		
-   1577          		USART_ClearITPendingBit(USART1, USART_IT_TC);
-   1578          	}
+   1531          		if(u_buf == SONY_FIRST_BYTE)
+   1532          		{
+   1533          			stBYPASS.RX_STATUS = 0x01;
+   1534          			stBYPASS.RX_BUF[0] = u_buf;
+   1535          			stBYPASS.RX_CNT++;
+   1536          			
+   1537          		}
+   1538          	}
+   1539          }
+   1540          
+   1541          /*******************************************************************************
+   1542          * Function Name  : USART1_IRQHandler
+   1543          * Description    : This function handles USART1 interrupt request.
+   1544          * Input           : Main - PA10 USART1_RX
+   1545          * Output         : Main - PA9 USART1_TX
+   1546          *******************************************************************************/
+   1547          void USART1_IRQHandler(void)
+   1548          {
+   1549          	u8 Rx_Buf = 0x00;
+   1550          	
+   1551            	// =======================================
+   1552            	// USART1 TX Process : TILT -> MAIN Board
+   1553            	// =======================================
+   1554          	if (USART_GetITStatus(USART1, USART_IT_TC) != RESET)
+   1555          	{
+   1556          		if (stUSART1.TX_CNT < stUSART1.TX_MAX) 
+   1557          		{
+   1558          			USART_SendData(USART1, stUSART1.TX_BUF[stUSART1.TX_CNT++]);
+   1559          		}
+   1560          		else 
+   1561          		{
+   1562          			stUSART1.TX_MAX = 0;
+   1563          			stUSART1.TX_CNT = 0;
+   1564          		}
+   1565          		
+   1566          		USART_ClearITPendingBit(USART1, USART_IT_TC);
+   1567          	}
+   1568          
+   1569            	// =======================================
+   1570            	// USART1 RX Process : TILT <- MAIN Board
+   1571            	// =======================================
+   1572          	if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
+   1573          	{
+   1574          		Rx_Buf = USART_ReceiveData(USART1);
+   1575          
+   1576          		Main_Protocol_Data_Pasher(Rx_Buf);
+   1577          		
+   1578          		//Sony_Data_Pasher(Rx_Buf);
    1579          
-   1580            	// =======================================
-   1581            	// USART1 RX Process : TILT <- MAIN Board
-   1582            	// =======================================
-   1583          	if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
-   1584          	{
-   1585          		Rx_Buf = USART_ReceiveData(USART1);
-   1586          
-   1587          		Main_Protocol_Data_Pasher(Rx_Buf);
-   1588          		
-   1589          		//Sony_Data_Pasher(Rx_Buf);
-   1590          
-   1591          		//if(stUSART_ERROR.RX_CNT == UART4_RX_BUF_MAX) stUSART_ERROR.RX_CNT = 0;
-   1592          
-   1593          		//stUSART_ERROR.RX_BUF[stUSART_ERROR.RX_CNT++] = Rx_Buf;
-   1594          	}
-   1595          }
-   1596          
-   1597          /*******************************************************************************
-   1598          * Function Name  : LRF_Data_Clear
-   1599          *******************************************************************************/
-   1600          void LRF_Data_Clear(void)
-   1601          {
-   1602          	u8 i;
-   1603          	
-   1604          	for(i=0; i<LRF_RX_BUF_MAX; i++)
-   1605          	{
-   1606          		stLRF.RX_BUF[i] = 0x00;
-   1607          	}
-   1608          }
-   1609          
-   1610          /*******************************************************************************
-   1611          * Function Name  : LRF_Trans_Data
-   1612          *******************************************************************************/
-   1613          void LRF_Trans_Data(void)
-   1614          {
-   1615          	u8 i;
-   1616          
-   1617          	if(stBYPASS.TX_FLAG == 0x00)
-   1618          	{
-   1619          		for(i=0; i<LRF_RX_BUF_MAX; i++)
-   1620          		{
-   1621          			stUSART1.TX_BUF[i] = stLRF.RX_BUF[i];
-   1622          		}
-   1623          
-   1624          		stUSART1.TX_CNT = 0;
-   1625          		stUSART1.TX_MAX = 21;
-   1626          		
-   1627          		USART_SendData(USART1, stUSART1.TX_BUF[stUSART1.TX_CNT++]);
-   1628          	}
-   1629          	
-   1630          }
-   1631          
-   1632          /************************************************************************************
-   1633          * Function Name  : LRF_Data_Pasher
-   1634          * Description    : This function handles USART2 interrupt request.
-   1635          * Input           : LRF - PA10 USART2_RX
-   1636          * Output         : LRF - PA9 USART2_TX
-   1637          -------------------------------------------------------------------------------------
-   1638          * LRF 출력데이터 예제
-   1639          [00]	[01]	[02]	[03]	[04]	[05]	[06]	[07]	[08]	[09]	[10]	[11]	[12]	[13]	[14]	[15]	[16]	[17]	[18]	[19]	[20]
-   1640          44	4D	20	31	20	30	30	30	38	2E	36	20	20	39	39	39	20	33	31	0D	0A
-   1641          D	M		1		0	0	0	8	.	6			9	9	9		3	1		
-   1642          *************************************************************************************/
-   1643          void LRF_Data_Pasher(u8 u_Data)
-   1644          {
-   1645          	// LRF <-> TILT
-   1646          	switch(stDIP.MODE2)
-   1647          	{
-   1648          		case LRF_MODE:
-   1649          
-   1650          			// Data Compare Check
-   1651          			if(stLRF.RX_CNT == 0x14)
-   1652          			{
-   1653          				if((stLRF.RX_BUF[0] == LRF_BYTE_1) && (stLRF.RX_BUF[1] == LRF_BYTE_2) && (stLRF.RX_BUF[19] == LRF_BYTE_END))
-   1654          				{
-   1655          					LRF_Trans_Data();
-   1656          				}
-   1657          
-   1658          				LRF_Data_Clear();
-   1659          				stLRF.RX_CNT = 0;
-   1660          				stLRF.RX_END_FLAG = 0x01;
-   1661          			}
-   1662          
-   1663          			// Data Save
-   1664          			if(stLRF.RX_CNT >= 0x02)
-   1665          			{
-   1666          				stLRF.RX_BUF[stLRF.RX_CNT] = u_Data;
-   1667          				stLRF.RX_CNT++;
-   1668          			}
-   1669          
-   1670          			if(stLRF.RX_END_FLAG == 0x00)
-   1671          			{
-   1672          				// Second Data Check
-   1673          				if((u_Data == LRF_BYTE_2) && (stLRF.RX_CNT == 1))
-   1674          				{
-   1675          					stLRF.RX_BUF[1] = LRF_BYTE_2;
-   1676          					stLRF.RX_CNT++;
-   1677          				}			
-   1678          
-   1679          				// First Data Check
-   1680          				if((u_Data == LRF_BYTE_1) && (stLRF.RX_CNT == 0))
-   1681          				{
-   1682          					stLRF.RX_BUF[0] = LRF_BYTE_1;
-   1683          					stLRF.RX_CNT++;
-   1684          				}
-   1685          			}
-   1686          			else
-   1687          			{
-   1688          				stLRF.RX_END_FLAG = 0x00;
-   1689          			}
-   1690          
-   1691          			if(stLRF.RX_CNT >= LRF_RX_BUF_MAX) 
-   1692          			{
-   1693          				stLRF.RX_CNT = 0;
-   1694          				LRF_Data_Clear();
-   1695          			}
-   1696          			
-   1697          			break;
-   1698          	}
-   1699          }
-   1700          
-   1701          /*******************************************************************************
-   1702          * Function Name  : USART2_IRQHandler
-   1703          * Description    : This function handles USART2 interrupt request.
-   1704          * Input           : MDIN - PA3 USART2_RX
-   1705          * Output         : MDIN - PA2 USART2_TX
-   1706          *******************************************************************************/
-   1707          void USART2_IRQHandler(void)
-   1708          {
-   1709          	u8 Rx_Buf = 0x00, Tx_Buf = 0x00;	
+   1580          		//if(stUSART_ERROR.RX_CNT == UART4_RX_BUF_MAX) stUSART_ERROR.RX_CNT = 0;
+   1581          
+   1582          		//stUSART_ERROR.RX_BUF[stUSART_ERROR.RX_CNT++] = Rx_Buf;
+   1583          	}
+   1584          }
+   1585          
+   1586          /*******************************************************************************
+   1587          * Function Name  : LRF_Data_Clear
+   1588          *******************************************************************************/
+   1589          void LRF_Data_Clear(void)
+   1590          {
+   1591          	u8 i;
+   1592          	
+   1593          	for(i=0; i<LRF_RX_BUF_MAX; i++)
+   1594          	{
+   1595          		stLRF.RX_BUF[i] = 0x00;
+   1596          	}
+   1597          }
+   1598          
+   1599          /*******************************************************************************
+   1600          * Function Name  : LRF_Trans_Data
+   1601          *******************************************************************************/
+   1602          void LRF_Trans_Data(void)
+   1603          {
+   1604          	u8 i;
+   1605          
+   1606          	if(stBYPASS.TX_FLAG == 0x00)
+   1607          	{
+   1608          		for(i=0; i<LRF_RX_BUF_MAX; i++)
+   1609          		{
+   1610          			stUSART1.TX_BUF[i] = stLRF.RX_BUF[i];
+   1611          		}
+   1612          
+   1613          		stUSART1.TX_CNT = 0;
+   1614          		stUSART1.TX_MAX = 21;
+   1615          		
+   1616          		USART_SendData(USART1, stUSART1.TX_BUF[stUSART1.TX_CNT++]);
+   1617          	}
+   1618          	
+   1619          }
+   1620          
+   1621          /************************************************************************************
+   1622          * Function Name  : LRF_Data_Pasher
+   1623          * Description    : This function handles USART2 interrupt request.
+   1624          * Input           : LRF - PA10 USART2_RX
+   1625          * Output         : LRF - PA9 USART2_TX
+   1626          -------------------------------------------------------------------------------------
+   1627          * LRF 출력데이터 예제
+   1628          [00]	[01]	[02]	[03]	[04]	[05]	[06]	[07]	[08]	[09]	[10]	[11]	[12]	[13]	[14]	[15]	[16]	[17]	[18]	[19]	[20]
+   1629          44	4D	20	31	20	30	30	30	38	2E	36	20	20	39	39	39	20	33	31	0D	0A
+   1630          D	M		1		0	0	0	8	.	6			9	9	9		3	1		
+   1631          *************************************************************************************/
+   1632          void LRF_Data_Pasher(u8 u_Data)
+   1633          {
+   1634          	// LRF <-> TILT
+   1635          	switch(stDIP.MODE2)
+   1636          	{
+   1637          		case LRF_MODE:
+   1638          
+   1639          			// Data Compare Check
+   1640          			if(stLRF.RX_CNT == 0x14)
+   1641          			{
+   1642          				if((stLRF.RX_BUF[0] == LRF_BYTE_1) && (stLRF.RX_BUF[1] == LRF_BYTE_2) && (stLRF.RX_BUF[19] == LRF_BYTE_END))
+   1643          				{
+   1644          					LRF_Trans_Data();
+   1645          				}
+   1646          
+   1647          				LRF_Data_Clear();
+   1648          				stLRF.RX_CNT = 0;
+   1649          				stLRF.RX_END_FLAG = 0x01;
+   1650          			}
+   1651          
+   1652          			// Data Save
+   1653          			if(stLRF.RX_CNT >= 0x02)
+   1654          			{
+   1655          				stLRF.RX_BUF[stLRF.RX_CNT] = u_Data;
+   1656          				stLRF.RX_CNT++;
+   1657          			}
+   1658          
+   1659          			if(stLRF.RX_END_FLAG == 0x00)
+   1660          			{
+   1661          				// Second Data Check
+   1662          				if((u_Data == LRF_BYTE_2) && (stLRF.RX_CNT == 1))
+   1663          				{
+   1664          					stLRF.RX_BUF[1] = LRF_BYTE_2;
+   1665          					stLRF.RX_CNT++;
+   1666          				}			
+   1667          
+   1668          				// First Data Check
+   1669          				if((u_Data == LRF_BYTE_1) && (stLRF.RX_CNT == 0))
+   1670          				{
+   1671          					stLRF.RX_BUF[0] = LRF_BYTE_1;
+   1672          					stLRF.RX_CNT++;
+   1673          				}
+   1674          			}
+   1675          			else
+   1676          			{
+   1677          				stLRF.RX_END_FLAG = 0x00;
+   1678          			}
+   1679          
+   1680          			if(stLRF.RX_CNT >= LRF_RX_BUF_MAX) 
+   1681          			{
+   1682          				stLRF.RX_CNT = 0;
+   1683          				LRF_Data_Clear();
+   1684          			}
+   1685          			
+   1686          			break;
+   1687          	}
+   1688          }
+   1689          
+   1690          /*******************************************************************************
+   1691          * Function Name  : USART2_IRQHandler
+   1692          * Description    : This function handles USART2 interrupt request.
+   1693          * Input           : MDIN - PA3 USART2_RX
+   1694          * Output         : MDIN - PA2 USART2_TX
+   1695          *******************************************************************************/
+   1696          void USART2_IRQHandler(void)
+   1697          {
+   1698          	u8 Rx_Buf = 0x00, Tx_Buf = 0x00;	
+   1699          
+   1700          	// =======================================
+   1701          	// USART2 TX Process 
+   1702          	// =======================================
+   1703          	if (USART_GetITStatus(USART2, USART_IT_TC) != RESET)
+   1704          	{
+   1705          
+   1706          		if(stUSART2.TX_CNT < stUSART2.TX_MAX)
+   1707          		{
+   1708          			Tx_Buf = stUSART2.TX_BUF[stUSART2.TX_CNT];
+   1709          			stUSART2.TX_CNT++;				
    1710          
-   1711          	// =======================================
-   1712          	// USART2 TX Process 
-   1713          	// =======================================
-   1714          	if (USART_GetITStatus(USART2, USART_IT_TC) != RESET)
-   1715          	{
-   1716          
-   1717          		if(stUSART2.TX_CNT < stUSART2.TX_MAX)
-   1718          		{
-   1719          			Tx_Buf = stUSART2.TX_BUF[stUSART2.TX_CNT];
-   1720          			stUSART2.TX_CNT++;				
-   1721          
-   1722          			USART_SendData(USART2, Tx_Buf);
-   1723          		}
-   1724          		else
-   1725          		{
-   1726          			stUSART2.TX_CNT = 0x00;
-   1727          			stUSART2.TX_MAX = 0x00;
-   1728          		}
-   1729          
-   1730          		USART_ClearITPendingBit(USART2, USART_IT_TC);
+   1711          			USART_SendData(USART2, Tx_Buf);
+   1712          		}
+   1713          		else
+   1714          		{
+   1715          			stUSART2.TX_CNT = 0x00;
+   1716          			stUSART2.TX_MAX = 0x00;
+   1717          		}
+   1718          
+   1719          		USART_ClearITPendingBit(USART2, USART_IT_TC);
+   1720          
+   1721          	}
+   1722          
+   1723          	// =======================================
+   1724          	// USART2 RX Process
+   1725          	// =======================================
+   1726          	if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
+   1727          	{
+   1728          		Rx_Buf = USART_ReceiveData(USART2);
+   1729          	}     
+   1730          }
    1731          
-   1732          	}
-   1733          
-   1734          	// =======================================
-   1735          	// USART2 RX Process
-   1736          	// =======================================
-   1737          	if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
-   1738          	{
-   1739          		Rx_Buf = USART_ReceiveData(USART2);
-   1740          	}     
-   1741          }
-   1742          
-   1743          /*******************************************************************************
-   1744          * Function Name  : USART3_IRQHandler
-   1745          * Description    : This function handles USART1 interrupt request.
-   1746          * Input           : Camera - PB11 USART3_RX
-   1747          * Output         : Camera - PB10 USART3_TX
-   1748          *******************************************************************************/
-   1749          void USART3_IRQHandler(void)
-   1750          {
-   1751          	u8 Rx_Buf = 0x00, Tx_Buf = 0x00;	
-   1752          
-   1753            	// =======================================
-   1754            	// USART3 TX Process 
-   1755            	// =======================================
-   1756          	if (USART_GetITStatus(USART3, USART_IT_TC) != RESET)
-   1757          	{ 
-   1758          		USART_SendData(USART3, Tx_Buf);
-   1759          		
-   1760          		USART_ClearITPendingBit(USART3, USART_IT_TC);
-   1761          	}
-   1762          	
-   1763            	// =======================================
-   1764            	// USART3 RX Process
-   1765            	// =======================================
-   1766          	if (USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)
-   1767          	{
-   1768          		Rx_Buf = USART_ReceiveData(USART3);
-   1769          	}
-   1770          
-   1771          }
-   1772          
-   1773          /*******************************************************************************
-   1774          * Function Name  : SONY_Data_Clear
-   1775          *******************************************************************************/
-   1776          void SONY_Data_Clear(void)
-   1777          {
-   1778          	u8 i;
-   1779          	
-   1780          	for(i=0; i<SONY_RX_BUF_MAX; i++)
-   1781          	{
-   1782          		stSONY.RX_BUF[i] = 0x00;
-   1783          	}
-   1784          }
-   1785          
-   1786          /*******************************************************************************
-   1787          * Function Name  : TSM_Data_Pasher
-   1788          *******************************************************************************/
-   1789          void TSM_Data_Pasher(u8 u_Buf)
-   1790          {
-   1791          	u8 i = 0;
-   1792          	u8 u_Data_P1 = 0x00, u_Data_P2 = 0x00;
-   1793          	u16 u16_Convert_Data = 0x0000;
-   1794          	u8 u_Convert_Data  = 0x00;	
-   1795          
-   1796          	if(stUART4.RX_ENABLE == 0x01)
-   1797          	{
-   1798          		stUART4.RX_BUF[stUART4.RX_CNT++] = u_Buf;
-   1799          
-   1800          		if(stUART4.RX_BUF_MAX == 0x00)
-   1801          		{
-   1802          			switch(stUART4.RX_BUF[1])
-   1803          			{
-   1804          				case TSM_CALL_ALL_TEMPERATURE:
-   1805          					stUART4.RX_BUF_MAX = 0x23;
+   1732          /*******************************************************************************
+   1733          * Function Name  : USART3_IRQHandler
+   1734          * Description    : This function handles USART1 interrupt request.
+   1735          * Input           : Camera - PB11 USART3_RX
+   1736          * Output         : Camera - PB10 USART3_TX
+   1737          *******************************************************************************/
+   1738          void USART3_IRQHandler(void)
+   1739          {
+   1740          	u8 Rx_Buf = 0x00, Tx_Buf = 0x00;	
+   1741          
+   1742            	// =======================================
+   1743            	// USART3 TX Process 
+   1744            	// =======================================
+   1745          	if (USART_GetITStatus(USART3, USART_IT_TC) != RESET)
+   1746          	{ 
+   1747          		USART_SendData(USART3, Tx_Buf);
+   1748          		
+   1749          		USART_ClearITPendingBit(USART3, USART_IT_TC);
+   1750          	}
+   1751          	
+   1752            	// =======================================
+   1753            	// USART3 RX Process
+   1754            	// =======================================
+   1755          	if (USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)
+   1756          	{
+   1757          		Rx_Buf = USART_ReceiveData(USART3);
+   1758          	}
+   1759          
+   1760          }
+   1761          
+   1762          /*******************************************************************************
+   1763          * Function Name  : SONY_Data_Clear
+   1764          *******************************************************************************/
+   1765          void SONY_Data_Clear(void)
+   1766          {
+   1767          	u8 i;
+   1768          	
+   1769          	for(i=0; i<SONY_RX_BUF_MAX; i++)
+   1770          	{
+   1771          		stSONY.RX_BUF[i] = 0x00;
+   1772          	}
+   1773          }
+   1774          
+   1775          /*******************************************************************************
+   1776          * Function Name  : TSM_Data_Pasher
+   1777          *******************************************************************************/
+   1778          void TSM_Data_Pasher(u8 u_Buf)
+   1779          {
+   1780          	u8 i = 0;
+   1781          	u8 u_Data_P1 = 0x00, u_Data_P2 = 0x00;
+   1782          	u16 u16_Convert_Data = 0x0000;
+   1783          	u8 u_Convert_Data  = 0x00;	
+   1784          
+   1785          	if(stUART4.RX_ENABLE == 0x01)
+   1786          	{
+   1787          		stUART4.RX_BUF[stUART4.RX_CNT++] = u_Buf;
+   1788          
+   1789          		if(stUART4.RX_BUF_MAX == 0x00)
+   1790          		{
+   1791          			switch(stUART4.RX_BUF[1])
+   1792          			{
+   1793          				case TSM_CALL_ALL_TEMPERATURE:
+   1794          					stUART4.RX_BUF_MAX = 0x23;
+   1795          					break;
+   1796          
+   1797          				case TSM_CALL_FIRMWARE_VERSION:
+   1798          					stUART4.RX_BUF_MAX = 0x08;
+   1799          					break;
+   1800          
+   1801          				case TCM_COOLER_RUNTIME_INQ:
+   1802          					if(stINFO.THERMAL_MODEL == TCM_640)
+   1803          					{
+   1804          						stUART4.RX_BUF_MAX = 0x07;
+   1805          					}
    1806          					break;
    1807          
-   1808          				case TSM_CALL_FIRMWARE_VERSION:
-   1809          					stUART4.RX_BUF_MAX = 0x08;
+   1808          				default:
+   1809          					stUART4.RX_BUF_MAX = 0x06;
    1810          					break;
-   1811          
-   1812          				case TCM_COOLER_RUNTIME_INQ:
-   1813          					if(stINFO.THERMAL_MODEL == TCM_640)
-   1814          					{
-   1815          						stUART4.RX_BUF_MAX = 0x07;
-   1816          					}
-   1817          					break;
-   1818          
-   1819          				default:
-   1820          					stUART4.RX_BUF_MAX = 0x06;
-   1821          					break;
-   1822          			}
-   1823          		}
+   1811          			}
+   1812          		}
+   1813          
+   1814          		// Rx Data Check & Initialization
+   1815          		if((stUART4.RX_CNT == stUART4.RX_BUF_MAX) && (u_Buf == 0xAF))
+   1816          		{
+   1817          			switch(stUART4.RX_BUF_MAX)
+   1818          			{
+   1819          				case 0x06:
+   1820          
+   1821          					switch(stUART4.RX_REQUEST_CMD)
+   1822          					{
+   1823          						case TSM_CALL_MODULE_STATUS:
    1824          
-   1825          		// Rx Data Check & Initialization
-   1826          		if((stUART4.RX_CNT == stUART4.RX_BUF_MAX) && (u_Buf == 0xAF))
-   1827          		{
-   1828          			switch(stUART4.RX_BUF_MAX)
-   1829          			{
-   1830          				case 0x06:
-   1831          
-   1832          					switch(stUART4.RX_REQUEST_CMD)
-   1833          					{
-   1834          						case TSM_CALL_MODULE_STATUS:
-   1835          
-   1836          							if(stUART4.RX_BUF[1] == TSM_CALL_MODULE_STATUS)
-   1837          							{
-   1838          								u_Data_P1 = stUART4.RX_BUF[2];
-   1839          
-   1840          								if(u_Data_P1) 
-   1841          								{
-   1842          									stTSM.MODULE_ENABLE = 0x01;
-   1843          								}
-   1844          								
-   1845          								stTSM.MODULE_STATUS = u_Data_P1;
-   1846          								stINFO.MODULE_TYPE = TSM_MODULE;
-   1847          
-   1848          								stUART4.RX_REQUEST_CMD = 0x00;
-   1849          							}
-   1850          								
-   1851          							break;
-   1852          							
-   1853          						case TSM_CALL_DIGITAL_ZOOM_POSITION:
+   1825          							if(stUART4.RX_BUF[1] == TSM_CALL_MODULE_STATUS)
+   1826          							{
+   1827          								u_Data_P1 = stUART4.RX_BUF[2];
+   1828          
+   1829          								if(u_Data_P1) 
+   1830          								{
+   1831          									stTSM.MODULE_ENABLE = 0x01;
+   1832          								}
+   1833          								
+   1834          								stTSM.MODULE_STATUS = u_Data_P1;
+   1835          								stINFO.MODULE_TYPE = TSM_MODULE;
+   1836          
+   1837          								stUART4.RX_REQUEST_CMD = 0x00;
+   1838          							}
+   1839          								
+   1840          							break;
+   1841          							
+   1842          						case TSM_CALL_DIGITAL_ZOOM_POSITION:
+   1843          
+   1844          							if(stUART4.RX_BUF[1] == TSM_CALL_DIGITAL_ZOOM_POSITION)
+   1845          							{
+   1846          								u_Data_P1 = stUART4.RX_BUF[4];
+   1847          								u16_Convert_Data |= u_Data_P1;
+   1848          								stTSM.ZOOM_DATA = u16_Convert_Data;
+   1849          
+   1850          								stTSM.ZOOM_CNT = stTSM.ZOOM_DATA;
+   1851          
+   1852          								stUART4.RX_REQUEST_CMD = 0x00;
+   1853          							}
    1854          
-   1855          							if(stUART4.RX_BUF[1] == TSM_CALL_DIGITAL_ZOOM_POSITION)
-   1856          							{
-   1857          								u_Data_P1 = stUART4.RX_BUF[4];
-   1858          								u16_Convert_Data |= u_Data_P1;
-   1859          								stTSM.ZOOM_DATA = u16_Convert_Data;
-   1860          
-   1861          								stTSM.ZOOM_CNT = stTSM.ZOOM_DATA;
-   1862          
-   1863          								stUART4.RX_REQUEST_CMD = 0x00;
-   1864          							}
-   1865          
-   1866          							break;
-   1867          
-   1868          						case TSM_CALL_OPTICAL_ZOOM_POSITION:
-   1869          							break;
-   1870          
-   1871          						case TSM_CALL_TOTAL_ZOOM_POSITION:
-   1872          							
-   1873          							if(stUART4.RX_BUF[1] == TSM_CALL_TOTAL_ZOOM_POSITION)
-   1874          							{
-   1875          								u_Data_P1 = stUART4.RX_BUF[2];
-   1876          								u_Data_P2 = stUART4.RX_BUF[3];
+   1855          							break;
+   1856          
+   1857          						case TSM_CALL_OPTICAL_ZOOM_POSITION:
+   1858          							break;
+   1859          
+   1860          						case TSM_CALL_TOTAL_ZOOM_POSITION:
+   1861          							
+   1862          							if(stUART4.RX_BUF[1] == TSM_CALL_TOTAL_ZOOM_POSITION)
+   1863          							{
+   1864          								u_Data_P1 = stUART4.RX_BUF[2];
+   1865          								u_Data_P2 = stUART4.RX_BUF[3];
+   1866          
+   1867          								u16_Convert_Data = u_Data_P1 << 8;
+   1868          								u16_Convert_Data |= u_Data_P2;
+   1869          
+   1870          								stTSM.ZOOM_CNT = u16_Convert_Data;
+   1871          
+   1872          								stUART4.RX_REQUEST_CMD = 0x00;
+   1873          								stUART4.RX_REQUEST_COMPLETE = TSM_CALL_TOTAL_ZOOM_POSITION;
+   1874          							}
+   1875          							
+   1876          							break;
    1877          
-   1878          								u16_Convert_Data = u_Data_P1 << 8;
-   1879          								u16_Convert_Data |= u_Data_P2;
-   1880          
-   1881          								stTSM.ZOOM_CNT = u16_Convert_Data;
-   1882          
-   1883          								stUART4.RX_REQUEST_CMD = 0x00;
-   1884          								stUART4.RX_REQUEST_COMPLETE = TSM_CALL_TOTAL_ZOOM_POSITION;
-   1885          							}
-   1886          							
-   1887          							break;
-   1888          
-   1889          						case TSM_CALL_FOCUS_POSITION:
-   1890          
-   1891          							if(stUART4.RX_BUF[1] == TSM_CALL_FOCUS_POSITION)
-   1892          							{
-   1893          								u_Data_P1 = stUART4.RX_BUF[2];
-   1894          								u_Data_P2 = stUART4.RX_BUF[3];
+   1878          						case TSM_CALL_FOCUS_POSITION:
+   1879          
+   1880          							if(stUART4.RX_BUF[1] == TSM_CALL_FOCUS_POSITION)
+   1881          							{
+   1882          								u_Data_P1 = stUART4.RX_BUF[2];
+   1883          								u_Data_P2 = stUART4.RX_BUF[3];
+   1884          
+   1885          								u16_Convert_Data = u_Data_P1 << 8;
+   1886          								u16_Convert_Data |= u_Data_P2;
+   1887          
+   1888          								stTSM.FOCUS_CNT = u16_Convert_Data;
+   1889          
+   1890          								stUART4.RX_REQUEST_CMD = 0x00;
+   1891          								stUART4.RX_REQUEST_COMPLETE = TSM_CALL_FOCUS_POSITION;								
+   1892          							}
+   1893          							
+   1894          							break;
    1895          
-   1896          								u16_Convert_Data = u_Data_P1 << 8;
-   1897          								u16_Convert_Data |= u_Data_P2;
-   1898          
-   1899          								stTSM.FOCUS_CNT = u16_Convert_Data;
-   1900          
-   1901          								stUART4.RX_REQUEST_CMD = 0x00;
-   1902          								stUART4.RX_REQUEST_COMPLETE = TSM_CALL_FOCUS_POSITION;								
-   1903          							}
-   1904          							
-   1905          							break;
-   1906          
-   1907          						case TSM_CALL_PRODUCT_IDENTIFICATION:
+   1896          						case TSM_CALL_PRODUCT_IDENTIFICATION:
+   1897          
+   1898          							if(stUART4.RX_BUF[1] == TSM_CALL_PRODUCT_IDENTIFICATION)
+   1899          							{
+   1900          								// Camera Information Data Check							
+   1901          								stINFO.THERMAL_MODEL = stUART4.RX_BUF[2];
+   1902          								stINFO.THERMAL_LENS = stUART4.RX_BUF[4];
+   1903          								
+   1904          								stUART4.RX_REQUEST_CMD = 0x00;
+   1905          							}
+   1906          							
+   1907          							break;
    1908          
-   1909          							if(stUART4.RX_BUF[1] == TSM_CALL_PRODUCT_IDENTIFICATION)
-   1910          							{
-   1911          								// Camera Information Data Check							
-   1912          								stINFO.THERMAL_MODEL = stUART4.RX_BUF[2];
-   1913          								stINFO.THERMAL_LENS = stUART4.RX_BUF[4];
-   1914          								
-   1915          								stUART4.RX_REQUEST_CMD = 0x00;
-   1916          							}
-   1917          							
-   1918          							break;
-   1919          
-   1920          						case TSM_CALL_CAMERA_INFORMATION:
+   1909          						case TSM_CALL_CAMERA_INFORMATION:
+   1910          
+   1911          							if(stUART4.RX_BUF[1] == TSM_CALL_CAMERA_INFORMATION)
+   1912          							{
+   1913          								// Camera Information Data Check
+   1914          								stINFO.THERMAL_VER_HIGH = stUART4.RX_BUF[3];
+   1915          								stINFO.THERMAL_VER_LOW = stUART4.RX_BUF[4];
+   1916          								
+   1917          								stUART4.RX_REQUEST_CMD = 0x00;
+   1918          							}
+   1919          							
+   1920          							break;
    1921          
-   1922          							if(stUART4.RX_BUF[1] == TSM_CALL_CAMERA_INFORMATION)
-   1923          							{
-   1924          								// Camera Information Data Check
-   1925          								stINFO.THERMAL_VER_HIGH = stUART4.RX_BUF[3];
-   1926          								stINFO.THERMAL_VER_LOW = stUART4.RX_BUF[4];
-   1927          								
-   1928          								stUART4.RX_REQUEST_CMD = 0x00;
-   1929          							}
-   1930          							
-   1931          							break;
-   1932          
-   1933          						case TSM_CALL_FPGA_VERSION:
-   1934          
-   1935          							if(stUART4.RX_BUF[1] == TSM_CALL_FPGA_VERSION)
-   1936          							{
-   1937          								stINFO.FPGA_VERSION_HIGH = stUART4.RX_BUF[2];
-   1938          								stINFO.FPGA_VERSION_LOW = stUART4.RX_BUF[3];
-   1939          
-   1940          								stUART4.RX_REQUEST_CMD = 0x00;
-   1941          							}
-   1942          							
-   1943          							break;
-   1944          							
-   1945          						case TSM_CALL_TEMPERATURE_MODE:
-   1946          
-   1947          							if(stUART4.RX_BUF[1] == TSM_CALL_TEMPERATURE_MODE)
-   1948          							{
-   1949          								// Camera Information Data Check
-   1950          								stINFO.THERMAL_TEMP_MODE = stUART4.RX_BUF[2];
-   1951          								
-   1952          								stUART4.RX_REQUEST_CMD = 0x00;
-   1953          							}
-   1954          							
-   1955          							break;
-   1956          
-   1957          						case TCM_TOTAL_ZOOM_POSITION_INQ:
-   1958          
-   1959          							if(stUART4.RX_BUF[1] == TCM_TOTAL_ZOOM_POSITION_INQ)
-   1960          							{
-   1961          								u_Data_P1 = stUART4.RX_BUF[2];
-   1962          								u_Data_P2 = stUART4.RX_BUF[3];
-   1963          
-   1964          								u16_Convert_Data = u_Data_P1 << 8;
-   1965          								u16_Convert_Data |= u_Data_P2;
+   1922          						case TSM_CALL_FPGA_VERSION:
+   1923          
+   1924          							if(stUART4.RX_BUF[1] == TSM_CALL_FPGA_VERSION)
+   1925          							{
+   1926          								stINFO.FPGA_VERSION_HIGH = stUART4.RX_BUF[2];
+   1927          								stINFO.FPGA_VERSION_LOW = stUART4.RX_BUF[3];
+   1928          
+   1929          								stUART4.RX_REQUEST_CMD = 0x00;
+   1930          							}
+   1931          							
+   1932          							break;
+   1933          							
+   1934          						case TSM_CALL_TEMPERATURE_MODE:
+   1935          
+   1936          							if(stUART4.RX_BUF[1] == TSM_CALL_TEMPERATURE_MODE)
+   1937          							{
+   1938          								// Camera Information Data Check
+   1939          								stINFO.THERMAL_TEMP_MODE = stUART4.RX_BUF[2];
+   1940          								
+   1941          								stUART4.RX_REQUEST_CMD = 0x00;
+   1942          							}
+   1943          							
+   1944          							break;
+   1945          
+   1946          						case TCM_TOTAL_ZOOM_POSITION_INQ:
+   1947          
+   1948          							if(stUART4.RX_BUF[1] == TCM_TOTAL_ZOOM_POSITION_INQ)
+   1949          							{
+   1950          								u_Data_P1 = stUART4.RX_BUF[2];
+   1951          								u_Data_P2 = stUART4.RX_BUF[3];
+   1952          
+   1953          								u16_Convert_Data = u_Data_P1 << 8;
+   1954          								u16_Convert_Data |= u_Data_P2;
+   1955          
+   1956          								stTSM.ZOOM_DATA = u16_Convert_Data;
+   1957          
+   1958          								stTSM.ZOOM_CNT = stTSM.ZOOM_DATA;
+   1959          
+   1960          								stUART4.RX_REQUEST_CMD = 0x00;
+   1961          							}
+   1962          							
+   1963          							break;
+   1964          
+   1965          						case TCM_GET_FW_UPDATE_INQ:
    1966          
-   1967          								stTSM.ZOOM_DATA = u16_Convert_Data;
-   1968          
-   1969          								stTSM.ZOOM_CNT = stTSM.ZOOM_DATA;
-   1970          
-   1971          								stUART4.RX_REQUEST_CMD = 0x00;
-   1972          							}
-   1973          							
-   1974          							break;
-   1975          
-   1976          						case TCM_GET_FW_UPDATE_INQ:
+   1967          							if(stUART4.RX_BUF[1] == TCM_GET_FW_UPDATE_INQ)
+   1968          							{
+   1969          								stINFO.THERMAL_YEAR = stUART4.RX_BUF[2];
+   1970          								stINFO.THERMAL_MONTH = stUART4.RX_BUF[3];
+   1971          								stINFO.THERMAL_DAY = stUART4.RX_BUF[4];
+   1972          									
+   1973          								stUART4.RX_REQUEST_CMD = 0x00;
+   1974          							}
+   1975          							
+   1976          							break;
    1977          
-   1978          							if(stUART4.RX_BUF[1] == TCM_GET_FW_UPDATE_INQ)
-   1979          							{
-   1980          								stINFO.THERMAL_YEAR = stUART4.RX_BUF[2];
-   1981          								stINFO.THERMAL_MONTH = stUART4.RX_BUF[3];
-   1982          								stINFO.THERMAL_DAY = stUART4.RX_BUF[4];
-   1983          									
-   1984          								stUART4.RX_REQUEST_CMD = 0x00;
-   1985          							}
-   1986          							
-   1987          							break;
-   1988          
-   1989          						case TCM_GET_ENGINE_VERSION:
-   1990          
-   1991          							if(stUART4.RX_BUF[1] == TCM_GET_ENGINE_VERSION)
-   1992          							{
-   1993          								stINFO.THERMAL_ENGINE_VER_HW = stUART4.RX_BUF[2];
-   1994          								stINFO.THERMAL_ENGINE_VER_FW = stUART4.RX_BUF[3];
-   1995          
-   1996          								stUART4.RX_REQUEST_CMD = 0x00;
-   1997          							}
-   1998          							
-   1999          							break;		
-   2000          
-   2001          						case TCM_FOCUS_POSITION_INQ:
-   2002          
-   2003          							if(stUART4.RX_BUF[1] == TCM_FOCUS_POSITION_INQ)
-   2004          							{
-   2005          								u_Data_P1 = stUART4.RX_BUF[2];
-   2006          								u_Data_P2 = stUART4.RX_BUF[3];
-   2007          
-   2008          								u16_Convert_Data = u_Data_P1 << 8;
-   2009          								u16_Convert_Data |= u_Data_P2;
-   2010          
-   2011          								stTSM.FOCUS_CNT = u16_Convert_Data;
+   1978          						case TCM_GET_ENGINE_VERSION:
+   1979          
+   1980          							if(stUART4.RX_BUF[1] == TCM_GET_ENGINE_VERSION)
+   1981          							{
+   1982          								stINFO.THERMAL_ENGINE_VER_HW = stUART4.RX_BUF[2];
+   1983          								stINFO.THERMAL_ENGINE_VER_FW = stUART4.RX_BUF[3];
+   1984          
+   1985          								stUART4.RX_REQUEST_CMD = 0x00;
+   1986          							}
+   1987          							
+   1988          							break;		
+   1989          
+   1990          						case TCM_FOCUS_POSITION_INQ:
+   1991          
+   1992          							if(stUART4.RX_BUF[1] == TCM_FOCUS_POSITION_INQ)
+   1993          							{
+   1994          								u_Data_P1 = stUART4.RX_BUF[2];
+   1995          								u_Data_P2 = stUART4.RX_BUF[3];
+   1996          
+   1997          								u16_Convert_Data = u_Data_P1 << 8;
+   1998          								u16_Convert_Data |= u_Data_P2;
+   1999          
+   2000          								stTSM.FOCUS_CNT = u16_Convert_Data;
+   2001          
+   2002          								stUART4.RX_REQUEST_CMD = 0x00;
+   2003          							}
+   2004          
+   2005          							break;	
+   2006          
+   2007          						default:
+   2008          							break;
+   2009          					}
+   2010          						
+   2011          					break;
    2012          
-   2013          								stUART4.RX_REQUEST_CMD = 0x00;
-   2014          							}
-   2015          
-   2016          							break;	
+   2013          				case 0x07:
+   2014          					switch(stUART4.RX_REQUEST_CMD)
+   2015          					{
+   2016          						case TCM_COOLER_RUNTIME_INQ:
    2017          
-   2018          						default:
-   2019          							break;
-   2020          					}
-   2021          						
-   2022          					break;
-   2023          
-   2024          				case 0x07:
-   2025          					switch(stUART4.RX_REQUEST_CMD)
-   2026          					{
-   2027          						case TCM_COOLER_RUNTIME_INQ:
-   2028          
-   2029          								stINFO.THERMAL_ENGINE_TIME_DAY= 0x0000;
-   2030          								stINFO.THERMAL_ENGINE_TIME_DAY |= (stUART4.RX_BUF[2]<<8);
-   2031          								stINFO.THERMAL_ENGINE_TIME_DAY |= (stUART4.RX_BUF[3]&0xFF);
-   2032          
-   2033          								stINFO.THERMAL_ENGINE_TIME_HOUR = 0x0000;
-   2034          								stINFO.THERMAL_ENGINE_TIME_HOUR |= (stUART4.RX_BUF[4]<<8);
-   2035          								stINFO.THERMAL_ENGINE_TIME_HOUR |= (stUART4.RX_BUF[5]&0xFF);
-   2036          
-   2037          								stINFO.THERMAL_ENGINE_DAY_HIGH = stUART4.RX_BUF[2];
-   2038          								stINFO.THERMAL_ENGINE_DAY_LOW = stUART4.RX_BUF[3];
-   2039          								stINFO.THERMAL_ENGINE_HOUR_HIGH = stUART4.RX_BUF[4];
-   2040          								stINFO.THERMAL_ENGINE_HOUR_LOW = stUART4.RX_BUF[5];								
-   2041          								
-   2042          								stINFO.TCM640_ENGINE_RUNTIME_COMPLETE = TRUE;
-   2043          								
-   2044          								stUART4.RX_REQUEST_CMD = 0x00;	
-   2045          
-   2046          							break;
-   2047          					}
-   2048          					break;
-   2049          					
-   2050          				case 0x08:
-   2051          					
-   2052          					switch(stUART4.RX_REQUEST_CMD)
-   2053          					{
-   2054          						case TSM_CALL_FIRMWARE_VERSION:
-   2055          
-   2056          							if(stUART4.RX_BUF[1] == TSM_CALL_FIRMWARE_VERSION)
-   2057          							{
-   2058          								// Camera Information Data Check
-   2059          								stINFO.THERMAL_DAY = stUART4.RX_BUF[4];
-   2060          								stINFO.THERMAL_MONTH = stUART4.RX_BUF[5];
-   2061          								stINFO.THERMAL_YEAR = stUART4.RX_BUF[6];
-   2062          								
-   2063          								stUART4.RX_REQUEST_CMD = 0x00;
-   2064          							}
-   2065          							
-   2066          							break;
-   2067          
-   2068          						default:
-   2069          							break;
-   2070          					}
-   2071          							
-   2072          					break;
-   2073          					
-   2074          				case 0x23:
-   2075          					
-   2076          					//stTEMP.TEMPERATURE_READ_COMPLETE = 0x01;	// 온도 체크 데이터 수신 완료.
-   2077          					
-   2078          					break;
-   2079          
-   2080          				default:
-   2081          					break;
-   2082          			}
-   2083          		
-   2084          			for(i=0;i<stUART4.RX_BUF_MAX;i++)
-   2085          			{
-   2086          				//stTEMP.RX_BUF[i] = stUART4.RX_BUF[i];
-   2087          				stUART4.RX_BUF[i] = 0x00;
-   2088          			}
-   2089          
-   2090          			stUART4.RX_ENABLE = 0x00;
-   2091          			stUART4.RX_CNT = 0x00;
-   2092          			stUART4.RX_BUF_MAX = 0x00;
-   2093          			stUART4.RX_PARITY = 0x01;
-   2094          			
-   2095          		}
-   2096          		else if((stUART4.RX_CNT == stUART4.RX_BUF_MAX) && (u_Buf != 0xAF))
-   2097          		{
-   2098          			for(i=0;i<stUART4.RX_CNT;i++)
-   2099          			{
-   2100          				stUART4.RX_BUF[i] = 0x00;
-   2101          			}
-   2102          
-   2103          			stUART4.RX_ENABLE = 0x00;
-   2104          			stUART4.RX_CNT = 0x00;
-   2105          			stUART4.RX_BUF_MAX = 0x00;
-   2106          			stUART4.RX_REQUEST_ERROR = 0x01;			
-   2107          		}
-   2108          	}
-   2109          
-   2110          	if((stUART4.RX_ENABLE == 0x00) && (u_Buf == 0xA0))
-   2111          	{
-   2112          		stUART4.RX_BUF[0] = u_Buf;
-   2113          		stUART4.RX_CNT++;
-   2114          		stUART4.RX_ENABLE = 0x01;
-   2115          	}
-   2116          }
-   2117          
-   2118          /*******************************************************************************
-   2119          * Function Name  : Rx_Sony_Inquiry_Command
-   2120          *******************************************************************************/
-   2121          void SONY_Data_Pasher(u8 u_buf)
-   2122          {
-   2123          	u16 u_CZoomData = 0x0000, u_CFocusData = 0x0000;
-   2124          
-   2125          	// Data Save
-   2126          	if(stSONY.RX_CNT >= 0x02)
-   2127          	{
-   2128          		stSONY.RX_BUF[stSONY.RX_CNT] = u_buf;
-   2129          		stSONY.RX_CNT++;
-   2130          	}
-   2131          
-   2132          	if(stSONY.RX_CNT == 0x04)
-   2133          	{
-   2134          		if((stSONY.RX_BUF[0] == SONY_BYTE_1) && (stSONY.RX_BUF[1] == SONY_BYTE_2) && (stSONY.RX_BUF[3] == SONY_BYTE_END))
-   2135          		{
-   2136          			switch(stUART4.RX_REQUEST_CMD)
-   2137          			{
-   2138          				case SONY_POWER_INQ:
-   2139          
-   2140          					stSONY.MODULE_STATUS = stSONY.RX_BUF[2];
-   2141          
-   2142          					switch(stSONY.MODULE_STATUS)
-   2143          					{
-   2144          						case 0x02:
-   2145          							stSONY.MODULE_ENABLE = 1;
-   2146          							break;
-   2147          
-   2148          						case 0x03:
-   2149          							stSONY.MODULE_ENABLE = 0;
-   2150          							break;
-   2151          
-   2152          						default:
-   2153          							break;
-   2154          					}
-   2155          
-   2156          					stINFO.MODULE_TYPE = SONY_MODULE;
-   2157          					
-   2158          					break;
+   2018          								stINFO.THERMAL_ENGINE_TIME_DAY= 0x0000;
+   2019          								stINFO.THERMAL_ENGINE_TIME_DAY |= (stUART4.RX_BUF[2]<<8);
+   2020          								stINFO.THERMAL_ENGINE_TIME_DAY |= (stUART4.RX_BUF[3]&0xFF);
+   2021          
+   2022          								stINFO.THERMAL_ENGINE_TIME_HOUR = 0x0000;
+   2023          								stINFO.THERMAL_ENGINE_TIME_HOUR |= (stUART4.RX_BUF[4]<<8);
+   2024          								stINFO.THERMAL_ENGINE_TIME_HOUR |= (stUART4.RX_BUF[5]&0xFF);
+   2025          
+   2026          								stINFO.THERMAL_ENGINE_DAY_HIGH = stUART4.RX_BUF[2];
+   2027          								stINFO.THERMAL_ENGINE_DAY_LOW = stUART4.RX_BUF[3];
+   2028          								stINFO.THERMAL_ENGINE_HOUR_HIGH = stUART4.RX_BUF[4];
+   2029          								stINFO.THERMAL_ENGINE_HOUR_LOW = stUART4.RX_BUF[5];								
+   2030          								
+   2031          								stINFO.TCM640_ENGINE_RUNTIME_COMPLETE = TRUE;
+   2032          								
+   2033          								stUART4.RX_REQUEST_CMD = 0x00;	
+   2034          
+   2035          							break;
+   2036          					}
+   2037          					break;
+   2038          					
+   2039          				case 0x08:
+   2040          					
+   2041          					switch(stUART4.RX_REQUEST_CMD)
+   2042          					{
+   2043          						case TSM_CALL_FIRMWARE_VERSION:
+   2044          
+   2045          							if(stUART4.RX_BUF[1] == TSM_CALL_FIRMWARE_VERSION)
+   2046          							{
+   2047          								// Camera Information Data Check
+   2048          								stINFO.THERMAL_DAY = stUART4.RX_BUF[4];
+   2049          								stINFO.THERMAL_MONTH = stUART4.RX_BUF[5];
+   2050          								stINFO.THERMAL_YEAR = stUART4.RX_BUF[6];
+   2051          								
+   2052          								stUART4.RX_REQUEST_CMD = 0x00;
+   2053          							}
+   2054          							
+   2055          							break;
+   2056          
+   2057          						default:
+   2058          							break;
+   2059          					}
+   2060          							
+   2061          					break;
+   2062          					
+   2063          				case 0x23:
+   2064          					
+   2065          					//stTEMP.TEMPERATURE_READ_COMPLETE = 0x01;	// 온도 체크 데이터 수신 완료.
+   2066          					
+   2067          					break;
+   2068          
+   2069          				default:
+   2070          					break;
+   2071          			}
+   2072          		
+   2073          			for(i=0;i<stUART4.RX_BUF_MAX;i++)
+   2074          			{
+   2075          				//stTEMP.RX_BUF[i] = stUART4.RX_BUF[i];
+   2076          				stUART4.RX_BUF[i] = 0x00;
+   2077          			}
+   2078          
+   2079          			stUART4.RX_ENABLE = 0x00;
+   2080          			stUART4.RX_CNT = 0x00;
+   2081          			stUART4.RX_BUF_MAX = 0x00;
+   2082          			stUART4.RX_PARITY = 0x01;
+   2083          			
+   2084          		}
+   2085          		else if((stUART4.RX_CNT == stUART4.RX_BUF_MAX) && (u_Buf != 0xAF))
+   2086          		{
+   2087          			for(i=0;i<stUART4.RX_CNT;i++)
+   2088          			{
+   2089          				stUART4.RX_BUF[i] = 0x00;
+   2090          			}
+   2091          
+   2092          			stUART4.RX_ENABLE = 0x00;
+   2093          			stUART4.RX_CNT = 0x00;
+   2094          			stUART4.RX_BUF_MAX = 0x00;
+   2095          			stUART4.RX_REQUEST_ERROR = 0x01;			
+   2096          		}
+   2097          	}
+   2098          
+   2099          	if((stUART4.RX_ENABLE == 0x00) && (u_Buf == 0xA0))
+   2100          	{
+   2101          		stUART4.RX_BUF[0] = u_Buf;
+   2102          		stUART4.RX_CNT++;
+   2103          		stUART4.RX_ENABLE = 0x01;
+   2104          	}
+   2105          }
+   2106          
+   2107          /*******************************************************************************
+   2108          * Function Name  : Rx_Sony_Inquiry_Command
+   2109          *******************************************************************************/
+   2110          void SONY_Data_Pasher(u8 u_buf)
+   2111          {
+   2112          	u16 u_CZoomData = 0x0000, u_CFocusData = 0x0000;
+   2113          
+   2114          	// Data Save
+   2115          	if(stSONY.RX_CNT >= 0x02)
+   2116          	{
+   2117          		stSONY.RX_BUF[stSONY.RX_CNT] = u_buf;
+   2118          		stSONY.RX_CNT++;
+   2119          	}
+   2120          
+   2121          	if(stSONY.RX_CNT == 0x04)
+   2122          	{
+   2123          		if((stSONY.RX_BUF[0] == SONY_BYTE_1) && (stSONY.RX_BUF[1] == SONY_BYTE_2) && (stSONY.RX_BUF[3] == SONY_BYTE_END))
+   2124          		{
+   2125          			switch(stUART4.RX_REQUEST_CMD)
+   2126          			{
+   2127          				case SONY_POWER_INQ:
+   2128          
+   2129          					stSONY.MODULE_STATUS = stSONY.RX_BUF[2];
+   2130          
+   2131          					switch(stSONY.MODULE_STATUS)
+   2132          					{
+   2133          						case 0x02:
+   2134          							stSONY.MODULE_ENABLE = 1;
+   2135          							break;
+   2136          
+   2137          						case 0x03:
+   2138          							stSONY.MODULE_ENABLE = 0;
+   2139          							break;
+   2140          
+   2141          						default:
+   2142          							break;
+   2143          					}
+   2144          
+   2145          					stINFO.MODULE_TYPE = SONY_MODULE;
+   2146          					
+   2147          					break;
+   2148          
+   2149          				default:
+   2150          					break;
+   2151          			}
+   2152          
+   2153          			SONY_Data_Clear();
+   2154          			
+   2155          			stSONY.RX_CNT = 0;
+   2156          			stSONY.RX_END_FLAG = 0x01;	
+   2157          		}
+   2158          	}
    2159          
-   2160          				default:
-   2161          					break;
-   2162          			}
-   2163          
-   2164          			SONY_Data_Clear();
-   2165          			
-   2166          			stSONY.RX_CNT = 0;
-   2167          			stSONY.RX_END_FLAG = 0x01;	
-   2168          		}
-   2169          	}
-   2170          
-   2171          	// Data Compare Check
-   2172          	if(stSONY.RX_CNT == 0x07)
-   2173          	{
-   2174          		if((stSONY.RX_BUF[0] == SONY_BYTE_1) && (stSONY.RX_BUF[1] == SONY_BYTE_2) && (stSONY.RX_BUF[6] == SONY_BYTE_END))
-   2175          		{
-   2176          			switch(stUART4.RX_REQUEST_CMD)
-   2177          			{
-   2178          				case SONY_CALL_ZOOM_POSITION:
-   2179          					
-   2180          					u_CZoomData = stSONY.RX_BUF[2];
-   2181          					stSONY.ZOOM_CNT = u_CZoomData << 12;
-   2182          					u_CZoomData = stSONY.RX_BUF[3];
-   2183          					stSONY.ZOOM_CNT |= u_CZoomData << 8;
-   2184          					u_CZoomData = stSONY.RX_BUF[4];
-   2185          					stSONY.ZOOM_CNT |= u_CZoomData << 4;
-   2186          					u_CZoomData = stSONY.RX_BUF[5];
-   2187          					stSONY.ZOOM_CNT |= u_CZoomData;
-   2188          
-   2189          					if(stSONY.RX_BUF[6] == 0x00) 
-   2190          					{
-   2191          						stUART4.RX_REQUEST_ERROR = 0x01;
-   2192          					}
-   2193          					else 
-   2194          					{
-   2195          						stUART4.RX_REQUEST_CMD = 0x00;
-   2196          						stUART4.RX_REQUEST_COMPLETE = SONY_CALL_ZOOM_POSITION;
-   2197          					}
-   2198          					
-   2199          					break;
+   2160          	// Data Compare Check
+   2161          	if(stSONY.RX_CNT == 0x07)
+   2162          	{
+   2163          		if((stSONY.RX_BUF[0] == SONY_BYTE_1) && (stSONY.RX_BUF[1] == SONY_BYTE_2) && (stSONY.RX_BUF[6] == SONY_BYTE_END))
+   2164          		{
+   2165          			switch(stUART4.RX_REQUEST_CMD)
+   2166          			{
+   2167          				case SONY_CALL_ZOOM_POSITION:
+   2168          					
+   2169          					u_CZoomData = stSONY.RX_BUF[2];
+   2170          					stSONY.ZOOM_CNT = u_CZoomData << 12;
+   2171          					u_CZoomData = stSONY.RX_BUF[3];
+   2172          					stSONY.ZOOM_CNT |= u_CZoomData << 8;
+   2173          					u_CZoomData = stSONY.RX_BUF[4];
+   2174          					stSONY.ZOOM_CNT |= u_CZoomData << 4;
+   2175          					u_CZoomData = stSONY.RX_BUF[5];
+   2176          					stSONY.ZOOM_CNT |= u_CZoomData;
+   2177          
+   2178          					if(stSONY.RX_BUF[6] == 0x00) 
+   2179          					{
+   2180          						stUART4.RX_REQUEST_ERROR = 0x01;
+   2181          					}
+   2182          					else 
+   2183          					{
+   2184          						stUART4.RX_REQUEST_CMD = 0x00;
+   2185          						stUART4.RX_REQUEST_COMPLETE = SONY_CALL_ZOOM_POSITION;
+   2186          					}
+   2187          					
+   2188          					break;
+   2189          
+   2190          				case SONY_CALL_FOCUS_POSITION:
+   2191          					
+   2192          					u_CFocusData = stSONY.RX_BUF[2];
+   2193          					stSONY.FOCUS_CNT = u_CFocusData << 12;
+   2194          					u_CFocusData = stSONY.RX_BUF[3];
+   2195          					stSONY.FOCUS_CNT |= u_CFocusData << 8;
+   2196          					u_CFocusData = stSONY.RX_BUF[4];
+   2197          					stSONY.FOCUS_CNT |= u_CFocusData << 4;
+   2198          					u_CFocusData = stSONY.RX_BUF[5];
+   2199          					stSONY.FOCUS_CNT |= u_CFocusData;
    2200          
-   2201          				case SONY_CALL_FOCUS_POSITION:
-   2202          					
-   2203          					u_CFocusData = stSONY.RX_BUF[2];
-   2204          					stSONY.FOCUS_CNT = u_CFocusData << 12;
-   2205          					u_CFocusData = stSONY.RX_BUF[3];
-   2206          					stSONY.FOCUS_CNT |= u_CFocusData << 8;
-   2207          					u_CFocusData = stSONY.RX_BUF[4];
-   2208          					stSONY.FOCUS_CNT |= u_CFocusData << 4;
-   2209          					u_CFocusData = stSONY.RX_BUF[5];
-   2210          					stSONY.FOCUS_CNT |= u_CFocusData;
-   2211          
-   2212          					if(stSONY.RX_BUF[6] == 0x00) 
-   2213          					{
-   2214          						stUART4.RX_REQUEST_ERROR = 0x01;
-   2215          					}
-   2216          					else 
-   2217          					{
-   2218          						stUART4.RX_REQUEST_COMPLETE = SONY_CALL_FOCUS_POSITION;
-   2219          						stUART4.RX_REQUEST_CMD = 0x00;
-   2220          					}
-   2221          
-   2222          					break;
-   2223          
-   2224          				default:
+   2201          					if(stSONY.RX_BUF[6] == 0x00) 
+   2202          					{
+   2203          						stUART4.RX_REQUEST_ERROR = 0x01;
+   2204          					}
+   2205          					else 
+   2206          					{
+   2207          						stUART4.RX_REQUEST_COMPLETE = SONY_CALL_FOCUS_POSITION;
+   2208          						stUART4.RX_REQUEST_CMD = 0x00;
+   2209          					}
+   2210          
+   2211          					break;
+   2212          
+   2213          				default:
+   2214          
+   2215          					stUART4.RX_ENABLE = 0x00;
+   2216          					if(stUART4.RX_REQUEST_ERROR != 0x00) stUART4.RX_REQUEST_ERROR = 0x00;
+   2217          					
+   2218          					break;
+   2219          			}
+   2220          
+   2221          			SONY_Data_Clear();
+   2222          			
+   2223          			stSONY.RX_CNT = 0;
+   2224          			stSONY.RX_END_FLAG = 0x01;
    2225          
-   2226          					stUART4.RX_ENABLE = 0x00;
-   2227          					if(stUART4.RX_REQUEST_ERROR != 0x00) stUART4.RX_REQUEST_ERROR = 0x00;
-   2228          					
-   2229          					break;
-   2230          			}
-   2231          
-   2232          			SONY_Data_Clear();
-   2233          			
-   2234          			stSONY.RX_CNT = 0;
-   2235          			stSONY.RX_END_FLAG = 0x01;
-   2236          
-   2237          		}
-   2238          	}
-   2239          	
-   2240          	if(stSONY.RX_END_FLAG == 0x00)
-   2241          	{
-   2242          		// Second Data Check
-   2243          		if((u_buf == SONY_BYTE_2) && (stSONY.RX_CNT == 1))
-   2244          		{
-   2245          			stSONY.RX_BUF[1] = SONY_BYTE_2;
-   2246          			stSONY.RX_CNT++;
-   2247          		}
-   2248          		else if((u_buf != SONY_BYTE_2) && (stSONY.RX_CNT == 1))
-   2249          		{
-   2250          			stSONY.RX_BUF[0] = 0x00;
-   2251          			stSONY.RX_CNT = 0;
-   2252          		}
-   2253          
-   2254          		// First Data Check
-   2255          		if((u_buf == SONY_BYTE_1) && (stSONY.RX_CNT == 0))
-   2256          		{
-   2257          			stSONY.RX_BUF[0] = SONY_BYTE_1;
-   2258          			stSONY.RX_CNT++;
-   2259          		}
+   2226          		}
+   2227          	}
+   2228          	
+   2229          	if(stSONY.RX_END_FLAG == 0x00)
+   2230          	{
+   2231          		// Second Data Check
+   2232          		if((u_buf == SONY_BYTE_2) && (stSONY.RX_CNT == 1))
+   2233          		{
+   2234          			stSONY.RX_BUF[1] = SONY_BYTE_2;
+   2235          			stSONY.RX_CNT++;
+   2236          		}
+   2237          		else if((u_buf != SONY_BYTE_2) && (stSONY.RX_CNT == 1))
+   2238          		{
+   2239          			stSONY.RX_BUF[0] = 0x00;
+   2240          			stSONY.RX_CNT = 0;
+   2241          		}
+   2242          
+   2243          		// First Data Check
+   2244          		if((u_buf == SONY_BYTE_1) && (stSONY.RX_CNT == 0))
+   2245          		{
+   2246          			stSONY.RX_BUF[0] = SONY_BYTE_1;
+   2247          			stSONY.RX_CNT++;
+   2248          		}
+   2249          	}
+   2250          	else
+   2251          	{
+   2252          		stSONY.RX_END_FLAG = 0x00;
+   2253          	}
+   2254          
+   2255          	if(stSONY.RX_CNT >= SONY_RX_BUF_MAX)
+   2256          	{
+   2257          		stSONY.RX_CNT = 0;
+   2258          		SONY_Data_Clear();
+   2259          		
    2260          	}
-   2261          	else
-   2262          	{
-   2263          		stSONY.RX_END_FLAG = 0x00;
-   2264          	}
-   2265          
-   2266          	if(stSONY.RX_CNT >= SONY_RX_BUF_MAX)
-   2267          	{
-   2268          		stSONY.RX_CNT = 0;
-   2269          		SONY_Data_Clear();
-   2270          		
+   2261          }
+   2262          
+   2263          // ============================================================================
+   2264          // USART3 : UART4 Data Pasher (TSM)
+   2265          // ============================================================================
+   2266          void UART4_Data_Pasher(u8 u_Buf, u8 u_Index)
+   2267          {
+   2268          	if((u_Index == INDEX_NON) || (u_Index == INDEX_THERMAL))
+   2269          	{
+   2270          		TSM_Data_Pasher(u_Buf);
    2271          	}
-   2272          }
-   2273          
-   2274          // ============================================================================
-   2275          // USART3 : UART4 Data Pasher (TSM)
-   2276          // ============================================================================
-   2277          void UART4_Data_Pasher(u8 u_Buf, u8 u_Index)
-   2278          {
-   2279          	if((u_Index == INDEX_NON) || (u_Index == INDEX_THERMAL))
-   2280          	{
-   2281          		TSM_Data_Pasher(u_Buf);
-   2282          	}
-   2283          
-   2284          	if((u_Index == INDEX_NON) || (u_Index == INDEX_COLOR))
-   2285          	{
-   2286          		SONY_Data_Pasher(u_Buf);
-   2287          	}
-   2288          }
-   2289          
-   2290          /*******************************************************************************
-   2291          * Function Name  : UART4_IRQHandler
-   2292          * Description    : This function handles UART4 interrupt request.
-   2293          * Input           : - PC11 UART4_RX
-   2294          * Output         : - PC10 UART4_TX
-   2295          *******************************************************************************/
-   2296          void UART4_IRQHandler(void)
-   2297          {
-   2298          	u8 Rx_Buf = 0x00, Tx_Buf = 0x00;	
-   2299          
-   2300            	// =======================================
-   2301            	// USART4 TX Process 
-   2302            	// =======================================
-   2303          	if (USART_GetITStatus(UART4, USART_IT_TC) != RESET)
-   2304          	{
-   2305          		if(stUART4.TX_CNT < stUART4.TX_MAX)
-   2306          		{
-   2307          			Tx_Buf = stUART4.TX_BUF[stUART4.TX_CNT];
-   2308          			stUART4.TX_CNT++;				
-   2309          
-   2310          			USART_SendData(UART4, Tx_Buf);
-   2311          		}
-   2312          		else
-   2313          		{
-   2314          			stUART4.TX_CNT = 0x00;
-   2315          			stUART4.TX_MAX = 0x00;
-   2316          		}
+   2272          
+   2273          	if((u_Index == INDEX_NON) || (u_Index == INDEX_COLOR))
+   2274          	{
+   2275          		SONY_Data_Pasher(u_Buf);
+   2276          	}
+   2277          }
+   2278          
+   2279          /*******************************************************************************
+   2280          * Function Name  : UART4_IRQHandler
+   2281          * Description    : This function handles UART4 interrupt request.
+   2282          * Input           : - PC11 UART4_RX
+   2283          * Output         : - PC10 UART4_TX
+   2284          *******************************************************************************/
+   2285          void UART4_IRQHandler(void)
+   2286          {
+   2287          	u8 Rx_Buf = 0x00, Tx_Buf = 0x00;	
+   2288          
+   2289            	// =======================================
+   2290            	// USART4 TX Process 
+   2291            	// =======================================
+   2292          	if (USART_GetITStatus(UART4, USART_IT_TC) != RESET)
+   2293          	{
+   2294          		if(stUART4.TX_CNT < stUART4.TX_MAX)
+   2295          		{
+   2296          			Tx_Buf = stUART4.TX_BUF[stUART4.TX_CNT];
+   2297          			stUART4.TX_CNT++;				
+   2298          
+   2299          			USART_SendData(UART4, Tx_Buf);
+   2300          		}
+   2301          		else
+   2302          		{
+   2303          			stUART4.TX_CNT = 0x00;
+   2304          			stUART4.TX_MAX = 0x00;
+   2305          		}
+   2306          
+   2307          		USART_ClearITPendingBit(UART4, USART_IT_TC);
+   2308          	}
+   2309          	
+   2310            	// =======================================
+   2311            	// USART4 RX Process
+   2312            	// =======================================
+   2313          
+   2314          	if (USART_GetITStatus(UART4, USART_IT_RXNE) != RESET)
+   2315          	{
+   2316          		Rx_Buf = USART_ReceiveData(UART4);
    2317          
-   2318          		USART_ClearITPendingBit(UART4, USART_IT_TC);
+   2318          		UART4_Data_Pasher(Rx_Buf, stINFO.MODULE_TYPE);
    2319          	}
-   2320          	
-   2321            	// =======================================
-   2322            	// USART4 RX Process
-   2323            	// =======================================
-   2324          
-   2325          	if (USART_GetITStatus(UART4, USART_IT_RXNE) != RESET)
-   2326          	{
-   2327          		Rx_Buf = USART_ReceiveData(UART4);
-   2328          
-   2329          		UART4_Data_Pasher(Rx_Buf, stINFO.MODULE_TYPE);
-   2330          	}
-   2331          }
-   2332          
-   2333          /*******************************************************************************
-   2334          * Function Name  : Rx_Second_Comm_Check
-   2335          *******************************************************************************/
-   2336          void Rx_Pelco_Address_Check(u8 u_buf)
-   2337          {
-   2338          	stUART5.RX_BUF[1] =  u_buf;
-   2339          	stUART5.RX_BUF_INDEX++;
-   2340          	stUART5.RX_BUF_LENGTH = 0x01;
-   2341          }
-   2342          
-   2343          /*******************************************************************************
-   2344          * Function Name  : Rx_Pelco_Data_Check
-   2345          *******************************************************************************/
-   2346          void Rx_Pelco_Data_Check(void)
-   2347          {
-   2348          	u8 i = 0x00, u_Checksum = 0x00;
-   2349          
-   2350          	for(i=1; i<6; i++)
-   2351          	{
-   2352          		u_Checksum += stUART5.RX_BUF[i];
-   2353          	}
-   2354          	
-   2355          	if((stUART5.RX_BUF[6] & 0xFF) == u_Checksum)		// CheckSum Check
-   2356          	{
-   2357          		stUART5.RX_PARITY = 0x01;	// 정상 데이터 수신 (0x00: Nondata(수신대기), 0x01: 정상데이터, 0xFF, 비정상 데이터)
-   2358          		stUART5.RX_PARITY_CNT++;
-   2359          		
-   2360          		// DEBUG 데이터 체크 ======================================================/
-   2361          		//stERROR.PARITY_CNT_CHECK++;
-   2362          		//if(stERROR.PARITY_CNT_CHECK == 0x01) stERROR.TIMER_CHECK_FLAG = 0x01;
-   2363          		//if(stERROR.PARITY_CNT_CHECK == 0x02) stERROR.TIMER_CHECK_FLAG = 0x00;
-   2364          		// DEBUG 데이터 체크 ===================================================END/
-   2365          		//if(stUSART1.RX_PRIORITY == 0x00) stUSART1.RX_PRIORITY = 0x01;
-   2366          		
-   2367          		stUART5.RX_BUF_INDEX = 0x00;	// Index Init
-   2368          		//stUSART1.RX_BUF[stUSART1.RX_BUF_INDEX] = stUSART1.RX_PRIORITY++;
-   2369          	}
-   2370          	else
-   2371          	{
-   2372          		stUART5.RX_PARITY = 0xFF;	// 비정상 데이터 수신 (0x00: Nondata(수신대기), 0x01: 정상데이터, 0xFF, 비정상 데이터)
-   2373          		stUART5.RX_ERROR_CNT++;
-   2374          	}			
-   2375          }
-   2376          
-   2377          /*******************************************************************************
-   2378          * Function Name  : Rx_Second_Comm_Check
-   2379          *******************************************************************************/
-   2380          void Rx_Second_Comm_Check(u8 u_buf, u8 u_andbyte)
-   2381          {
-   2382          	if(u_buf == u_andbyte)
-   2383          	{
-   2384          		stUART5.RX_BUF[1] =  u_buf;
-   2385          		stUART5.RX_BUF_INDEX++;
-   2386          		stUART5.RX_BUF_LENGTH = 0x01;
-   2387          	}
-   2388          	else
-   2389          	{
-   2390          		stUART5.RX_BUF_INDEX = 0x00;					// Index Clear
-   2391          		stUART5.RX_BUF[0] = 0x00;						// Buffer Clear
-   2392          		stUART5.RX_ENABLE = 0x00;						// Command Check Byte Clear
-   2393          	}	
-   2394          }
-   2395          
-   2396          /*******************************************************************************
-   2397          * Function Name  : Rx_Usart_Comm_Handling
-   2398          *******************************************************************************/
-   2399          void Rx_Usart_Comm_Handling(u8 u_sync, u8 u_buf)	// u_port : Uart Port, u_sync : Sync Byte Check (0 : First Byte, 1 : Second Byte)
-   2400          {
-   2401          	// 첫번째 바이트 체크 (Sync Byte Check)
-   2402          	if(u_sync == Rx_SYNC_BYTE)	
-   2403          	{
-   2404          		stUART5.RX_BUF_INDEX = 0x00;	// Index Init
-   2405          		stUART5.RX_BUF[stUART5.RX_BUF_INDEX] = u_buf;
-   2406          		stUART5.RX_BUF_INDEX++;
-   2407          		
-   2408          		#if(ERROR_CHECK_BUF)
-   2409          		stERROR.RX_BUF[stERROR.RX_CNT++] = u_buf;
-   2410          		if(stERROR.RX_CNT >= ERROR_DATA_MAX) stERROR.RX_CNT = 0;
-   2411          		#endif
-   2412          	}
-   2413          
-   2414          	// 두번째 바이트 체크 (Sync & Byte Check)
-   2415          	if(u_sync == Rx_SYNC_AND_BYTE)
-   2416          	{
-   2417          		#if(ERROR_CHECK_BUF)	
-   2418          		stERROR.RX_BUF[stERROR.RX_CNT++] = u_buf;
-   2419          		if(stERROR.RX_CNT >= ERROR_DATA_MAX) stERROR.RX_CNT = 0;
-   2420          		#endif		
-   2421          		
-   2422          		// 두번째 명령어 체크 (Sync & Byte Check)
-   2423          		if(stUART5.RX_BUF_INDEX == 0x01)
-   2424          		{
-   2425          			switch(stUART5.RX_ENABLE)
-   2426          			{
-   2427          				case IP_SONY_SECOND_BYTE:
-   2428          					Rx_Second_Comm_Check(u_buf, IP_SONY_SECOND_BYTE);
-   2429          					break;
-   2430          
-   2431          				case IP_TSM_SECOND_BYTE:
-   2432          					Rx_Second_Comm_Check(u_buf, IP_TSM_SECOND_BYTE);
-   2433          					break;
-   2434          
-   2435          				case IP_DRS_SECOND_BYTE:
-   2436          					Rx_Second_Comm_Check(u_buf, IP_DRS_SECOND_BYTE);
-   2437          					break;
-   2438          
-   2439          				case IP_TCM_SECOND_BYTE:
-   2440          					Rx_Second_Comm_Check(u_buf, IP_TCM_SECOND_BYTE);
-   2441          					break;
-   2442          					
-   2443          				case IP_PTZ_SECOND_BYTE:
-   2444          					Rx_Second_Comm_Check(u_buf, IP_PTZ_SECOND_BYTE);
-   2445          					break;
-   2446          
-   2447          				case IP_DATA_SECOND_BYTE:
-   2448          					Rx_Second_Comm_Check(u_buf, IP_DATA_SECOND_BYTE);
-   2449          					break;	
-   2450          
-   2451          				case IP_OPTION_SECOND_BYTE:
-   2452          					Rx_Second_Comm_Check(u_buf, IP_OPTION_SECOND_BYTE);
-   2453          					break;		
-   2454          
-   2455          				case IP_PELCO_CHK_BYTE:
-   2456          					Rx_Pelco_Address_Check(u_buf);
-   2457          					break;
-   2458          
-   2459          				default:
-   2460          					break;
-   2461          			}
-   2462          		}	
-   2463          	}
-   2464          
-   2465          	// 세번째 바이트 체크 (Data Length)
-   2466          	if(u_sync == Rx_LENGTH_BYTE)
-   2467          	{
-   2468          		#if(ERROR_CHECK_BUF)	
-   2469          		stERROR.RX_BUF[stERROR.RX_CNT++] = u_buf;
-   2470          		if(stERROR.RX_CNT >= ERROR_DATA_MAX) stERROR.RX_CNT = 0;
-   2471          		#endif
-   2472          		
-   2473          		if(stUART5.RX_ENABLE == IP_PELCO_CHK_BYTE)
-   2474          		{
-   2475          			// PELCO-D Command 예외처리
-   2476          			if(stUART5.RX_BUF_INDEX == 0x02)
-   2477          			{
-   2478          				stUART5.RX_BUF_LENGTH = 0x02;
-   2479          				stUART5.RX_BUF_MAX = stUART5.RX_BUF_LENGTH + 5;
-   2480          				
-   2481          				stUART5.RX_BUF[2] =  u_buf;
+   2320          }
+   2321          
+   2322          /*******************************************************************************
+   2323          * Function Name  : Rx_Second_Comm_Check
+   2324          *******************************************************************************/
+   2325          void Rx_Pelco_Address_Check(u8 u_buf)
+   2326          {
+   2327          	stUART5.RX_BUF[1] =  u_buf;
+   2328          	stUART5.RX_BUF_INDEX++;
+   2329          	stUART5.RX_BUF_LENGTH = 0x01;
+   2330          }
+   2331          
+   2332          /*******************************************************************************
+   2333          * Function Name  : Rx_Pelco_Data_Check
+   2334          *******************************************************************************/
+   2335          void Rx_Pelco_Data_Check(void)
+   2336          {
+   2337          	u8 i = 0x00, u_Checksum = 0x00;
+   2338          
+   2339          	for(i=1; i<6; i++)
+   2340          	{
+   2341          		u_Checksum += stUART5.RX_BUF[i];
+   2342          	}
+   2343          	
+   2344          	if((stUART5.RX_BUF[6] & 0xFF) == u_Checksum)		// CheckSum Check
+   2345          	{
+   2346          		stUART5.RX_PARITY = 0x01;	// 정상 데이터 수신 (0x00: Nondata(수신대기), 0x01: 정상데이터, 0xFF, 비정상 데이터)
+   2347          		stUART5.RX_PARITY_CNT++;
+   2348          		
+   2349          		// DEBUG 데이터 체크 ======================================================/
+   2350          		//stERROR.PARITY_CNT_CHECK++;
+   2351          		//if(stERROR.PARITY_CNT_CHECK == 0x01) stERROR.TIMER_CHECK_FLAG = 0x01;
+   2352          		//if(stERROR.PARITY_CNT_CHECK == 0x02) stERROR.TIMER_CHECK_FLAG = 0x00;
+   2353          		// DEBUG 데이터 체크 ===================================================END/
+   2354          		//if(stUSART1.RX_PRIORITY == 0x00) stUSART1.RX_PRIORITY = 0x01;
+   2355          		
+   2356          		stUART5.RX_BUF_INDEX = 0x00;	// Index Init
+   2357          		//stUSART1.RX_BUF[stUSART1.RX_BUF_INDEX] = stUSART1.RX_PRIORITY++;
+   2358          	}
+   2359          	else
+   2360          	{
+   2361          		stUART5.RX_PARITY = 0xFF;	// 비정상 데이터 수신 (0x00: Nondata(수신대기), 0x01: 정상데이터, 0xFF, 비정상 데이터)
+   2362          		stUART5.RX_ERROR_CNT++;
+   2363          	}			
+   2364          }
+   2365          
+   2366          /*******************************************************************************
+   2367          * Function Name  : Rx_Second_Comm_Check
+   2368          *******************************************************************************/
+   2369          void Rx_Second_Comm_Check(u8 u_buf, u8 u_andbyte)
+   2370          {
+   2371          	if(u_buf == u_andbyte)
+   2372          	{
+   2373          		stUART5.RX_BUF[1] =  u_buf;
+   2374          		stUART5.RX_BUF_INDEX++;
+   2375          		stUART5.RX_BUF_LENGTH = 0x01;
+   2376          	}
+   2377          	else
+   2378          	{
+   2379          		stUART5.RX_BUF_INDEX = 0x00;					// Index Clear
+   2380          		stUART5.RX_BUF[0] = 0x00;						// Buffer Clear
+   2381          		stUART5.RX_ENABLE = 0x00;						// Command Check Byte Clear
+   2382          	}	
+   2383          }
+   2384          
+   2385          /*******************************************************************************
+   2386          * Function Name  : Rx_Usart_Comm_Handling
+   2387          *******************************************************************************/
+   2388          void Rx_Usart_Comm_Handling(u8 u_sync, u8 u_buf)	// u_port : Uart Port, u_sync : Sync Byte Check (0 : First Byte, 1 : Second Byte)
+   2389          {
+   2390          	// 첫번째 바이트 체크 (Sync Byte Check)
+   2391          	if(u_sync == Rx_SYNC_BYTE)	
+   2392          	{
+   2393          		stUART5.RX_BUF_INDEX = 0x00;	// Index Init
+   2394          		stUART5.RX_BUF[stUART5.RX_BUF_INDEX] = u_buf;
+   2395          		stUART5.RX_BUF_INDEX++;
+   2396          		
+   2397          		#if(ERROR_CHECK_BUF)
+   2398          		stERROR.RX_BUF[stERROR.RX_CNT++] = u_buf;
+   2399          		if(stERROR.RX_CNT >= ERROR_DATA_MAX) stERROR.RX_CNT = 0;
+   2400          		#endif
+   2401          	}
+   2402          
+   2403          	// 두번째 바이트 체크 (Sync & Byte Check)
+   2404          	if(u_sync == Rx_SYNC_AND_BYTE)
+   2405          	{
+   2406          		#if(ERROR_CHECK_BUF)	
+   2407          		stERROR.RX_BUF[stERROR.RX_CNT++] = u_buf;
+   2408          		if(stERROR.RX_CNT >= ERROR_DATA_MAX) stERROR.RX_CNT = 0;
+   2409          		#endif		
+   2410          		
+   2411          		// 두번째 명령어 체크 (Sync & Byte Check)
+   2412          		if(stUART5.RX_BUF_INDEX == 0x01)
+   2413          		{
+   2414          			switch(stUART5.RX_ENABLE)
+   2415          			{
+   2416          				case IP_SONY_SECOND_BYTE:
+   2417          					Rx_Second_Comm_Check(u_buf, IP_SONY_SECOND_BYTE);
+   2418          					break;
+   2419          
+   2420          				case IP_TSM_SECOND_BYTE:
+   2421          					Rx_Second_Comm_Check(u_buf, IP_TSM_SECOND_BYTE);
+   2422          					break;
+   2423          
+   2424          				case IP_DRS_SECOND_BYTE:
+   2425          					Rx_Second_Comm_Check(u_buf, IP_DRS_SECOND_BYTE);
+   2426          					break;
+   2427          
+   2428          				case IP_TCM_SECOND_BYTE:
+   2429          					Rx_Second_Comm_Check(u_buf, IP_TCM_SECOND_BYTE);
+   2430          					break;
+   2431          					
+   2432          				case IP_PTZ_SECOND_BYTE:
+   2433          					Rx_Second_Comm_Check(u_buf, IP_PTZ_SECOND_BYTE);
+   2434          					break;
+   2435          
+   2436          				case IP_DATA_SECOND_BYTE:
+   2437          					Rx_Second_Comm_Check(u_buf, IP_DATA_SECOND_BYTE);
+   2438          					break;	
+   2439          
+   2440          				case IP_OPTION_SECOND_BYTE:
+   2441          					Rx_Second_Comm_Check(u_buf, IP_OPTION_SECOND_BYTE);
+   2442          					break;		
+   2443          
+   2444          				case IP_PELCO_CHK_BYTE:
+   2445          					Rx_Pelco_Address_Check(u_buf);
+   2446          					break;
+   2447          
+   2448          				default:
+   2449          					break;
+   2450          			}
+   2451          		}	
+   2452          	}
+   2453          
+   2454          	// 세번째 바이트 체크 (Data Length)
+   2455          	if(u_sync == Rx_LENGTH_BYTE)
+   2456          	{
+   2457          		#if(ERROR_CHECK_BUF)	
+   2458          		stERROR.RX_BUF[stERROR.RX_CNT++] = u_buf;
+   2459          		if(stERROR.RX_CNT >= ERROR_DATA_MAX) stERROR.RX_CNT = 0;
+   2460          		#endif
+   2461          		
+   2462          		if(stUART5.RX_ENABLE == IP_PELCO_CHK_BYTE)
+   2463          		{
+   2464          			// PELCO-D Command 예외처리
+   2465          			if(stUART5.RX_BUF_INDEX == 0x02)
+   2466          			{
+   2467          				stUART5.RX_BUF_LENGTH = 0x02;
+   2468          				stUART5.RX_BUF_MAX = stUART5.RX_BUF_LENGTH + 5;
+   2469          				
+   2470          				stUART5.RX_BUF[2] =  u_buf;
+   2471          				
+   2472          				stUART5.RX_BUF_INDEX++;
+   2473          			}					
+   2474          		}
+   2475          		else
+   2476          		{
+   2477          			// 세번째 데이터 길이 체크 (Sync & Byte Check)
+   2478          			if(stUART5.RX_BUF_INDEX == 0x02)
+   2479          			{
+   2480          				stUART5.RX_BUF_LENGTH = u_buf;
+   2481          				stUART5.RX_BUF_MAX = stUART5.RX_BUF_LENGTH + 5;
    2482          				
-   2483          				stUART5.RX_BUF_INDEX++;
-   2484          			}					
-   2485          		}
-   2486          		else
-   2487          		{
-   2488          			// 세번째 데이터 길이 체크 (Sync & Byte Check)
-   2489          			if(stUART5.RX_BUF_INDEX == 0x02)
-   2490          			{
-   2491          				stUART5.RX_BUF_LENGTH = u_buf;
-   2492          				stUART5.RX_BUF_MAX = stUART5.RX_BUF_LENGTH + 5;
-   2493          				
-   2494          				stUART5.RX_BUF[2] =  u_buf;
-   2495          				
-   2496          				stUART5.RX_BUF_INDEX++;
-   2497          			}
-   2498          		}
-   2499          	}	
-   2500          
-   2501          	// 데이터 누적
-   2502          	if(u_sync == Rx_DATA_BYTE)
-   2503          	{
-   2504          		#if(ERROR_CHECK_BUF)
-   2505          		stERROR.RX_BUF[stERROR.RX_CNT++] = u_buf;
-   2506          		if(stERROR.RX_CNT >= ERROR_DATA_MAX) stERROR.RX_CNT = 0;
-   2507          		#endif		
-   2508          		
-   2509          		stUART5.RX_BUF[stUART5.RX_BUF_INDEX] = u_buf;
-   2510          
-   2511          		stUART5.RX_BUF_INDEX++;	
-   2512          		
-   2513          		if(stUART5.RX_BUF_INDEX == stUART5.RX_BUF_MAX)
-   2514          		{
-   2515          			// PELCO-D Command 예외처리
-   2516          			if(stUART5.RX_ENABLE == IP_PELCO_CHK_BYTE)
-   2517          			{
-   2518          				Rx_Pelco_Data_Check();
-   2519          			}
-   2520          			else
-   2521          			{
-   2522          				if((stUART5.RX_BUF[stUART5.RX_BUF_INDEX - 1]&0x0F) == 0x0F)		// End Byte Check
-   2523          				{
-   2524          					stUART5.RX_PARITY = 0x01;	// 정상 데이터 수신 (0x00: Nondata(수신대기), 0x01: 정상데이터, 0xFF, 비정상 데이터)
-   2525          					stUART5.RX_PARITY_CNT++;
-   2526          
-   2527          					// DEBUG 데이터 체크 ======================================================/
-   2528          					//stERROR.PARITY_CNT_CHECK++;
-   2529          					//if(stERROR.PARITY_CNT_CHECK == 0x01) stERROR.TIMER_CHECK_FLAG = 0x01;
-   2530          					//if(stERROR.PARITY_CNT_CHECK == 0x02) stERROR.TIMER_CHECK_FLAG = 0x00;
-   2531          					// DEBUG 데이터 체크 ===================================================END/
-   2532          					
-   2533          					//if(stUSART1.RX_PRIORITY == 0x00) stUSART1.RX_PRIORITY = 0x01;
-   2534          					
-   2535          					stUART5.RX_BUF_INDEX = 0x00;	// Index Init
-   2536          					//stUSART1.RX_BUF[stUSART1.RX_BUF_INDEX] = stUSART1.RX_PRIORITY++;
-   2537          				}
-   2538          				else
-   2539          				{
-   2540          					stUART5.RX_PARITY = 0xFF;	// 비정상 데이터 수신 (0x00: Nondata(수신대기), 0x01: 정상데이터, 0xFF, 비정상 데이터)
-   2541          					stUART5.RX_ERROR_CNT++;
-   2542          				}
-   2543          			}
-   2544          			
-   2545          			stUART5.RX_BUF_INDEX = 0x00;
-   2546          			stUART5.RX_BUF_LENGTH = 0x00;
-   2547          			
-   2548          			stUART5.RX_ENABLE = 0x00;
-   2549          		}
-   2550          	}		
-   2551          }
-   2552          
-   2553          /*******************************************************************************
-   2554          * Function Name  : Protocol_Command_Check
-   2555          * Description    : This function handles UART5 interrupt request.
-   2556          * Input           : TILT <-> Thermal IP Board (- PA10 UART5_RX)
-   2557          * Output         : TILT <-> Thermal IP Board (- PA9 UART5_TX)
-   2558          *******************************************************************************/
-   2559          void Protocol_Command_Check(u8 u_buf)
-   2560          {
-   2561          	u8 u_Index_Chk = 0;
-   2562          
-   2563          	if(stUART5.RX_ENABLE == 0x00)
-   2564          	{
-   2565          		// 첫번째 바이트 체크 (Sync Byte Check)
-   2566          		switch(u_buf)
-   2567          		{
-   2568          			case IP_SONY_FIRST_BYTE:
-   2569          				Rx_Usart_Comm_Handling(Rx_SYNC_BYTE, IP_SONY_FIRST_BYTE);
-   2570          				stUART5.RX_ENABLE = IP_SONY_SECOND_BYTE;
-   2571          				break;
-   2572          
-   2573          			case IP_TSM_FIRST_BYTE:
-   2574          				Rx_Usart_Comm_Handling(Rx_SYNC_BYTE, IP_TSM_FIRST_BYTE);
-   2575          				stUART5.RX_ENABLE = IP_TSM_SECOND_BYTE;
-   2576          				break;
-   2577          
-   2578          			case IP_DRS_FIRST_BYTE:
-   2579          				Rx_Usart_Comm_Handling(Rx_SYNC_BYTE, IP_DRS_FIRST_BYTE);
-   2580          				stUART5.RX_ENABLE = IP_DRS_SECOND_BYTE;
-   2581          				break;
-   2582          
-   2583          			case IP_TCM_FIRST_BYTE:
-   2584          				Rx_Usart_Comm_Handling(Rx_SYNC_BYTE, IP_TCM_FIRST_BYTE);
-   2585          				stUART5.RX_ENABLE = IP_TCM_SECOND_BYTE;
-   2586          				break;
-   2587          
-   2588          			case IP_PTZ_FIRST_BYTE:
-   2589          				Rx_Usart_Comm_Handling(Rx_SYNC_BYTE, IP_PTZ_FIRST_BYTE);
-   2590          				stUART5.RX_ENABLE = IP_PTZ_SECOND_BYTE;
-   2591          				break;
-   2592          
-   2593          			case IP_DATA_FIRST_BYTE:
-   2594          				Rx_Usart_Comm_Handling(Rx_SYNC_BYTE, IP_DATA_FIRST_BYTE);
-   2595          				stUART5.RX_ENABLE = IP_DATA_SECOND_BYTE;
-   2596          				break;
-   2597          
-   2598          			case IP_OPTION_FIRST_BYTE:
-   2599          				Rx_Usart_Comm_Handling(Rx_SYNC_BYTE, IP_OPTION_FIRST_BYTE);
-   2600          				stUART5.RX_ENABLE = IP_OPTION_SECOND_BYTE;
-   2601          				break;
-   2602          
-   2603          			case IP_PELCO_CHK_BYTE:
-   2604          				Rx_Usart_Comm_Handling(Rx_SYNC_BYTE, IP_PELCO_CHK_BYTE);
-   2605          				stUART5.RX_ENABLE = IP_PELCO_CHK_BYTE;
-   2606          				break;	
-   2607          
-   2608          			default:
-   2609          				break;
-   2610          		}
-   2611          	}
-   2612          	else
-   2613          	{
-   2614          		if(stUART5.RX_BUF_LENGTH == 0x00) u_Index_Chk = Rx_SYNC_AND_BYTE;
-   2615          		else 
-   2616          		{
-   2617          			if(stUART5.RX_BUF_INDEX >= 0x03)
-   2618          			{
-   2619          				u_Index_Chk = Rx_DATA_BYTE;
-   2620          			}
-   2621          			else
-   2622          			{
-   2623          				if(stUART5.RX_STATUS == 0x00)
-   2624          				{
-   2625          					u_Index_Chk = Rx_LENGTH_BYTE;
-   2626          				}
-   2627          			}
-   2628          		}
-   2629          
-   2630          		// 두번째, 세번째 바이트 체크 (Rx_SYNC_AND_BYTE : Sync & Byte Check, Rx_LENGTH_BYTE : Length Check)
-   2631          		Rx_Usart_Comm_Handling(u_Index_Chk, u_buf);
-   2632          	}
-   2633          }
-   2634          
-   2635          /*******************************************************************************
-   2636          * Function Name  : UART5_IRQHandler
-   2637          * Description    : This function handles UART5 interrupt request.
-   2638          * Input           : IP Board - PD2 USART5_RX
-   2639          * Output         : IP Board - PC12 USART5_TX
-   2640          *******************************************************************************/
-   2641          void UART5_IRQHandler(void)
-   2642          {
-   2643          	u8 Rx_Buf = 0x00, Tx_Buf = 0x00;	
+   2483          				stUART5.RX_BUF[2] =  u_buf;
+   2484          				
+   2485          				stUART5.RX_BUF_INDEX++;
+   2486          			}
+   2487          		}
+   2488          	}	
+   2489          
+   2490          	// 데이터 누적
+   2491          	if(u_sync == Rx_DATA_BYTE)
+   2492          	{
+   2493          		#if(ERROR_CHECK_BUF)
+   2494          		stERROR.RX_BUF[stERROR.RX_CNT++] = u_buf;
+   2495          		if(stERROR.RX_CNT >= ERROR_DATA_MAX) stERROR.RX_CNT = 0;
+   2496          		#endif		
+   2497          		
+   2498          		stUART5.RX_BUF[stUART5.RX_BUF_INDEX] = u_buf;
+   2499          
+   2500          		stUART5.RX_BUF_INDEX++;	
+   2501          		
+   2502          		if(stUART5.RX_BUF_INDEX == stUART5.RX_BUF_MAX)
+   2503          		{
+   2504          			// PELCO-D Command 예외처리
+   2505          			if(stUART5.RX_ENABLE == IP_PELCO_CHK_BYTE)
+   2506          			{
+   2507          				Rx_Pelco_Data_Check();
+   2508          			}
+   2509          			else
+   2510          			{
+   2511          				if((stUART5.RX_BUF[stUART5.RX_BUF_INDEX - 1]&0x0F) == 0x0F)		// End Byte Check
+   2512          				{
+   2513          					stUART5.RX_PARITY = 0x01;	// 정상 데이터 수신 (0x00: Nondata(수신대기), 0x01: 정상데이터, 0xFF, 비정상 데이터)
+   2514          					stUART5.RX_PARITY_CNT++;
+   2515          
+   2516          					// DEBUG 데이터 체크 ======================================================/
+   2517          					//stERROR.PARITY_CNT_CHECK++;
+   2518          					//if(stERROR.PARITY_CNT_CHECK == 0x01) stERROR.TIMER_CHECK_FLAG = 0x01;
+   2519          					//if(stERROR.PARITY_CNT_CHECK == 0x02) stERROR.TIMER_CHECK_FLAG = 0x00;
+   2520          					// DEBUG 데이터 체크 ===================================================END/
+   2521          					
+   2522          					//if(stUSART1.RX_PRIORITY == 0x00) stUSART1.RX_PRIORITY = 0x01;
+   2523          					
+   2524          					stUART5.RX_BUF_INDEX = 0x00;	// Index Init
+   2525          					//stUSART1.RX_BUF[stUSART1.RX_BUF_INDEX] = stUSART1.RX_PRIORITY++;
+   2526          				}
+   2527          				else
+   2528          				{
+   2529          					stUART5.RX_PARITY = 0xFF;	// 비정상 데이터 수신 (0x00: Nondata(수신대기), 0x01: 정상데이터, 0xFF, 비정상 데이터)
+   2530          					stUART5.RX_ERROR_CNT++;
+   2531          				}
+   2532          			}
+   2533          			
+   2534          			stUART5.RX_BUF_INDEX = 0x00;
+   2535          			stUART5.RX_BUF_LENGTH = 0x00;
+   2536          			
+   2537          			stUART5.RX_ENABLE = 0x00;
+   2538          		}
+   2539          	}		
+   2540          }
+   2541          
+   2542          /*******************************************************************************
+   2543          * Function Name  : Protocol_Command_Check
+   2544          * Description    : This function handles UART5 interrupt request.
+   2545          * Input           : TILT <-> Thermal IP Board (- PA10 UART5_RX)
+   2546          * Output         : TILT <-> Thermal IP Board (- PA9 UART5_TX)
+   2547          *******************************************************************************/
+   2548          void Protocol_Command_Check(u8 u_buf)
+   2549          {
+   2550          	u8 u_Index_Chk = 0;
+   2551          
+   2552          	if(stUART5.RX_ENABLE == 0x00)
+   2553          	{
+   2554          		// 첫번째 바이트 체크 (Sync Byte Check)
+   2555          		switch(u_buf)
+   2556          		{
+   2557          			case IP_SONY_FIRST_BYTE:
+   2558          				Rx_Usart_Comm_Handling(Rx_SYNC_BYTE, IP_SONY_FIRST_BYTE);
+   2559          				stUART5.RX_ENABLE = IP_SONY_SECOND_BYTE;
+   2560          				break;
+   2561          
+   2562          			case IP_TSM_FIRST_BYTE:
+   2563          				Rx_Usart_Comm_Handling(Rx_SYNC_BYTE, IP_TSM_FIRST_BYTE);
+   2564          				stUART5.RX_ENABLE = IP_TSM_SECOND_BYTE;
+   2565          				break;
+   2566          
+   2567          			case IP_DRS_FIRST_BYTE:
+   2568          				Rx_Usart_Comm_Handling(Rx_SYNC_BYTE, IP_DRS_FIRST_BYTE);
+   2569          				stUART5.RX_ENABLE = IP_DRS_SECOND_BYTE;
+   2570          				break;
+   2571          
+   2572          			case IP_TCM_FIRST_BYTE:
+   2573          				Rx_Usart_Comm_Handling(Rx_SYNC_BYTE, IP_TCM_FIRST_BYTE);
+   2574          				stUART5.RX_ENABLE = IP_TCM_SECOND_BYTE;
+   2575          				break;
+   2576          
+   2577          			case IP_PTZ_FIRST_BYTE:
+   2578          				Rx_Usart_Comm_Handling(Rx_SYNC_BYTE, IP_PTZ_FIRST_BYTE);
+   2579          				stUART5.RX_ENABLE = IP_PTZ_SECOND_BYTE;
+   2580          				break;
+   2581          
+   2582          			case IP_DATA_FIRST_BYTE:
+   2583          				Rx_Usart_Comm_Handling(Rx_SYNC_BYTE, IP_DATA_FIRST_BYTE);
+   2584          				stUART5.RX_ENABLE = IP_DATA_SECOND_BYTE;
+   2585          				break;
+   2586          
+   2587          			case IP_OPTION_FIRST_BYTE:
+   2588          				Rx_Usart_Comm_Handling(Rx_SYNC_BYTE, IP_OPTION_FIRST_BYTE);
+   2589          				stUART5.RX_ENABLE = IP_OPTION_SECOND_BYTE;
+   2590          				break;
+   2591          
+   2592          			case IP_PELCO_CHK_BYTE:
+   2593          				Rx_Usart_Comm_Handling(Rx_SYNC_BYTE, IP_PELCO_CHK_BYTE);
+   2594          				stUART5.RX_ENABLE = IP_PELCO_CHK_BYTE;
+   2595          				break;	
+   2596          
+   2597          			default:
+   2598          				break;
+   2599          		}
+   2600          	}
+   2601          	else
+   2602          	{
+   2603          		if(stUART5.RX_BUF_LENGTH == 0x00) u_Index_Chk = Rx_SYNC_AND_BYTE;
+   2604          		else 
+   2605          		{
+   2606          			if(stUART5.RX_BUF_INDEX >= 0x03)
+   2607          			{
+   2608          				u_Index_Chk = Rx_DATA_BYTE;
+   2609          			}
+   2610          			else
+   2611          			{
+   2612          				if(stUART5.RX_STATUS == 0x00)
+   2613          				{
+   2614          					u_Index_Chk = Rx_LENGTH_BYTE;
+   2615          				}
+   2616          			}
+   2617          		}
+   2618          
+   2619          		// 두번째, 세번째 바이트 체크 (Rx_SYNC_AND_BYTE : Sync & Byte Check, Rx_LENGTH_BYTE : Length Check)
+   2620          		Rx_Usart_Comm_Handling(u_Index_Chk, u_buf);
+   2621          	}
+   2622          }
+   2623          
+   2624          /*******************************************************************************
+   2625          * Function Name  : UART5_IRQHandler
+   2626          * Description    : This function handles UART5 interrupt request.
+   2627          * Input           : IP Board - PD2 USART5_RX
+   2628          * Output         : IP Board - PC12 USART5_TX
+   2629          *******************************************************************************/
+   2630          void UART5_IRQHandler(void)
+   2631          {
+   2632          	u8 Rx_Buf = 0x00, Tx_Buf = 0x00;	
+   2633          
+   2634            	// =======================================
+   2635            	// USART5 TX Process 
+   2636            	// =======================================
+   2637          	if (USART_GetITStatus(UART5, USART_IT_TC) != RESET)
+   2638          	{ 
+   2639          
+   2640          		if(stUART5.TX_CNT < stUART5.TX_MAX)
+   2641          		{
+   2642          			Tx_Buf = stUART5.TX_BUF[stUART5.TX_CNT];
+   2643          			stUART5.TX_CNT++;				
    2644          
-   2645            	// =======================================
-   2646            	// USART5 TX Process 
-   2647            	// =======================================
-   2648          	if (USART_GetITStatus(UART5, USART_IT_TC) != RESET)
-   2649          	{ 
-   2650          
-   2651          		if(stUART5.TX_CNT < stUART5.TX_MAX)
-   2652          		{
-   2653          			Tx_Buf = stUART5.TX_BUF[stUART5.TX_CNT];
-   2654          			stUART5.TX_CNT++;				
-   2655          
-   2656          			USART_SendData(UART5, Tx_Buf);
-   2657          		}
-   2658          		else
-   2659          		{
-   2660          			stUART5.TX_CNT = 0x00;
-   2661          			stUART5.TX_MAX = 0x00;
-   2662          		}
-   2663          		
-   2664          		USART_ClearITPendingBit(UART5, USART_IT_TC);
+   2645          			USART_SendData(UART5, Tx_Buf);
+   2646          		}
+   2647          		else
+   2648          		{
+   2649          			stUART5.TX_CNT = 0x00;
+   2650          			stUART5.TX_MAX = 0x00;
+   2651          		}
+   2652          		
+   2653          		USART_ClearITPendingBit(UART5, USART_IT_TC);
+   2654          	}
+   2655          	
+   2656            	// =======================================
+   2657            	// USART5RX Process
+   2658            	// =======================================
+   2659          
+   2660          	if (USART_GetITStatus(UART5, USART_IT_RXNE) != RESET)
+   2661          	{
+   2662          		Rx_Buf = USART_ReceiveData(UART5);
+   2663          
+   2664          		Protocol_Command_Check(Rx_Buf);
    2665          	}
-   2666          	
-   2667            	// =======================================
-   2668            	// USART5RX Process
-   2669            	// =======================================
+   2666          }
+   2667          
+   2668          
+   2669          /******************* (C) COPYRIGHT 2016 TBT System *****END OF FILE****/
    2670          
-   2671          	if (USART_GetITStatus(UART5, USART_IT_RXNE) != RESET)
-   2672          	{
-   2673          		Rx_Buf = USART_ReceiveData(UART5);
-   2674          
-   2675          		Protocol_Command_Check(Rx_Buf);
-   2676          	}
-   2677          }
-   2678          
-   2679          
-   2680          /******************* (C) COPYRIGHT 2016 TBT System *****END OF FILE****/
-   2681          
 
    Maximum stack usage in bytes:
 
@@ -2798,8 +2787,10 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\
         0  TIM1_UP_IRQHandler
         8  TIM2_IRQHandler
               8 -> GPIO_ReadInputDataBit
+              8 -> LED_On_Red
               8 -> TIM_ClearITPendingBit
               8 -> TIM_GetITStatus
+              8 -> delay
         8  TIM3_IRQHandler
               8 -> LED_Off_Green
               8 -> LED_On_Green
@@ -2856,7 +2847,6 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\
        4  ??DataTable14_1
        4  ??DataTable14_2
        4  ??DataTable14_3
-       4  ??DataTable14_4
        4  ??DataTable15
        4  ??DataTable18
        4  ??DataTable18_1
@@ -2932,7 +2922,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\
        2  TIM1_CC_IRQHandler
        2  TIM1_TRG_COM_IRQHandler
        2  TIM1_UP_IRQHandler
-     974  TIM2_IRQHandler
+     898  TIM2_IRQHandler
       36  TIM3_IRQHandler
       36  TIM4_IRQHandler
     1440  TSM_Data_Pasher
@@ -2950,10 +2940,10 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\Libraries\STM32F10x_StdPeriph_Driver\src\
 
  
      1 byte  in section .bss
- 7 552 bytes in section .text
+ 7 472 bytes in section .text
  
- 7 552 bytes of CODE memory
+ 7 472 bytes of CODE memory
      1 byte  of DATA memory
 
 Errors: none
-Warnings: 7
+Warnings: 8

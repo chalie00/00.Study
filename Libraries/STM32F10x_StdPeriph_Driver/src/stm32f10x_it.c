@@ -562,29 +562,18 @@ void TIM2_IRQHandler(void)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);	
 
-		// =======================================
-		// LED Control : 1s
-		// =======================================
-		stLED_SET.LED_COUNT++;
-		if(stLED_SET.LED_COUNT >= 100)
-		{
-			stLED_SET.LED_COUNT = 0;
-			stLED_SET.LED_FLAG ^= 0xFF;
-
-			//if(stLED_SET.LED_FLAG) LED1_ON;
-			//else LED1_OFF;
+		if(GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1) != RESET) {
+			LED_On_Red();
+			delay(1000);
 		}
+		
+		
 
-		if(stINFO.BOOT_FLAG == 0x01)
-		{
-			stINFO.BOOT_CHECK_LIMIT_ms++;
 
-			if(stINFO.BOOT_CHECK_LIMIT_ms >= 1000)
-			{
-				stINFO.BOOT_CHECK_LIMIT_ms = 0;
-				stINFO.BOOT_FLAG = 0x00;
-			}
-		}
+
+
+
+		
 
 		// ================================================================
 		// Wiper Sensor Check

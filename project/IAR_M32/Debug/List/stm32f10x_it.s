@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    20/Jul/2022  18:34:54 /
+// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    25/Jul/2022  18:01:38 /
 // Copyright 1999-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Cpu mode     =  thumb                                                   /
@@ -52,12 +52,12 @@
         EXTERN USART_GetITStatus
         EXTERN USART_ReceiveData
         EXTERN USART_SendData
+        EXTERN delay
         EXTERN i2cDelay_Decrement
         EXTERN stBYPASS
         EXTERN stDIP
         EXTERN stERROR
         EXTERN stINFO
-        EXTERN stLED_SET
         EXTERN stLRF
         EXTERN stSONY
         EXTERN stSYS
@@ -315,166 +315,136 @@ TIM2_IRQHandler:
         MOVS     R1,#+1
         MOVS     R0,#+1073741824
         BL       TIM_ClearITPendingBit
-        LDR.W    R0,??DataTable14
-        LDRB     R0,[R0, #+0]
-        ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable14
-        STRB     R0,[R1, #+0]
-        LDR.W    R0,??DataTable14
-        LDRB     R0,[R0, #+0]
-        CMP      R0,#+100
-        BCC.N    ??TIM2_IRQHandler_1
-        LDR.W    R0,??DataTable14
-        MOVS     R1,#+0
-        STRB     R1,[R0, #+0]
-        LDR.W    R0,??DataTable14
-        LDRB     R0,[R0, #+1]
-        EORS     R0,R0,#0xFF
-        LDR.W    R1,??DataTable14
-        STRB     R0,[R1, #+1]
+        MOVS     R1,#+2
+        LDR.W    R0,??DataTable14  ;; 0x40010800
+        BL       GPIO_ReadInputDataBit
+        CMP      R0,#+0
+        BEQ.N    ??TIM2_IRQHandler_1
+        BL       LED_On_Red
+        MOV      R0,#+1000
+        BL       delay
 ??TIM2_IRQHandler_1:
         LDR.W    R0,??DataTable14_1
-        LDRB     R0,[R0, #+0]
-        CMP      R0,#+1
-        BNE.N    ??TIM2_IRQHandler_2
-        LDR.W    R0,??DataTable14_1
-        LDR      R0,[R0, #+4]
-        ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable14_1
-        STR      R0,[R1, #+4]
-        LDR.W    R0,??DataTable14_1
-        LDR      R0,[R0, #+4]
-        MOV      R1,#+1000
-        CMP      R0,R1
-        BCC.N    ??TIM2_IRQHandler_2
-        LDR.W    R0,??DataTable14_1
-        MOVS     R1,#+0
-        STR      R1,[R0, #+4]
-        LDR.W    R0,??DataTable14_1
-        MOVS     R1,#+0
-        STRB     R1,[R0, #+0]
-??TIM2_IRQHandler_2:
-        LDR.W    R0,??DataTable14_2
         LDRB     R0,[R0, #+1]
         CMP      R0,#+0
-        BEQ.N    ??TIM2_IRQHandler_3
+        BEQ.N    ??TIM2_IRQHandler_2
         CMP      R0,#+1
-        BEQ.N    ??TIM2_IRQHandler_4
-        B.N      ??TIM2_IRQHandler_5
-??TIM2_IRQHandler_3:
+        BEQ.N    ??TIM2_IRQHandler_3
+        B.N      ??TIM2_IRQHandler_4
+??TIM2_IRQHandler_2:
         MOVS     R1,#+1
-        LDR.W    R0,??DataTable14_3  ;; 0x40011000
+        LDR.W    R0,??DataTable14_2  ;; 0x40011000
         BL       GPIO_ReadInputDataBit
         LDR.W    R1,??DataTable15
         STRB     R0,[R1, #+4]
         MOVS     R1,#+2
-        LDR.W    R0,??DataTable14_3  ;; 0x40011000
+        LDR.W    R0,??DataTable14_2  ;; 0x40011000
         BL       GPIO_ReadInputDataBit
         LDR.W    R1,??DataTable15
         STRB     R0,[R1, #+5]
-        B.N      ??TIM2_IRQHandler_6
-??TIM2_IRQHandler_4:
+        B.N      ??TIM2_IRQHandler_5
+??TIM2_IRQHandler_3:
         MOVS     R1,#+1
-        LDR.W    R0,??DataTable14_3  ;; 0x40011000
+        LDR.W    R0,??DataTable14_2  ;; 0x40011000
         BL       GPIO_ReadInputDataBit
         LDR.W    R1,??DataTable15
         STRB     R0,[R1, #+4]
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_3
         LDRB     R0,[R0, #+1]
         LDR.W    R1,??DataTable15
         LDRB     R1,[R1, #+4]
         CMP      R0,R1
-        BEQ.N    ??TIM2_IRQHandler_7
+        BEQ.N    ??TIM2_IRQHandler_6
         LDR.W    R0,??DataTable15
         LDRB     R0,[R0, #+4]
         CMP      R0,#+0
-        BNE.N    ??TIM2_IRQHandler_8
-        LDR.W    R0,??DataTable14_4
+        BNE.N    ??TIM2_IRQHandler_7
+        LDR.W    R0,??DataTable14_3
         LDRB     R0,[R0, #+1]
         CMP      R0,#+1
-        BNE.N    ??TIM2_IRQHandler_8
-        LDR.W    R0,??DataTable14_4
+        BNE.N    ??TIM2_IRQHandler_7
+        LDR.W    R0,??DataTable14_3
         LDRB     R0,[R0, #+3]
         CMP      R0,#+1
-        BCC.N    ??TIM2_IRQHandler_9
-        LDR.W    R0,??DataTable14_4
+        BCC.N    ??TIM2_IRQHandler_8
+        LDR.W    R0,??DataTable14_3
         LDRB     R0,[R0, #+3]
         CMP      R0,#+15
-        BCS.N    ??TIM2_IRQHandler_9
-        LDR.W    R0,??DataTable14_4
+        BCS.N    ??TIM2_IRQHandler_8
+        LDR.W    R0,??DataTable14_3
         LDRB     R0,[R0, #+3]
         SUBS     R0,R0,#+1
-        LDR.W    R1,??DataTable14_4
+        LDR.W    R1,??DataTable14_3
         STRB     R0,[R1, #+3]
-??TIM2_IRQHandler_9:
-        LDR.W    R0,??DataTable14_4
+??TIM2_IRQHandler_8:
+        LDR.W    R0,??DataTable14_3
         LDRB     R0,[R0, #+3]
         CMP      R0,#+0
-        BEQ.N    ??TIM2_IRQHandler_8
-        LDR.W    R0,??DataTable14_4
+        BEQ.N    ??TIM2_IRQHandler_7
+        LDR.W    R0,??DataTable14_3
         LDRB     R0,[R0, #+4]
         CMP      R0,#+0
-        BNE.N    ??TIM2_IRQHandler_8
-        LDR.W    R0,??DataTable14_4
+        BNE.N    ??TIM2_IRQHandler_7
+        LDR.W    R0,??DataTable14_3
         LDRB     R0,[R0, #+5]
         CMP      R0,#+0
-        BEQ.N    ??TIM2_IRQHandler_8
-        LDR.W    R0,??DataTable14_4
+        BEQ.N    ??TIM2_IRQHandler_7
+        LDR.W    R0,??DataTable14_3
         MOVS     R1,#+1
         STRB     R1,[R0, #+4]
-??TIM2_IRQHandler_8:
-        MOVS     R1,#+1
-        LDR.W    R0,??DataTable14_3  ;; 0x40011000
-        BL       GPIO_ReadInputDataBit
-        LDR.W    R1,??DataTable14_4
-        STRB     R0,[R1, #+1]
 ??TIM2_IRQHandler_7:
+        MOVS     R1,#+1
+        LDR.W    R0,??DataTable14_2  ;; 0x40011000
+        BL       GPIO_ReadInputDataBit
+        LDR.W    R1,??DataTable14_3
+        STRB     R0,[R1, #+1]
+??TIM2_IRQHandler_6:
         MOVS     R1,#+2
-        LDR.W    R0,??DataTable14_3  ;; 0x40011000
+        LDR.W    R0,??DataTable14_2  ;; 0x40011000
         BL       GPIO_ReadInputDataBit
         LDR.W    R1,??DataTable15
         STRB     R0,[R1, #+5]
-        B.N      ??TIM2_IRQHandler_6
+        B.N      ??TIM2_IRQHandler_5
+??TIM2_IRQHandler_4:
 ??TIM2_IRQHandler_5:
-??TIM2_IRQHandler_6:
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_3
         LDRB     R0,[R0, #+4]
         CMP      R0,#+1
-        BNE.N    ??TIM2_IRQHandler_10
-        LDR.W    R0,??DataTable14_4
+        BNE.N    ??TIM2_IRQHandler_9
+        LDR.W    R0,??DataTable14_3
         LDRB     R0,[R0, #+6]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable14_4
+        LDR.W    R1,??DataTable14_3
         STRB     R0,[R1, #+6]
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_3
         LDRB     R0,[R0, #+6]
         CMP      R0,#+101
-        BCC.N    ??TIM2_IRQHandler_10
-        LDR.W    R0,??DataTable14_4
+        BCC.N    ??TIM2_IRQHandler_9
+        LDR.W    R0,??DataTable14_3
         MOVS     R1,#+0
         STRB     R1,[R0, #+6]
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_3
         LDRB     R0,[R0, #+7]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable14_4
+        LDR.W    R1,??DataTable14_3
         STRB     R0,[R1, #+7]
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_3
         LDRB     R0,[R0, #+7]
-        LDR.W    R1,??DataTable14_4
+        LDR.W    R1,??DataTable14_3
         LDRB     R1,[R1, #+5]
         CMP      R0,R1
-        BCC.N    ??TIM2_IRQHandler_10
-        LDR.W    R0,??DataTable14_4
+        BCC.N    ??TIM2_IRQHandler_9
+        LDR.W    R0,??DataTable14_3
         MOVS     R1,#+0
         STRB     R1,[R0, #+4]
-        LDR.W    R0,??DataTable14_4
+        LDR.W    R0,??DataTable14_3
         MOVS     R1,#+0
         STRB     R1,[R0, #+7]
-??TIM2_IRQHandler_10:
+??TIM2_IRQHandler_9:
         LDR.W    R0,??DataTable15
         LDRB     R0,[R0, #+13]
         CMP      R0,#+0
-        BEQ.N    ??TIM2_IRQHandler_11
+        BEQ.N    ??TIM2_IRQHandler_10
         LDR.W    R0,??DataTable15
         LDRB     R0,[R0, #+14]
         ADDS     R0,R0,#+1
@@ -483,7 +453,7 @@ TIM2_IRQHandler:
         LDR.W    R0,??DataTable15
         LDRB     R0,[R0, #+14]
         CMP      R0,#+100
-        BCC.N    ??TIM2_IRQHandler_11
+        BCC.N    ??TIM2_IRQHandler_10
         LDR.W    R0,??DataTable15
         LDRB     R0,[R0, #+15]
         ADDS     R0,R0,#+1
@@ -497,7 +467,7 @@ TIM2_IRQHandler:
         LDR.W    R1,??DataTable15
         LDRB     R1,[R1, #+12]
         CMP      R0,R1
-        BCC.N    ??TIM2_IRQHandler_11
+        BCC.N    ??TIM2_IRQHandler_10
         LDR.W    R0,??DataTable15
         MOVS     R1,#+1
         STRB     R1,[R0, #+16]
@@ -507,15 +477,15 @@ TIM2_IRQHandler:
         LDR.W    R0,??DataTable15
         MOVS     R1,#+0
         STRB     R1,[R0, #+13]
-??TIM2_IRQHandler_11:
+??TIM2_IRQHandler_10:
         LDR.W    R0,??DataTable15
         LDRB     R0,[R0, #+10]
         CMP      R0,#+0
-        BNE.N    ??TIM2_IRQHandler_12
+        BNE.N    ??TIM2_IRQHandler_11
         LDR.W    R0,??DataTable15
         LDRB     R0,[R0, #+13]
         CMP      R0,#+0
-        BEQ.N    ??TIM2_IRQHandler_12
+        BEQ.N    ??TIM2_IRQHandler_11
         LDR.W    R0,??DataTable15
         MOVS     R1,#+0
         STRB     R1,[R0, #+13]
@@ -525,11 +495,11 @@ TIM2_IRQHandler:
         LDR.W    R0,??DataTable15
         MOVS     R1,#+0
         STRB     R1,[R0, #+15]
-??TIM2_IRQHandler_12:
+??TIM2_IRQHandler_11:
         LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+0]
         CMP      R0,#+1
-        BNE.N    ??TIM2_IRQHandler_13
+        BNE.N    ??TIM2_IRQHandler_12
         LDR.W    R0,??DataTable18
         LDR      R0,[R0, #+4]
         ADDS     R0,R0,#+1
@@ -538,7 +508,7 @@ TIM2_IRQHandler:
         LDR.W    R0,??DataTable18
         LDR      R0,[R0, #+4]
         CMP      R0,#+200
-        BCC.N    ??TIM2_IRQHandler_13
+        BCC.N    ??TIM2_IRQHandler_12
         LDR.W    R0,??DataTable18
         MOVS     R1,#+1
         STRB     R1,[R0, #+8]
@@ -548,11 +518,11 @@ TIM2_IRQHandler:
         LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STRB     R1,[R0, #+0]
-??TIM2_IRQHandler_13:
+??TIM2_IRQHandler_12:
         LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+9]
         CMP      R0,#+1
-        BNE.N    ??TIM2_IRQHandler_14
+        BNE.N    ??TIM2_IRQHandler_13
         LDR.W    R0,??DataTable18
         LDR      R0,[R0, #+12]
         ADDS     R0,R0,#+1
@@ -563,18 +533,18 @@ TIM2_IRQHandler:
         LDR.W    R1,??DataTable18
         LDR      R1,[R1, #+12]
         CMP      R0,R1
-        BCS.N    ??TIM2_IRQHandler_14
+        BCS.N    ??TIM2_IRQHandler_13
         LDR.W    R0,??DataTable18
         MOVS     R1,#+1
         STRB     R1,[R0, #+20]
         LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STR      R1,[R0, #+12]
-??TIM2_IRQHandler_14:
+??TIM2_IRQHandler_13:
         LDR.W    R0,??DataTable18_1
         LDRB     R0,[R0, #+2]
         CMP      R0,#+1
-        BNE.N    ??TIM2_IRQHandler_15
+        BNE.N    ??TIM2_IRQHandler_14
         LDR.W    R0,??DataTable18_1
         LDRB     R0,[R0, #+3]
         ADDS     R0,R0,#+1
@@ -583,35 +553,35 @@ TIM2_IRQHandler:
         LDR.W    R0,??DataTable18_1
         LDRB     R0,[R0, #+3]
         CMP      R0,#+50
-        BCC.N    ??TIM2_IRQHandler_15
+        BCC.N    ??TIM2_IRQHandler_14
         LDR.W    R0,??DataTable18_1
         MOVS     R1,#+0
         STRB     R1,[R0, #+3]
         LDR.W    R0,??DataTable18_1
         MOVS     R1,#+0
         STRB     R1,[R0, #+2]
-??TIM2_IRQHandler_15:
+??TIM2_IRQHandler_14:
         LDR.W    R0,??DataTable15
         LDRB     R0,[R0, #+18]
         CMP      R0,#+0
-        BNE.N    ??TIM2_IRQHandler_16
+        BNE.N    ??TIM2_IRQHandler_15
         LDR.W    R0,??DataTable15
         LDRB     R0,[R0, #+19]
         CMP      R0,#+0
-        BNE.N    ??TIM2_IRQHandler_17
+        BNE.N    ??TIM2_IRQHandler_16
         LDR.W    R0,??DataTable15
         LDRB     R0,[R0, #+20]
         CMP      R0,#+0
-        BNE.N    ??TIM2_IRQHandler_17
+        BNE.N    ??TIM2_IRQHandler_16
         LDR.W    R0,??DataTable15
         LDRB     R0,[R0, #+21]
         CMP      R0,#+0
-        BNE.N    ??TIM2_IRQHandler_17
+        BNE.N    ??TIM2_IRQHandler_16
         LDR.W    R0,??DataTable15
         LDRB     R0,[R0, #+22]
         CMP      R0,#+0
-        BEQ.N    ??TIM2_IRQHandler_16
-??TIM2_IRQHandler_17:
+        BEQ.N    ??TIM2_IRQHandler_15
+??TIM2_IRQHandler_16:
         LDR.W    R0,??DataTable15
         MOVS     R1,#+0
         STRB     R1,[R0, #+19]
@@ -624,7 +594,7 @@ TIM2_IRQHandler:
         LDR.W    R0,??DataTable15
         MOVS     R1,#+0
         STRB     R1,[R0, #+22]
-??TIM2_IRQHandler_16:
+??TIM2_IRQHandler_15:
         LDR.W    R0,??DataTable15
         LDRB     R0,[R0, #+18]
         CMP      R0,#+1
@@ -1765,30 +1735,24 @@ LRF_Trans_Data:
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable14:
-        DC32     stLED_SET
+        DC32     0x40010800
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable14_1:
-        DC32     stINFO
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable14_2:
         DC32     stDIP
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable14_3:
+??DataTable14_2:
         DC32     0x40011000
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable14_4:
+??DataTable14_3:
         DC32     stWIPER1
 
         SECTION `.text`:CODE:NOROOT(1)
@@ -3645,10 +3609,10 @@ UART5_IRQHandler:
         END
 // 
 //     1 byte  in section .bss
-// 7 552 bytes in section .text
+// 7 472 bytes in section .text
 // 
-// 7 552 bytes of CODE memory
+// 7 472 bytes of CODE memory
 //     1 byte  of DATA memory
 //
 //Errors: none
-//Warnings: 7
+//Warnings: 8

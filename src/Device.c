@@ -31,12 +31,6 @@ void Initial_Device(void)
 
    TIMER_Init();
 
-   if (SysTick_Config(rcc_clocks.SYSCLK_Frequency / 1000))
-   {
-      while (1)
-         ;
-   }
-
    NVIC_Configuration();
 }
 
@@ -49,6 +43,29 @@ void TIMER_Init(void)
    uint16_t	period;
    period = (SystemCoreClock / 1200 ) - 1;
    PrescalerValue = (uint16_t) (SystemCoreClock / 120000);
+
+
+
+	//USER Key: TIM2 CH2
+   TIM_TimeBaseStructure.TIM_Period = 3600 - 1;
+   TIM_TimeBaseStructure.TIM_Prescaler = 60000 - 1;
+   TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+   TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+   //TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
+   TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+   
+   TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Disable;
+   TIM_OC1Init(TIM4, &TIM_OCInitStructure);
+   TIM_OC3Init(TIM4, &TIM_OCInitStructure);
+   TIM_OC4Init(TIM4, &TIM_OCInitStructure);
+
+   TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+   TIM_OCInitStructure.TIM_Pulse = 1;
+   TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+   TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
+   TIM_OC2Init(TIM4, &TIM_OCInitStructure);
+   TIM_Cmd(TIM2, ENABLE);
+   
 
    //TIM4 (CH3): GPIOB 8 LED Green
    //TIM4 (CH4): GPIOB 9 LED Red
@@ -133,7 +150,7 @@ void GPIO_Configuration(void)
 
    //GPIOB Pin5: Yellow, Pin8: Green, Pin9: Red
    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_8 | GPIO_Pin_5;
-   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
    GPIO_Init(GPIOB, &GPIO_InitStructure);
 
