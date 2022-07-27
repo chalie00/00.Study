@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    20/Jul/2022  18:34:52 /
+// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    27/Jul/2022  17:47:00 /
 // Copyright 1999-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Cpu mode     =  thumb                                                   /
@@ -37,7 +37,14 @@
 
         #define SHT_PROGBITS 0x1
 
+        EXTERN Delay_1ms
         EXTERN Initial_Device
+        EXTERN LED_Off_Green
+        EXTERN LED_Off_Red
+        EXTERN LED_Off_Yellow
+        EXTERN LED_On_Green
+        EXTERN LED_On_Red
+        EXTERN LED_On_Yellow
         EXTERN RCC_DeInit
         EXTERN RCC_GetFlagStatus
         EXTERN RCC_GetSYSCLKSource
@@ -7954,6 +7961,24 @@ main:
         PUSH     {R7,LR}
         BL       Initial_Device
 ??main_0:
+        BL       LED_On_Red
+        MOV      R0,#+500
+        BL       Delay_1ms
+        BL       LED_Off_Red
+        MOV      R0,#+500
+        BL       Delay_1ms
+        BL       LED_On_Green
+        MOV      R0,#+500
+        BL       Delay_1ms
+        BL       LED_Off_Green
+        MOV      R0,#+500
+        BL       Delay_1ms
+        BL       LED_On_Yellow
+        MOV      R0,#+500
+        BL       Delay_1ms
+        BL       LED_Off_Yellow
+        MOV      R0,#+500
+        BL       Delay_1ms
         B.N      ??main_0
 
         SECTION `.iar_vfe_header`:DATA:REORDER:NOALLOC:NOROOT(2)
@@ -7972,11 +7997,11 @@ main:
 //  1 029 bytes in section .bss
 //    199 bytes in section .data
 // 17 744 bytes in section .rodata
-//    102 bytes in section .text
+//    174 bytes in section .text
 // 
-//    102 bytes of CODE  memory
+//    174 bytes of CODE  memory
 // 17 744 bytes of CONST memory
 //  1 228 bytes of DATA  memory
 //
 //Errors: none
-//Warnings: 1
+//Warnings: 7

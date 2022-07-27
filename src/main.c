@@ -89,20 +89,20 @@ int main(void)
    {
 
 /* LED ON/OFF */
-//	      LED_On_Red();
-//	      Delay_1ms(500);
-//	      LED_Off_Red();
-//	      Delay_1ms(500);
-//		  
-//	      LED_On_Green();
-//	      Delay_1ms(500);
-//	      LED_Off_Green();
-//	      Delay_1ms(500);
-//		  
-//	      LED_On_Yellow();
-//	      Delay_1ms(500);
-//	      LED_Off_Yellow();
-//	      Delay_1ms(500);
+      LED_On_Red();
+      Delay_1ms(500);
+      LED_Off_Red();
+      Delay_1ms(500);
+	  
+      LED_On_Green();
+      Delay_1ms(500);
+      LED_Off_Green();
+      Delay_1ms(500);
+	  
+      LED_On_Yellow();
+      Delay_1ms(500);
+      LED_Off_Yellow();
+      Delay_1ms(500);
 
 
 /* SW + LED ON/OFF */

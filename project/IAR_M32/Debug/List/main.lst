@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     20/Jul/2022  18:34:52 #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     27/Jul/2022  17:47:00 #
 # Copyright 1999-2011 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -126,20 +126,20 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\main.c
      89             {
      90          
      91          /* LED ON/OFF */
-     92          //	      LED_On_Red();
-     93          //	      Delay_1ms(500);
-     94          //	      LED_Off_Red();
-     95          //	      Delay_1ms(500);
-     96          //		  
-     97          //	      LED_On_Green();
-     98          //	      Delay_1ms(500);
-     99          //	      LED_Off_Green();
-    100          //	      Delay_1ms(500);
-    101          //		  
-    102          //	      LED_On_Yellow();
-    103          //	      Delay_1ms(500);
-    104          //	      LED_Off_Yellow();
-    105          //	      Delay_1ms(500);
+     92                LED_On_Red();
+     93                Delay_1ms(500);
+     94                LED_Off_Red();
+     95                Delay_1ms(500);
+     96          	  
+     97                LED_On_Green();
+     98                Delay_1ms(500);
+     99                LED_Off_Green();
+    100                Delay_1ms(500);
+    101          	  
+    102                LED_On_Yellow();
+    103                Delay_1ms(500);
+    104                LED_Off_Yellow();
+    105                Delay_1ms(500);
     106          
     107          
     108          /* SW + LED ON/OFF */
@@ -167,7 +167,14 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\main.c
              8 -> RCC_SYSCLKConfig
              8 -> RCC_WaitForHSEStartUp
         8  main
+             8 -> Delay_1ms
              8 -> Initial_Device
+             8 -> LED_Off_Green
+             8 -> LED_Off_Red
+             8 -> LED_Off_Yellow
+             8 -> LED_On_Green
+             8 -> LED_On_Red
+             8 -> LED_On_Yellow
 
 
    Section sizes:
@@ -1133,7 +1140,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\main.c
       20  inHeaterOnMsg
        4  intFlag
        4  inter
-       8  main
+      80  main
        1  minusFlag
        4  msCount
        4  msIdleCnt
@@ -1150,11 +1157,11 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\main.c
   1 029 bytes in section .bss
     199 bytes in section .data
  17 744 bytes in section .rodata
-    102 bytes in section .text
+    174 bytes in section .text
  
-    102 bytes of CODE  memory
+    174 bytes of CODE  memory
  17 744 bytes of CONST memory
   1 228 bytes of DATA  memory
 
 Errors: none
-Warnings: 1
+Warnings: 7

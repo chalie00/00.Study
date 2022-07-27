@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    20/Jul/2022  18:34:50 /
+// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    27/Jul/2022  17:46:23 /
 // Copyright 1999-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Cpu mode     =  thumb                                                   /
@@ -68,57 +68,6 @@
         PUBLIC rcc_clocks
 
 
-        SECTION `.text`:CODE:NOROOT(1)
-        THUMB
-// static __interwork __softfp void NVIC_SetPriority(IRQn_Type, uint32_t)
-NVIC_SetPriority:
-        SXTB     R0,R0            ;; SignExt  R0,R0,#+24,#+24
-        CMP      R0,#+0
-        BPL.N    ??NVIC_SetPriority_0
-        SXTB     R0,R0            ;; SignExt  R0,R0,#+24,#+24
-        ANDS     R2,R0,#0xF
-        LDR.N    R3,??DataTable5  ;; 0xe000ed18
-        ADDS     R2,R2,R3
-        LSLS     R3,R1,#+4
-        STRB     R3,[R2, #-4]
-        B.N      ??NVIC_SetPriority_1
-??NVIC_SetPriority_0:
-        SXTB     R0,R0            ;; SignExt  R0,R0,#+24,#+24
-        LDR.N    R2,??DataTable5_1  ;; 0xe000e400
-        LSLS     R3,R1,#+4
-        STRB     R3,[R0, R2]
-??NVIC_SetPriority_1:
-        BX       LR               ;; return
-
-        SECTION `.text`:CODE:NOROOT(1)
-        THUMB
-// static __interwork __softfp uint32_t SysTick_Config(uint32_t)
-SysTick_Config:
-        PUSH     {R4,LR}
-        MOVS     R4,R0
-        CMP      R4,#+16777216
-        BCC.N    ??SysTick_Config_0
-        MOVS     R0,#+1
-        B.N      ??SysTick_Config_1
-??SysTick_Config_0:
-        LSLS     R0,R4,#+8        ;; ZeroExtS R0,R4,#+8,#+8
-        LSRS     R0,R0,#+8
-        SUBS     R0,R0,#+1
-        LDR.N    R1,??DataTable5_2  ;; 0xe000e014
-        STR      R0,[R1, #+0]
-        MOVS     R1,#+15
-        MOVS     R0,#-1
-        BL       NVIC_SetPriority
-        LDR.N    R0,??DataTable5_3  ;; 0xe000e018
-        MOVS     R1,#+0
-        STR      R1,[R0, #+0]
-        LDR.N    R0,??DataTable5_4  ;; 0xe000e010
-        MOVS     R1,#+7
-        STR      R1,[R0, #+0]
-        MOVS     R0,#+0
-??SysTick_Config_1:
-        POP      {R4,PC}          ;; return
-
         SECTION `.bss`:DATA:REORDER:NOROOT(2)
 USART_InitStructure:
         DS8 16
@@ -164,98 +113,86 @@ PrescalerValue:
 Initial_Device:
         PUSH     {R7,LR}
         BL       RCC_Configuration
-        LDR.N    R0,??DataTable5_5
+        LDR.N    R0,??DataTable3
         BL       RCC_GetClocksFreq
         BL       GPIO_Configuration
-        BL       TIMER_Init
-        LDR.N    R0,??DataTable5_5
-        LDR      R0,[R0, #+0]
-        MOV      R1,#+1000
-        UDIV     R0,R0,R1
-        BL       SysTick_Config
-        CMP      R0,#+0
-        BEQ.N    ??Initial_Device_0
-??Initial_Device_1:
-        B.N      ??Initial_Device_1
-??Initial_Device_0:
-        BL       NVIC_Configuration
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
 TIMER_Init:
         PUSH     {R4,LR}
-        LDR.N    R0,??DataTable5_6
+        LDR.N    R0,??DataTable3_1
         LDR      R0,[R0, #+0]
         MOV      R1,#+1200
         UDIV     R0,R0,R1
         SUBS     R0,R0,#+1
         MOVS     R4,R0
-        LDR.N    R0,??DataTable5_6
+        LDR.N    R0,??DataTable3_1
         LDR      R0,[R0, #+0]
-        LDR.N    R1,??DataTable5_7  ;; 0x1d4c0
+        LDR.N    R1,??DataTable3_2  ;; 0x1d4c0
         UDIV     R0,R0,R1
-        LDR.N    R1,??DataTable5_8
+        LDR.N    R1,??DataTable3_3
         STRH     R0,[R1, #+0]
-        LDR.N    R0,??DataTable5_9
+        LDR.N    R0,??DataTable3_4
         MOVW     R1,#+3599
         STRH     R1,[R0, #+4]
-        LDR.N    R0,??DataTable5_9
+        LDR.N    R0,??DataTable3_4
         MOVW     R1,#+59999
         STRH     R1,[R0, #+0]
-        LDR.N    R0,??DataTable5_9
+        LDR.N    R0,??DataTable3_4
         MOVS     R1,#+0
         STRH     R1,[R0, #+6]
-        LDR.N    R0,??DataTable5_9
+        LDR.N    R0,??DataTable3_4
         MOVS     R1,#+0
         STRH     R1,[R0, #+2]
-        LDR.N    R1,??DataTable5_9
-        LDR.N    R0,??DataTable5_10  ;; 0x40000800
+        LDR.N    R1,??DataTable3_4
+        LDR.N    R0,??DataTable3_5  ;; 0x40000800
         BL       TIM_TimeBaseInit
-        LDR.N    R0,??DataTable5_11
+        LDR.N    R0,??DataTable3_6
         MOVS     R1,#+0
         STRH     R1,[R0, #+2]
-        LDR.N    R1,??DataTable5_11
-        LDR.N    R0,??DataTable5_10  ;; 0x40000800
+        LDR.N    R1,??DataTable3_6
+        LDR.N    R0,??DataTable3_5  ;; 0x40000800
         BL       TIM_OC1Init
-        LDR.N    R1,??DataTable5_11
-        LDR.N    R0,??DataTable5_10  ;; 0x40000800
+        LDR.N    R1,??DataTable3_6
+        LDR.N    R0,??DataTable3_5  ;; 0x40000800
         BL       TIM_OC2Init
-        LDR.N    R0,??DataTable5_11
+        LDR.N    R0,??DataTable3_6
         MOVS     R1,#+1
         STRH     R1,[R0, #+2]
-        LDR.N    R0,??DataTable5_11
+        LDR.N    R0,??DataTable3_6
         MOVS     R1,#+1
         STRH     R1,[R0, #+6]
-        LDR.N    R0,??DataTable5_11
+        LDR.N    R0,??DataTable3_6
         MOVS     R1,#+0
         STRH     R1,[R0, #+8]
-        LDR.N    R0,??DataTable5_11
+        LDR.N    R0,??DataTable3_6
         MOVS     R1,#+48
         STRH     R1,[R0, #+0]
-        LDR.N    R1,??DataTable5_11
-        LDR.N    R0,??DataTable5_10  ;; 0x40000800
+        LDR.N    R1,??DataTable3_6
+        LDR.N    R0,??DataTable3_5  ;; 0x40000800
         BL       TIM_OC3Init
         MOVS     R1,#+1
-        LDR.N    R0,??DataTable5_10  ;; 0x40000800
+        LDR.N    R0,??DataTable3_5  ;; 0x40000800
         BL       TIM_Cmd
-        LDR.N    R0,??DataTable5_11
+        LDR.N    R0,??DataTable3_6
         MOVS     R1,#+1
         STRH     R1,[R0, #+2]
-        LDR.N    R0,??DataTable5_11
+        LDR.N    R0,??DataTable3_6
         MOVS     R1,#+1
         STRH     R1,[R0, #+6]
-        LDR.N    R0,??DataTable5_11
+        LDR.N    R0,??DataTable3_6
         MOVS     R1,#+2
         STRH     R1,[R0, #+8]
-        LDR.N    R0,??DataTable5_11
+        LDR.N    R0,??DataTable3_6
         MOVS     R1,#+48
         STRH     R1,[R0, #+0]
-        LDR.N    R1,??DataTable5_11
-        LDR.N    R0,??DataTable5_10  ;; 0x40000800
+        LDR.N    R1,??DataTable3_6
+        LDR.N    R0,??DataTable3_5  ;; 0x40000800
         BL       TIM_OC4Init
         MOVS     R1,#+1
-        LDR.N    R0,??DataTable5_10  ;; 0x40000800
+        LDR.N    R0,??DataTable3_5  ;; 0x40000800
         BL       TIM_Cmd
         POP      {R4,PC}          ;; return
 
@@ -276,19 +213,19 @@ RCC_Configuration:
         THUMB
 NVIC_Configuration:
         PUSH     {R7,LR}
-        LDR.N    R0,??DataTable5_12
+        LDR.N    R0,??DataTable3_7
         MOVS     R1,#+28
         STRB     R1,[R0, #+0]
-        LDR.N    R0,??DataTable5_12
+        LDR.N    R0,??DataTable3_7
         MOVS     R1,#+0
         STRB     R1,[R0, #+1]
-        LDR.N    R0,??DataTable5_12
+        LDR.N    R0,??DataTable3_7
         MOVS     R1,#+0
         STRB     R1,[R0, #+2]
-        LDR.N    R0,??DataTable5_12
+        LDR.N    R0,??DataTable3_7
         MOVS     R1,#+1
         STRB     R1,[R0, #+3]
-        LDR.N    R0,??DataTable5_12
+        LDR.N    R0,??DataTable3_7
         BL       NVIC_Init
         POP      {R0,PC}          ;; return
 
@@ -296,138 +233,108 @@ NVIC_Configuration:
         THUMB
 GPIO_Configuration:
         PUSH     {R7,LR}
-        LDR.N    R0,??DataTable5_13
+        LDR.N    R0,??DataTable3_8
         MOVS     R1,#+1
         STRH     R1,[R0, #+0]
-        LDR.N    R0,??DataTable5_13
+        LDR.N    R0,??DataTable3_8
         MOVS     R1,#+40
         STRB     R1,[R0, #+3]
-        LDR.N    R0,??DataTable5_13
+        LDR.N    R0,??DataTable3_8
         MOVS     R1,#+2
         STRB     R1,[R0, #+2]
-        LDR.N    R1,??DataTable5_13
-        LDR.N    R0,??DataTable5_14  ;; 0x40010800
+        LDR.N    R1,??DataTable3_8
+        LDR.N    R0,??DataTable3_9  ;; 0x40010800
         BL       GPIO_Init
-        LDR.N    R0,??DataTable5_13
+        LDR.N    R0,??DataTable3_8
         MOVS     R1,#+2
         STRH     R1,[R0, #+0]
-        LDR.N    R0,??DataTable5_13
+        LDR.N    R0,??DataTable3_8
         MOVS     R1,#+40
         STRB     R1,[R0, #+3]
-        LDR.N    R0,??DataTable5_13
+        LDR.N    R0,??DataTable3_8
         MOVS     R1,#+2
         STRB     R1,[R0, #+2]
-        LDR.N    R1,??DataTable5_13
-        LDR.N    R0,??DataTable5_14  ;; 0x40010800
+        LDR.N    R1,??DataTable3_8
+        LDR.N    R0,??DataTable3_9  ;; 0x40010800
         BL       GPIO_Init
-        LDR.N    R0,??DataTable5_13
+        LDR.N    R0,??DataTable3_8
         MOV      R1,#+800
         STRH     R1,[R0, #+0]
-        LDR.N    R0,??DataTable5_13
-        MOVS     R1,#+28
+        LDR.N    R0,??DataTable3_8
+        MOVS     R1,#+16
         STRB     R1,[R0, #+3]
-        LDR.N    R0,??DataTable5_13
+        LDR.N    R0,??DataTable3_8
         MOVS     R1,#+2
         STRB     R1,[R0, #+2]
-        LDR.N    R1,??DataTable5_13
-        LDR.N    R0,??DataTable5_15  ;; 0x40010c00
+        LDR.N    R1,??DataTable3_8
+        LDR.N    R0,??DataTable3_10  ;; 0x40010c00
         BL       GPIO_Init
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable5:
-        DC32     0xe000ed18
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable5_1:
-        DC32     0xe000e400
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable5_2:
-        DC32     0xe000e014
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable5_3:
-        DC32     0xe000e018
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable5_4:
-        DC32     0xe000e010
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable5_5:
+??DataTable3:
         DC32     rcc_clocks
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable5_6:
+??DataTable3_1:
         DC32     SystemCoreClock
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable5_7:
+??DataTable3_2:
         DC32     0x1d4c0
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable5_8:
+??DataTable3_3:
         DC32     PrescalerValue
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable5_9:
+??DataTable3_4:
         DC32     TIM_TimeBaseStructure
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable5_10:
+??DataTable3_5:
         DC32     0x40000800
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable5_11:
+??DataTable3_6:
         DC32     TIM_OCInitStructure
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable5_12:
+??DataTable3_7:
         DC32     NVIC_InitStructure
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable5_13:
+??DataTable3_8:
         DC32     GPIO_InitStructure
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable5_14:
+??DataTable3_9:
         DC32     0x40010800
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable5_15:
+??DataTable3_10:
         DC32     0x40010c00
 
         SECTION `.iar_vfe_header`:DATA:REORDER:NOALLOC:NOROOT(2)
@@ -444,9 +351,9 @@ GPIO_Configuration:
         END
 // 
 // 154 bytes in section .bss
-// 510 bytes in section .text
+// 376 bytes in section .text
 // 
-// 510 bytes of CODE memory
+// 376 bytes of CODE memory
 // 154 bytes of DATA memory
 //
 //Errors: none
