@@ -1151,6 +1151,33 @@ void TIM4_IRQHandler(void)
 
 }//End Of The TIM4_IRQ_Handler
 
+
+
+void EXTI0_IRQHandler(void) {
+	if(EXTI_GetITStatus(EXTI_Line0) != RESET) {
+		EXTI_ClearITPendingBit(EXTI_Line0);
+		if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_9) == SET) {
+			LED_Off_Red();
+		} else {
+		  LED_On_Red();
+		}
+	}
+}
+
+void EXTI1_IRQHandler(void) {
+	if(EXTI_GetITStatus(EXTI_Line1) != RESET) {
+		EXTI_ClearITPendingBit(EXTI_Line1);
+		if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_8) == SET) {
+			LED_Off_Green();
+		} else {
+		  LED_On_Green();
+		}
+	}
+}
+
+
+
+
 /*******************************************************************************
 * Function Name  : I2C1_EV_IRQHandler
 * Description    : This function handles I2C1 Event interrupt request.

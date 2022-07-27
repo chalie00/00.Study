@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    27/Jul/2022  17:49:27 /
+// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    27/Jul/2022  18:07:00 /
 // Copyright 1999-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Cpu mode     =  thumb                                                   /
@@ -37,6 +37,7 @@
 
         #define SHT_PROGBITS 0x1
 
+        EXTERN EXTI_Init
         EXTERN GPIO_Init
         EXTERN NVIC_Init
         EXTERN RCC_APB1PeriphClockCmd
@@ -53,6 +54,8 @@
 
         PUBLIC ADC_InitStructure
         PUBLIC DMA_InitStructure
+        PUBLIC EXTI_Configuration
+        PUBLIC EXTI_InitStructure
         PUBLIC GPIO_Configuration
         PUBLIC GPIO_InitStructure
         PUBLIC I2C_InitStructure
@@ -89,6 +92,10 @@ TIM_OCInitStructure:
         DS8 16
 
         SECTION `.bss`:DATA:REORDER:NOROOT(2)
+EXTI_InitStructure:
+        DS8 8
+
+        SECTION `.bss`:DATA:REORDER:NOROOT(2)
 DMA_InitStructure:
         DS8 44
 
@@ -113,87 +120,88 @@ PrescalerValue:
 Initial_Device:
         PUSH     {R7,LR}
         BL       RCC_Configuration
-        LDR.N    R0,??DataTable3
+        LDR.N    R0,??DataTable4
         BL       RCC_GetClocksFreq
         BL       GPIO_Configuration
-        BL       TIMER_Init
+        BL       NVIC_Configuration
+        BL       EXTI_Configuration
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
 TIMER_Init:
         PUSH     {R4,LR}
-        LDR.N    R0,??DataTable3_1
+        LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
         MOV      R1,#+1200
         UDIV     R0,R0,R1
         SUBS     R0,R0,#+1
         MOVS     R4,R0
-        LDR.N    R0,??DataTable3_1
+        LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
-        LDR.N    R1,??DataTable3_2  ;; 0x1d4c0
+        LDR.N    R1,??DataTable4_2  ;; 0x1d4c0
         UDIV     R0,R0,R1
-        LDR.N    R1,??DataTable3_3
+        LDR.N    R1,??DataTable4_3
         STRH     R0,[R1, #+0]
-        LDR.N    R0,??DataTable3_4
+        LDR.N    R0,??DataTable4_4
         MOVW     R1,#+3599
         STRH     R1,[R0, #+4]
-        LDR.N    R0,??DataTable3_4
+        LDR.N    R0,??DataTable4_4
         MOVW     R1,#+59999
         STRH     R1,[R0, #+0]
-        LDR.N    R0,??DataTable3_4
+        LDR.N    R0,??DataTable4_4
         MOVS     R1,#+0
         STRH     R1,[R0, #+6]
-        LDR.N    R0,??DataTable3_4
+        LDR.N    R0,??DataTable4_4
         MOVS     R1,#+0
         STRH     R1,[R0, #+2]
-        LDR.N    R1,??DataTable3_4
-        LDR.N    R0,??DataTable3_5  ;; 0x40000800
+        LDR.N    R1,??DataTable4_4
+        LDR.N    R0,??DataTable4_5  ;; 0x40000800
         BL       TIM_TimeBaseInit
-        LDR.N    R0,??DataTable3_6
+        LDR.N    R0,??DataTable4_6
         MOVS     R1,#+0
         STRH     R1,[R0, #+2]
-        LDR.N    R1,??DataTable3_6
-        LDR.N    R0,??DataTable3_5  ;; 0x40000800
+        LDR.N    R1,??DataTable4_6
+        LDR.N    R0,??DataTable4_5  ;; 0x40000800
         BL       TIM_OC1Init
-        LDR.N    R1,??DataTable3_6
-        LDR.N    R0,??DataTable3_5  ;; 0x40000800
+        LDR.N    R1,??DataTable4_6
+        LDR.N    R0,??DataTable4_5  ;; 0x40000800
         BL       TIM_OC2Init
-        LDR.N    R0,??DataTable3_6
+        LDR.N    R0,??DataTable4_6
         MOVS     R1,#+1
         STRH     R1,[R0, #+2]
-        LDR.N    R0,??DataTable3_6
+        LDR.N    R0,??DataTable4_6
         MOVS     R1,#+1
         STRH     R1,[R0, #+6]
-        LDR.N    R0,??DataTable3_6
+        LDR.N    R0,??DataTable4_6
         MOVS     R1,#+0
         STRH     R1,[R0, #+8]
-        LDR.N    R0,??DataTable3_6
+        LDR.N    R0,??DataTable4_6
         MOVS     R1,#+48
         STRH     R1,[R0, #+0]
-        LDR.N    R1,??DataTable3_6
-        LDR.N    R0,??DataTable3_5  ;; 0x40000800
+        LDR.N    R1,??DataTable4_6
+        LDR.N    R0,??DataTable4_5  ;; 0x40000800
         BL       TIM_OC3Init
         MOVS     R1,#+1
-        LDR.N    R0,??DataTable3_5  ;; 0x40000800
+        LDR.N    R0,??DataTable4_5  ;; 0x40000800
         BL       TIM_Cmd
-        LDR.N    R0,??DataTable3_6
+        LDR.N    R0,??DataTable4_6
         MOVS     R1,#+1
         STRH     R1,[R0, #+2]
-        LDR.N    R0,??DataTable3_6
+        LDR.N    R0,??DataTable4_6
         MOVS     R1,#+1
         STRH     R1,[R0, #+6]
-        LDR.N    R0,??DataTable3_6
+        LDR.N    R0,??DataTable4_6
         MOVS     R1,#+2
         STRH     R1,[R0, #+8]
-        LDR.N    R0,??DataTable3_6
+        LDR.N    R0,??DataTable4_6
         MOVS     R1,#+48
         STRH     R1,[R0, #+0]
-        LDR.N    R1,??DataTable3_6
-        LDR.N    R0,??DataTable3_5  ;; 0x40000800
+        LDR.N    R1,??DataTable4_6
+        LDR.N    R0,??DataTable4_5  ;; 0x40000800
         BL       TIM_OC4Init
         MOVS     R1,#+1
-        LDR.N    R0,??DataTable3_5  ;; 0x40000800
+        LDR.N    R0,??DataTable4_5  ;; 0x40000800
         BL       TIM_Cmd
         POP      {R4,PC}          ;; return
 
@@ -214,19 +222,33 @@ RCC_Configuration:
         THUMB
 NVIC_Configuration:
         PUSH     {R7,LR}
-        LDR.N    R0,??DataTable3_7
-        MOVS     R1,#+28
+        LDR.N    R0,??DataTable4_7
+        MOVS     R1,#+6
         STRB     R1,[R0, #+0]
-        LDR.N    R0,??DataTable3_7
+        LDR.N    R0,??DataTable4_7
         MOVS     R1,#+0
         STRB     R1,[R0, #+1]
-        LDR.N    R0,??DataTable3_7
+        LDR.N    R0,??DataTable4_7
         MOVS     R1,#+0
         STRB     R1,[R0, #+2]
-        LDR.N    R0,??DataTable3_7
+        LDR.N    R0,??DataTable4_7
         MOVS     R1,#+1
         STRB     R1,[R0, #+3]
-        LDR.N    R0,??DataTable3_7
+        LDR.N    R0,??DataTable4_7
+        BL       NVIC_Init
+        LDR.N    R0,??DataTable4_7
+        MOVS     R1,#+7
+        STRB     R1,[R0, #+0]
+        LDR.N    R0,??DataTable4_7
+        MOVS     R1,#+0
+        STRB     R1,[R0, #+1]
+        LDR.N    R0,??DataTable4_7
+        MOVS     R1,#+0
+        STRB     R1,[R0, #+2]
+        LDR.N    R0,??DataTable4_7
+        MOVS     R1,#+1
+        STRB     R1,[R0, #+3]
+        LDR.N    R0,??DataTable4_7
         BL       NVIC_Init
         POP      {R0,PC}          ;; return
 
@@ -234,109 +256,149 @@ NVIC_Configuration:
         THUMB
 GPIO_Configuration:
         PUSH     {R7,LR}
-        LDR.N    R0,??DataTable3_8
+        LDR.N    R0,??DataTable4_8
         MOVS     R1,#+1
         STRH     R1,[R0, #+0]
-        LDR.N    R0,??DataTable3_8
+        LDR.N    R0,??DataTable4_8
         MOVS     R1,#+40
         STRB     R1,[R0, #+3]
-        LDR.N    R0,??DataTable3_8
+        LDR.N    R0,??DataTable4_8
         MOVS     R1,#+2
         STRB     R1,[R0, #+2]
-        LDR.N    R1,??DataTable3_8
-        LDR.N    R0,??DataTable3_9  ;; 0x40010800
+        LDR.N    R1,??DataTable4_8
+        LDR.N    R0,??DataTable4_9  ;; 0x40010800
         BL       GPIO_Init
-        LDR.N    R0,??DataTable3_8
+        LDR.N    R0,??DataTable4_8
         MOVS     R1,#+2
         STRH     R1,[R0, #+0]
-        LDR.N    R0,??DataTable3_8
+        LDR.N    R0,??DataTable4_8
         MOVS     R1,#+40
         STRB     R1,[R0, #+3]
-        LDR.N    R0,??DataTable3_8
+        LDR.N    R0,??DataTable4_8
         MOVS     R1,#+2
         STRB     R1,[R0, #+2]
-        LDR.N    R1,??DataTable3_8
-        LDR.N    R0,??DataTable3_9  ;; 0x40010800
+        LDR.N    R1,??DataTable4_8
+        LDR.N    R0,??DataTable4_9  ;; 0x40010800
         BL       GPIO_Init
-        LDR.N    R0,??DataTable3_8
+        LDR.N    R0,??DataTable4_8
         MOV      R1,#+800
         STRH     R1,[R0, #+0]
-        LDR.N    R0,??DataTable3_8
-        MOVS     R1,#+24
+        LDR.N    R0,??DataTable4_8
+        MOVS     R1,#+16
         STRB     R1,[R0, #+3]
-        LDR.N    R0,??DataTable3_8
+        LDR.N    R0,??DataTable4_8
         MOVS     R1,#+2
         STRB     R1,[R0, #+2]
-        LDR.N    R1,??DataTable3_8
-        LDR.N    R0,??DataTable3_10  ;; 0x40010c00
+        LDR.N    R1,??DataTable4_8
+        LDR.N    R0,??DataTable4_10  ;; 0x40010c00
         BL       GPIO_Init
+        POP      {R0,PC}          ;; return
+
+        SECTION `.text`:CODE:NOROOT(1)
+        THUMB
+EXTI_Configuration:
+        PUSH     {R7,LR}
+        LDR.N    R0,??DataTable4_11
+        MOVS     R1,#+1
+        STR      R1,[R0, #+0]
+        LDR.N    R0,??DataTable4_11
+        MOVS     R1,#+0
+        STRB     R1,[R0, #+4]
+        LDR.N    R0,??DataTable4_11
+        MOVS     R1,#+12
+        STRB     R1,[R0, #+5]
+        LDR.N    R0,??DataTable4_11
+        MOVS     R1,#+1
+        STRB     R1,[R0, #+6]
+        LDR.N    R0,??DataTable4_11
+        BL       EXTI_Init
+        LDR.N    R0,??DataTable4_11
+        MOVS     R1,#+2
+        STR      R1,[R0, #+0]
+        LDR.N    R0,??DataTable4_11
+        MOVS     R1,#+0
+        STRB     R1,[R0, #+4]
+        LDR.N    R0,??DataTable4_11
+        MOVS     R1,#+12
+        STRB     R1,[R0, #+5]
+        LDR.N    R0,??DataTable4_11
+        MOVS     R1,#+1
+        STRB     R1,[R0, #+6]
+        LDR.N    R0,??DataTable4_11
+        BL       EXTI_Init
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable3:
+??DataTable4:
         DC32     rcc_clocks
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable3_1:
+??DataTable4_1:
         DC32     SystemCoreClock
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable3_2:
+??DataTable4_2:
         DC32     0x1d4c0
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable3_3:
+??DataTable4_3:
         DC32     PrescalerValue
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable3_4:
+??DataTable4_4:
         DC32     TIM_TimeBaseStructure
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable3_5:
+??DataTable4_5:
         DC32     0x40000800
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable3_6:
+??DataTable4_6:
         DC32     TIM_OCInitStructure
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable3_7:
+??DataTable4_7:
         DC32     NVIC_InitStructure
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable3_8:
+??DataTable4_8:
         DC32     GPIO_InitStructure
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable3_9:
+??DataTable4_9:
         DC32     0x40010800
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
-??DataTable3_10:
+??DataTable4_10:
         DC32     0x40010c00
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable4_11:
+        DC32     EXTI_InitStructure
 
         SECTION `.iar_vfe_header`:DATA:REORDER:NOALLOC:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
@@ -351,11 +413,11 @@ GPIO_Configuration:
 
         END
 // 
-// 154 bytes in section .bss
-// 380 bytes in section .text
+// 162 bytes in section .bss
+// 482 bytes in section .text
 // 
-// 380 bytes of CODE memory
-// 154 bytes of DATA memory
+// 482 bytes of CODE memory
+// 162 bytes of DATA memory
 //
 //Errors: none
 //Warnings: 1

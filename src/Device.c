@@ -10,6 +10,7 @@ NVIC_InitTypeDef NVIC_InitStructure;
 GPIO_InitTypeDef GPIO_InitStructure;
 TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 TIM_OCInitTypeDef TIM_OCInitStructure;
+EXTI_InitTypeDef EXTI_InitStructure;
 DMA_InitTypeDef DMA_InitStructure;
 ADC_InitTypeDef ADC_InitStructure;
 RCC_ClocksTypeDef rcc_clocks;
@@ -29,8 +30,9 @@ void Initial_Device(void)
    RCC_GetClocksFreq(&rcc_clocks);
    GPIO_Configuration();
 
-   TIMER_Init();
-   //NVIC_Configuration();
+   //TIMER_Init();
+   NVIC_Configuration();
+   EXTI_Configuration();
 }
 
 
@@ -96,9 +98,13 @@ void RCC_Configuration(void)
 void NVIC_Configuration(void)
 {
 
-   //  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
+   NVIC_InitStructure.NVIC_IRQChannel = EXTI0_IRQn;
+   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+   NVIC_Init(&NVIC_InitStructure);
 
-   NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
+   NVIC_InitStructure.NVIC_IRQChannel = EXTI1_IRQn;
    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
@@ -126,9 +132,25 @@ void GPIO_Configuration(void)
 
    //GPIOB Pin5: Yellow, Pin8: Green, Pin9: Red
    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_8 | GPIO_Pin_5;
-   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
    GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 }
+
+void EXTI_Configuration(void){
+	EXTI_InitStructure.EXTI_Line = EXTI_Line0;
+	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+	EXTI_Init(&EXTI_InitStructure);
+
+	EXTI_InitStructure.EXTI_Line = EXTI_Line1;
+    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+	EXTI_Init(&EXTI_InitStructure);
+
+}
+
 
