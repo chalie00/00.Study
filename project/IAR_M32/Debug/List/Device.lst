@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     27/Jul/2022  17:46:23 #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     27/Jul/2022  17:49:27 #
 # Copyright 1999-2011 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -66,7 +66,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
      29             RCC_GetClocksFreq(&rcc_clocks);
      30             GPIO_Configuration();
      31          
-     32             //TIMER_Init();
+     32             TIMER_Init();
      33             //NVIC_Configuration();
      34          }
      35          
@@ -163,7 +163,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
     126          
     127             //GPIOB Pin5: Yellow, Pin8: Green, Pin9: Red
     128             GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_8 | GPIO_Pin_5;
-    129             GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    129             GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
     130             GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
     131             GPIO_Init(GPIOB, &GPIO_InitStructure);
     132          
@@ -180,6 +180,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
              8 -> GPIO_Configuration
              8 -> RCC_Configuration
              8 -> RCC_GetClocksFreq
+             8 -> TIMER_Init
         8  NVIC_Configuration
              8 -> NVIC_Init
         8  RCC_Configuration
@@ -215,7 +216,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
       84  GPIO_Configuration
        4  GPIO_InitStructure
       16  I2C_InitStructure
-      18  Initial_Device
+      22  Initial_Device
       34  NVIC_Configuration
        4  NVIC_InitStructure
        2  PrescalerValue
@@ -228,9 +229,9 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
 
  
  154 bytes in section .bss
- 376 bytes in section .text
+ 380 bytes in section .text
  
- 376 bytes of CODE memory
+ 380 bytes of CODE memory
  154 bytes of DATA memory
 
 Errors: none

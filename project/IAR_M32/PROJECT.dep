@@ -791,7 +791,7 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 185 3 155</file>
+          <file> 3</file>
         </tool>
         <tool>
           <name>BICOMP</name>

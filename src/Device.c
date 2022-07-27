@@ -29,7 +29,7 @@ void Initial_Device(void)
    RCC_GetClocksFreq(&rcc_clocks);
    GPIO_Configuration();
 
-   //TIMER_Init();
+   TIMER_Init();
    //NVIC_Configuration();
 }
 
@@ -126,7 +126,7 @@ void GPIO_Configuration(void)
 
    //GPIOB Pin5: Yellow, Pin8: Green, Pin9: Red
    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_8 | GPIO_Pin_5;
-   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
    GPIO_Init(GPIOB, &GPIO_InitStructure);
 

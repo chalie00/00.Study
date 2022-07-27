@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    27/Jul/2022  17:46:23 /
+// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    27/Jul/2022  17:49:27 /
 // Copyright 1999-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Cpu mode     =  thumb                                                   /
@@ -116,6 +116,7 @@ Initial_Device:
         LDR.N    R0,??DataTable3
         BL       RCC_GetClocksFreq
         BL       GPIO_Configuration
+        BL       TIMER_Init
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(1)
@@ -261,7 +262,7 @@ GPIO_Configuration:
         MOV      R1,#+800
         STRH     R1,[R0, #+0]
         LDR.N    R0,??DataTable3_8
-        MOVS     R1,#+16
+        MOVS     R1,#+24
         STRB     R1,[R0, #+3]
         LDR.N    R0,??DataTable3_8
         MOVS     R1,#+2
@@ -351,9 +352,9 @@ GPIO_Configuration:
         END
 // 
 // 154 bytes in section .bss
-// 376 bytes in section .text
+// 380 bytes in section .text
 // 
-// 376 bytes of CODE memory
+// 380 bytes of CODE memory
 // 154 bytes of DATA memory
 //
 //Errors: none
