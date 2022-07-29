@@ -1,0 +1,177 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     29/Jul/2022  16:48:04 #
+# Copyright 1999-2011 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\SevenSeg.c    #
+#    Command line =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\SevenSeg.c    #
+#                    -D USE_STDPERIPH_DRIVER -D STM32F10x_HD -D               #
+#                    USE_FULL_ASSERT -lcN C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\Debug\List\ -lb                      #
+#                    C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\List\ -o C:\Users\TTT\Desktop\zz.STDFW\00.Study\pro #
+#                    ject\IAR_M32\Debug\Obj\ --no_cse --no_unroll             #
+#                    --no_inline --no_code_motion --no_tbaa --no_clustering   #
+#                    --no_scheduling --debug --endian=little --cpu=Cortex-M3  #
+#                    -e --fpu=None --dlib_config "C:\Program Files (x86)\IAR  #
+#                    Systems\Embedded Workbench 6.0\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\I #
+#                    AR_M32\..\..\inc\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\CMSIS\CM3\DeviceSupp #
+#                    ort\ST\STM32F10x\ -I C:\Users\TTT\Desktop\zz.STDFW\00.St #
+#                    udy\project\IAR_M32\..\..\Libraries\STM32F10x_StdPeriph_ #
+#                    Driver\inc\ -I "C:\Program Files (x86)\IAR               #
+#                    Systems\Embedded Workbench 6.0\arm\inc\c\" -On -I        #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.0\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\List\SevenSeg.lst                                   #
+#    Object file  =  C:\Users\TTT\Desktop\zz.STDFW\00.Study\project\IAR_M32\D #
+#                    ebug\Obj\SevenSeg.o                                      #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\SevenSeg.c
+      1          
+      2          /*
+      3           * File Name: SevenSeg.c
+      4           * Author: Chalie
+      5           * Version: v1.0
+      6           * Date: 2022.07.28
+      7          */
+      8          
+      9          /* include */
+     10          #include "stm32f10x.h"
+     11          
+     12          
+     13          /*Function*/
+     14          /*
+     15           * SevenSegAllOn
+     16           * SevenSegAllOff
+     17          */
+     18          
+     19          
+     20          
+     21          void SevenSegAllOn (void);
+     22          void SevenSegAllOff (void);
+     23          void OutPutName(int num);
+     24          void DisplayName(void);
+     25          
+     26          
+     27          void SevenSegAllOn (void) {
+     28          	GPIO_ResetBits(GPIOC, GPIO_Pin_0);
+     29              GPIO_ResetBits(GPIOC, GPIO_Pin_1);
+     30          	GPIO_ResetBits(GPIOC, GPIO_Pin_2);
+     31          	GPIO_ResetBits(GPIOC, GPIO_Pin_3);
+     32          	GPIO_ResetBits(GPIOC, GPIO_Pin_4);
+     33          	GPIO_ResetBits(GPIOC, GPIO_Pin_5);
+     34          	GPIO_ResetBits(GPIOC, GPIO_Pin_6); //DOT
+     35          	GPIO_ResetBits(GPIOC, GPIO_Pin_7); //Center
+     36          }
+     37          
+     38          
+     39          void SevenSegAllOff (void) {
+     40          	GPIO_SetBits(GPIOC, GPIO_Pin_0);
+     41          	GPIO_SetBits(GPIOC, GPIO_Pin_1);
+     42          	GPIO_SetBits(GPIOC, GPIO_Pin_2);
+     43          	GPIO_SetBits(GPIOC, GPIO_Pin_3);
+     44          	GPIO_SetBits(GPIOC, GPIO_Pin_4);
+     45          	GPIO_SetBits(GPIOC, GPIO_Pin_5);
+     46          	GPIO_SetBits(GPIOC, GPIO_Pin_6);
+     47          	GPIO_SetBits(GPIOC, GPIO_Pin_7);
+     48          }
+     49          
+     50          void OutPutName(int num) {
+     51          	
+     52          	
+     53          	switch(num)
+     54          		{
+     55          		case 1:
+     56          			//L
+     57          			GPIO_ResetBits(GPIOC, GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5);
+     58          			break;
+     59          		case 2:
+     60          			//E
+     61          			GPIO_ResetBits(GPIOC, GPIO_Pin_0 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7);
+     62          			break;
+     63          		case 3:
+     64          			//C
+     65          			GPIO_ResetBits(GPIOC, GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5);
+     66          			break;
+     67          		case 4:
+     68          			//H
+     69          			GPIO_ResetBits(GPIOC, GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5);
+     70          			break;
+     71          		case 5:
+     72          			//U
+     73          			GPIO_ResetBits(GPIOC, GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5);
+     74          			break;
+     75          
+     76          		}
+     77          }
+     78          
+     79          void DisplayName(void) {
+     80          
+     81             	/*SevenSeg */
+     82          	SevenSegAllOff();
+     83          	delay(1000);
+     84          
+     85          	OutPutName(1);
+     86          	delay(1000);
+     87          	
+     88          	SevenSegAllOff();
+     89          	delay(1000);
+     90          	
+     91          	OutPutName(2);
+     92          
+     93          }
+     94          
+     95          
+     96           
+     97          
+     98          
+     99          
+    100          
+    101          
+    102          
+    103          
+    104          
+    105          
+    106          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+        8  DisplayName
+             8 -> OutPutName
+             8 -> SevenSegAllOff
+             8 -> delay
+        8  OutPutName
+             8 -> GPIO_ResetBits
+        8  SevenSegAllOff
+             8 -> GPIO_SetBits
+        8  SevenSegAllOn
+             8 -> GPIO_ResetBits
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable2
+      48  DisplayName
+      74  OutPutName
+      68  SevenSegAllOff
+      68  SevenSegAllOn
+
+ 
+ 262 bytes in section .text
+ 
+ 262 bytes of CODE memory
+
+Errors: none
+Warnings: 1

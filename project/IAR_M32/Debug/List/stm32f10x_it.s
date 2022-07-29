@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    27/Jul/2022  18:00:38 /
+// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    28/Jul/2022  15:47:30 /
 // Copyright 1999-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Cpu mode     =  thumb                                                   /
@@ -319,266 +319,183 @@ TIM2_IRQHandler:
         MOVS     R1,#+1
         MOVS     R0,#+1073741824
         BL       TIM_ClearITPendingBit
-        LDR.W    R0,??DataTable15
+        LDR.W    R0,??DataTable16
         LDRB     R0,[R0, #+0]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable15
+        LDR.W    R1,??DataTable16
         STRB     R0,[R1, #+0]
-        LDR.W    R0,??DataTable15
+        LDR.W    R0,??DataTable16
         LDRB     R0,[R0, #+0]
         CMP      R0,#+100
         BCC.N    ??TIM2_IRQHandler_1
-        LDR.W    R0,??DataTable15
+        LDR.W    R0,??DataTable16
         MOVS     R1,#+0
         STRB     R1,[R0, #+0]
-        LDR.W    R0,??DataTable15
+        LDR.W    R0,??DataTable16
         LDRB     R0,[R0, #+1]
         EORS     R0,R0,#0xFF
-        LDR.W    R1,??DataTable15
+        LDR.W    R1,??DataTable16
         STRB     R0,[R1, #+1]
 ??TIM2_IRQHandler_1:
-        LDR.W    R0,??DataTable15_1
+        LDR.W    R0,??DataTable16_1
         LDRB     R0,[R0, #+0]
         CMP      R0,#+1
         BNE.N    ??TIM2_IRQHandler_2
-        LDR.W    R0,??DataTable15_1
+        LDR.W    R0,??DataTable16_1
         LDR      R0,[R0, #+4]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable15_1
+        LDR.W    R1,??DataTable16_1
         STR      R0,[R1, #+4]
-        LDR.W    R0,??DataTable15_1
+        LDR.W    R0,??DataTable16_1
         LDR      R0,[R0, #+4]
         MOV      R1,#+1000
         CMP      R0,R1
         BCC.N    ??TIM2_IRQHandler_2
-        LDR.W    R0,??DataTable15_1
+        LDR.W    R0,??DataTable16_1
         MOVS     R1,#+0
         STR      R1,[R0, #+4]
-        LDR.W    R0,??DataTable15_1
+        LDR.W    R0,??DataTable16_1
         MOVS     R1,#+0
         STRB     R1,[R0, #+0]
 ??TIM2_IRQHandler_2:
-        LDR.W    R0,??DataTable16
-        LDRB     R0,[R0, #+1]
-        CMP      R0,#+0
-        BEQ.N    ??TIM2_IRQHandler_3
-        CMP      R0,#+1
-        BEQ.N    ??TIM2_IRQHandler_4
-        B.N      ??TIM2_IRQHandler_5
-??TIM2_IRQHandler_3:
-        MOVS     R1,#+1
-        LDR.W    R0,??DataTable16_1  ;; 0x40011000
-        BL       GPIO_ReadInputDataBit
-        LDR.W    R1,??DataTable16_2
-        STRB     R0,[R1, #+4]
-        MOVS     R1,#+2
-        LDR.W    R0,??DataTable16_1  ;; 0x40011000
-        BL       GPIO_ReadInputDataBit
-        LDR.W    R1,??DataTable16_2
-        STRB     R0,[R1, #+5]
-        B.N      ??TIM2_IRQHandler_6
-??TIM2_IRQHandler_4:
-        MOVS     R1,#+1
-        LDR.W    R0,??DataTable16_1  ;; 0x40011000
-        BL       GPIO_ReadInputDataBit
-        LDR.W    R1,??DataTable16_2
-        STRB     R0,[R1, #+4]
-        LDR.W    R0,??DataTable16_3
-        LDRB     R0,[R0, #+1]
-        LDR.W    R1,??DataTable16_2
-        LDRB     R1,[R1, #+4]
-        CMP      R0,R1
-        BEQ.N    ??TIM2_IRQHandler_7
         LDR.W    R0,??DataTable16_2
         LDRB     R0,[R0, #+4]
-        CMP      R0,#+0
-        BNE.N    ??TIM2_IRQHandler_8
-        LDR.W    R0,??DataTable16_3
-        LDRB     R0,[R0, #+1]
         CMP      R0,#+1
-        BNE.N    ??TIM2_IRQHandler_8
-        LDR.W    R0,??DataTable16_3
-        LDRB     R0,[R0, #+3]
-        CMP      R0,#+1
-        BCC.N    ??TIM2_IRQHandler_9
-        LDR.W    R0,??DataTable16_3
-        LDRB     R0,[R0, #+3]
-        CMP      R0,#+15
-        BCS.N    ??TIM2_IRQHandler_9
-        LDR.W    R0,??DataTable16_3
-        LDRB     R0,[R0, #+3]
-        SUBS     R0,R0,#+1
-        LDR.W    R1,??DataTable16_3
-        STRB     R0,[R1, #+3]
-??TIM2_IRQHandler_9:
-        LDR.W    R0,??DataTable16_3
-        LDRB     R0,[R0, #+3]
-        CMP      R0,#+0
-        BEQ.N    ??TIM2_IRQHandler_8
-        LDR.W    R0,??DataTable16_3
-        LDRB     R0,[R0, #+4]
-        CMP      R0,#+0
-        BNE.N    ??TIM2_IRQHandler_8
-        LDR.W    R0,??DataTable16_3
-        LDRB     R0,[R0, #+5]
-        CMP      R0,#+0
-        BEQ.N    ??TIM2_IRQHandler_8
-        LDR.W    R0,??DataTable16_3
-        MOVS     R1,#+1
-        STRB     R1,[R0, #+4]
-??TIM2_IRQHandler_8:
-        MOVS     R1,#+1
-        LDR.W    R0,??DataTable16_1  ;; 0x40011000
-        BL       GPIO_ReadInputDataBit
-        LDR.W    R1,??DataTable16_3
-        STRB     R0,[R1, #+1]
-??TIM2_IRQHandler_7:
-        MOVS     R1,#+2
-        LDR.W    R0,??DataTable16_1  ;; 0x40011000
-        BL       GPIO_ReadInputDataBit
-        LDR.W    R1,??DataTable16_2
-        STRB     R0,[R1, #+5]
-        B.N      ??TIM2_IRQHandler_6
-??TIM2_IRQHandler_5:
-??TIM2_IRQHandler_6:
-        LDR.W    R0,??DataTable16_3
-        LDRB     R0,[R0, #+4]
-        CMP      R0,#+1
-        BNE.N    ??TIM2_IRQHandler_10
-        LDR.W    R0,??DataTable16_3
+        BNE.N    ??TIM2_IRQHandler_3
+        LDR.W    R0,??DataTable16_2
         LDRB     R0,[R0, #+6]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable16_3
+        LDR.W    R1,??DataTable16_2
         STRB     R0,[R1, #+6]
-        LDR.W    R0,??DataTable16_3
+        LDR.W    R0,??DataTable16_2
         LDRB     R0,[R0, #+6]
         CMP      R0,#+101
-        BCC.N    ??TIM2_IRQHandler_10
-        LDR.W    R0,??DataTable16_3
+        BCC.N    ??TIM2_IRQHandler_3
+        LDR.W    R0,??DataTable16_2
         MOVS     R1,#+0
         STRB     R1,[R0, #+6]
-        LDR.W    R0,??DataTable16_3
+        LDR.W    R0,??DataTable16_2
         LDRB     R0,[R0, #+7]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable16_3
+        LDR.W    R1,??DataTable16_2
         STRB     R0,[R1, #+7]
-        LDR.W    R0,??DataTable16_3
+        LDR.W    R0,??DataTable16_2
         LDRB     R0,[R0, #+7]
-        LDR.W    R1,??DataTable16_3
+        LDR.W    R1,??DataTable16_2
         LDRB     R1,[R1, #+5]
         CMP      R0,R1
-        BCC.N    ??TIM2_IRQHandler_10
-        LDR.W    R0,??DataTable16_3
+        BCC.N    ??TIM2_IRQHandler_3
+        LDR.W    R0,??DataTable16_2
         MOVS     R1,#+0
         STRB     R1,[R0, #+4]
-        LDR.W    R0,??DataTable16_3
+        LDR.W    R0,??DataTable16_2
         MOVS     R1,#+0
         STRB     R1,[R0, #+7]
-??TIM2_IRQHandler_10:
-        LDR.W    R0,??DataTable16_2
+??TIM2_IRQHandler_3:
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+13]
         CMP      R0,#+0
-        BEQ.N    ??TIM2_IRQHandler_11
-        LDR.W    R0,??DataTable16_2
+        BEQ.N    ??TIM2_IRQHandler_4
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+14]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable16_2
+        LDR.W    R1,??DataTable18
         STRB     R0,[R1, #+14]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+14]
         CMP      R0,#+100
-        BCC.N    ??TIM2_IRQHandler_11
-        LDR.W    R0,??DataTable16_2
+        BCC.N    ??TIM2_IRQHandler_4
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+15]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable16_2
+        LDR.W    R1,??DataTable18
         STRB     R0,[R1, #+15]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STRB     R1,[R0, #+14]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+15]
-        LDR.W    R1,??DataTable16_2
+        LDR.W    R1,??DataTable18
         LDRB     R1,[R1, #+12]
         CMP      R0,R1
-        BCC.N    ??TIM2_IRQHandler_11
-        LDR.W    R0,??DataTable16_2
+        BCC.N    ??TIM2_IRQHandler_4
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+1
         STRB     R1,[R0, #+16]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STRB     R1,[R0, #+15]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STRB     R1,[R0, #+13]
-??TIM2_IRQHandler_11:
-        LDR.W    R0,??DataTable16_2
+??TIM2_IRQHandler_4:
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+10]
         CMP      R0,#+0
-        BNE.N    ??TIM2_IRQHandler_12
-        LDR.W    R0,??DataTable16_2
+        BNE.N    ??TIM2_IRQHandler_5
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+13]
         CMP      R0,#+0
-        BEQ.N    ??TIM2_IRQHandler_12
-        LDR.W    R0,??DataTable16_2
+        BEQ.N    ??TIM2_IRQHandler_5
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STRB     R1,[R0, #+13]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STRB     R1,[R0, #+14]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STRB     R1,[R0, #+15]
-??TIM2_IRQHandler_12:
-        LDR.W    R0,??DataTable18
+??TIM2_IRQHandler_5:
+        LDR.W    R0,??DataTable18_1
         LDRB     R0,[R0, #+0]
         CMP      R0,#+1
-        BNE.N    ??TIM2_IRQHandler_13
-        LDR.W    R0,??DataTable18
+        BNE.N    ??TIM2_IRQHandler_6
+        LDR.W    R0,??DataTable18_1
         LDR      R0,[R0, #+4]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable18
+        LDR.W    R1,??DataTable18_1
         STR      R0,[R1, #+4]
-        LDR.W    R0,??DataTable18
+        LDR.W    R0,??DataTable18_1
         LDR      R0,[R0, #+4]
         CMP      R0,#+200
-        BCC.N    ??TIM2_IRQHandler_13
-        LDR.W    R0,??DataTable18
+        BCC.N    ??TIM2_IRQHandler_6
+        LDR.W    R0,??DataTable18_1
         MOVS     R1,#+1
         STRB     R1,[R0, #+8]
-        LDR.W    R0,??DataTable18
+        LDR.W    R0,??DataTable18_1
         MOVS     R1,#+0
         STR      R1,[R0, #+4]
-        LDR.W    R0,??DataTable18
+        LDR.W    R0,??DataTable18_1
         MOVS     R1,#+0
         STRB     R1,[R0, #+0]
-??TIM2_IRQHandler_13:
-        LDR.W    R0,??DataTable18
+??TIM2_IRQHandler_6:
+        LDR.W    R0,??DataTable18_1
         LDRB     R0,[R0, #+9]
         CMP      R0,#+1
-        BNE.N    ??TIM2_IRQHandler_14
-        LDR.W    R0,??DataTable18
+        BNE.N    ??TIM2_IRQHandler_7
+        LDR.W    R0,??DataTable18_1
         LDR      R0,[R0, #+12]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable18
+        LDR.W    R1,??DataTable18_1
         STR      R0,[R1, #+12]
-        LDR.W    R0,??DataTable18
+        LDR.W    R0,??DataTable18_1
         LDR      R0,[R0, #+16]
-        LDR.W    R1,??DataTable18
+        LDR.W    R1,??DataTable18_1
         LDR      R1,[R1, #+12]
         CMP      R0,R1
-        BCS.N    ??TIM2_IRQHandler_14
-        LDR.W    R0,??DataTable18
+        BCS.N    ??TIM2_IRQHandler_7
+        LDR.W    R0,??DataTable18_1
         MOVS     R1,#+1
         STRB     R1,[R0, #+20]
-        LDR.W    R0,??DataTable18
+        LDR.W    R0,??DataTable18_1
         MOVS     R1,#+0
         STR      R1,[R0, #+12]
-??TIM2_IRQHandler_14:
+??TIM2_IRQHandler_7:
         LDR.W    R0,??DataTable20
         LDRB     R0,[R0, #+2]
         CMP      R0,#+1
-        BNE.N    ??TIM2_IRQHandler_15
+        BNE.N    ??TIM2_IRQHandler_8
         LDR.W    R0,??DataTable20
         LDRB     R0,[R0, #+3]
         ADDS     R0,R0,#+1
@@ -587,106 +504,106 @@ TIM2_IRQHandler:
         LDR.W    R0,??DataTable20
         LDRB     R0,[R0, #+3]
         CMP      R0,#+50
-        BCC.N    ??TIM2_IRQHandler_15
+        BCC.N    ??TIM2_IRQHandler_8
         LDR.W    R0,??DataTable20
         MOVS     R1,#+0
         STRB     R1,[R0, #+3]
         LDR.W    R0,??DataTable20
         MOVS     R1,#+0
         STRB     R1,[R0, #+2]
-??TIM2_IRQHandler_15:
-        LDR.W    R0,??DataTable16_2
+??TIM2_IRQHandler_8:
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+18]
         CMP      R0,#+0
-        BNE.N    ??TIM2_IRQHandler_16
-        LDR.W    R0,??DataTable16_2
+        BNE.N    ??TIM2_IRQHandler_9
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+19]
         CMP      R0,#+0
-        BNE.N    ??TIM2_IRQHandler_17
-        LDR.W    R0,??DataTable16_2
+        BNE.N    ??TIM2_IRQHandler_10
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+20]
         CMP      R0,#+0
-        BNE.N    ??TIM2_IRQHandler_17
-        LDR.W    R0,??DataTable16_2
+        BNE.N    ??TIM2_IRQHandler_10
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+21]
         CMP      R0,#+0
-        BNE.N    ??TIM2_IRQHandler_17
-        LDR.W    R0,??DataTable16_2
+        BNE.N    ??TIM2_IRQHandler_10
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+22]
         CMP      R0,#+0
-        BEQ.N    ??TIM2_IRQHandler_16
-??TIM2_IRQHandler_17:
-        LDR.W    R0,??DataTable16_2
+        BEQ.N    ??TIM2_IRQHandler_9
+??TIM2_IRQHandler_10:
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STRB     R1,[R0, #+19]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STRB     R1,[R0, #+20]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STRB     R1,[R0, #+21]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STRB     R1,[R0, #+22]
-??TIM2_IRQHandler_16:
-        LDR.W    R0,??DataTable16_2
+??TIM2_IRQHandler_9:
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+18]
         CMP      R0,#+1
         BNE.N    ??TIM2_IRQHandler_0
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+19]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable16_2
+        LDR.W    R1,??DataTable18
         STRB     R0,[R1, #+19]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+19]
         CMP      R0,#+100
         BCC.N    ??TIM2_IRQHandler_0
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STRB     R1,[R0, #+19]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+20]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable16_2
+        LDR.W    R1,??DataTable18
         STRB     R0,[R1, #+20]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+20]
         CMP      R0,#+60
         BCC.N    ??TIM2_IRQHandler_0
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STRB     R1,[R0, #+20]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+21]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable16_2
+        LDR.W    R1,??DataTable18
         STRB     R0,[R1, #+21]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+21]
         CMP      R0,#+60
         BCC.N    ??TIM2_IRQHandler_0
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STRB     R1,[R0, #+21]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+22]
         ADDS     R0,R0,#+1
-        LDR.W    R1,??DataTable16_2
+        LDR.W    R1,??DataTable18
         STRB     R0,[R1, #+22]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         LDRB     R0,[R0, #+22]
-        LDR.W    R1,??DataTable16_2
+        LDR.W    R1,??DataTable18
         LDRB     R1,[R1, #+17]
         CMP      R0,R1
         BCC.N    ??TIM2_IRQHandler_0
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STRB     R1,[R0, #+22]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+0
         STRB     R1,[R0, #+18]
-        LDR.W    R0,??DataTable16_2
+        LDR.W    R0,??DataTable18
         MOVS     R1,#+1
         STRB     R1,[R0, #+23]
 ??TIM2_IRQHandler_0:
@@ -1754,7 +1671,7 @@ LRF_Data_Clear:
         CMP      R0,#+22
         BCS.N    ??LRF_Data_Clear_1
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
-        LDR.N    R1,??DataTable18
+        LDR.N    R1,??DataTable18_1
         ADDS     R1,R0,R1
         MOVS     R2,#+0
         STRB     R2,[R1, #+21]
@@ -1762,18 +1679,6 @@ LRF_Data_Clear:
         B.N      ??LRF_Data_Clear_0
 ??LRF_Data_Clear_1:
         BX       LR               ;; return
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable15:
-        DC32     stLED_SET
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable15_1:
-        DC32     stINFO
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
@@ -1793,7 +1698,7 @@ LRF_Trans_Data:
         LDR.N    R0,??DataTable20_4
         ADDS     R0,R4,R0
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
-        LDR.N    R1,??DataTable18
+        LDR.N    R1,??DataTable18_1
         ADDS     R1,R4,R1
         LDRB     R1,[R1, #+21]
         STRB     R1,[R0, #+31]
@@ -1825,24 +1730,18 @@ LRF_Trans_Data:
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable16:
-        DC32     stDIP
+        DC32     stLED_SET
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable16_1:
-        DC32     0x40011000
+        DC32     stINFO
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable16_2:
-        DC32     stWIPER2
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable16_3:
         DC32     stWIPER1
 
         SECTION `.text`:CODE:NOROOT(1)
@@ -1854,93 +1753,93 @@ LRF_Data_Pasher:
         LDRB     R0,[R0, #+1]
         CMP      R0,#+1
         BNE.N    ??LRF_Data_Pasher_0
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         LDRB     R0,[R0, #+43]
         CMP      R0,#+20
         BNE.N    ??LRF_Data_Pasher_1
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         LDRB     R0,[R0, #+21]
         CMP      R0,#+68
         BNE.N    ??LRF_Data_Pasher_2
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         LDRB     R0,[R0, #+22]
         CMP      R0,#+77
         BNE.N    ??LRF_Data_Pasher_2
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         LDRB     R0,[R0, #+40]
         CMP      R0,#+13
         BNE.N    ??LRF_Data_Pasher_2
         BL       LRF_Trans_Data
 ??LRF_Data_Pasher_2:
         BL       LRF_Data_Clear
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         MOVS     R1,#+0
         STRB     R1,[R0, #+43]
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         MOVS     R1,#+1
         STRB     R1,[R0, #+44]
 ??LRF_Data_Pasher_1:
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         LDRB     R0,[R0, #+43]
         CMP      R0,#+2
         BCC.N    ??LRF_Data_Pasher_3
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         LDRB     R0,[R0, #+43]
-        LDR.N    R1,??DataTable18
+        LDR.N    R1,??DataTable18_1
         ADDS     R0,R0,R1
         STRB     R4,[R0, #+21]
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         LDRB     R0,[R0, #+43]
         ADDS     R0,R0,#+1
-        LDR.N    R1,??DataTable18
+        LDR.N    R1,??DataTable18_1
         STRB     R0,[R1, #+43]
 ??LRF_Data_Pasher_3:
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         LDRB     R0,[R0, #+44]
         CMP      R0,#+0
         BNE.N    ??LRF_Data_Pasher_4
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
         CMP      R4,#+77
         BNE.N    ??LRF_Data_Pasher_5
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         LDRB     R0,[R0, #+43]
         CMP      R0,#+1
         BNE.N    ??LRF_Data_Pasher_5
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         MOVS     R1,#+77
         STRB     R1,[R0, #+22]
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         LDRB     R0,[R0, #+43]
         ADDS     R0,R0,#+1
-        LDR.N    R1,??DataTable18
+        LDR.N    R1,??DataTable18_1
         STRB     R0,[R1, #+43]
 ??LRF_Data_Pasher_5:
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
         CMP      R4,#+68
         BNE.N    ??LRF_Data_Pasher_6
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         LDRB     R0,[R0, #+43]
         CMP      R0,#+0
         BNE.N    ??LRF_Data_Pasher_6
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         MOVS     R1,#+68
         STRB     R1,[R0, #+21]
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         LDRB     R0,[R0, #+43]
         ADDS     R0,R0,#+1
-        LDR.N    R1,??DataTable18
+        LDR.N    R1,??DataTable18_1
         STRB     R0,[R1, #+43]
         B.N      ??LRF_Data_Pasher_6
 ??LRF_Data_Pasher_4:
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         MOVS     R1,#+0
         STRB     R1,[R0, #+44]
 ??LRF_Data_Pasher_6:
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         LDRB     R0,[R0, #+43]
         CMP      R0,#+22
         BCC.N    ??LRF_Data_Pasher_7
-        LDR.N    R0,??DataTable18
+        LDR.N    R0,??DataTable18_1
         MOVS     R1,#+0
         STRB     R1,[R0, #+43]
         BL       LRF_Data_Clear
@@ -2009,6 +1908,12 @@ USART2_IRQHandler:
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable18:
+        DC32     stWIPER2
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable18_1:
         DC32     stLRF
 
         SECTION `.text`:CODE:NOROOT(1)
@@ -3699,9 +3604,9 @@ UART5_IRQHandler:
         END
 // 
 //     1 byte  in section .bss
-// 7 648 bytes in section .text
+// 7 432 bytes in section .text
 // 
-// 7 648 bytes of CODE memory
+// 7 432 bytes of CODE memory
 //     1 byte  of DATA memory
 //
 //Errors: none

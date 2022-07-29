@@ -586,58 +586,7 @@ void TIM2_IRQHandler(void)
 			}
 		}
 
-		// ================================================================
-		// Wiper Sensor Check
-		// ================================================================
-
-		switch(stDIP.MODE2)
-		{
-			case 0x00:
-
-				stWIPER2.SENSOR_1 = WIPER_SENSOR_1;
-				stWIPER2.SENSOR_2 = WIPER_SENSOR_2;
-				
-				break;
-
-			case 0x01:
-
-				stWIPER2.SENSOR_1 = WIPER_SENSOR_1;
-				
-				if(stWIPER1.SENSOR_TEMP != stWIPER2.SENSOR_1) 
-				{
-
-					if((stWIPER2.SENSOR_1 == WIPER_SENS1_ON) && (stWIPER1.SENSOR_TEMP == WIPER_SENS1_OFF))
-					{
-						if((stWIPER1.ACTIVE_COUNT > 0) && (stWIPER1.ACTIVE_COUNT < 0x0F)) 
-						{
-							stWIPER1.ACTIVE_COUNT--;
-						}
-						
-						if(stWIPER1.ACTIVE_COUNT == 0) 
-						{
-							//Run_Wiper(WIPER_OFF, DIRECTION_CW);				// Wiper Off
-						}
-						else
-						{
-							if((stWIPER1.DWELL_FLAG == 0x00) && (stWIPER1.DWELL_TIME != 0))
-							{
-								//Run_Wiper(WIPER_OFF, DIRECTION_CW);				// Wiper off
-								stWIPER1.DWELL_FLAG = 0x01;
-							}
-						}
-					}
-
-					stWIPER1.SENSOR_TEMP = WIPER_SENSOR_1;
-					
-				}
-				stWIPER2.SENSOR_2 = WIPER_SENSOR_2;
-
-
-				break;
-
-			default:
-				break;
-		}
+		
 
 		// =======================================
 		// Wiper1 Dwell Timer

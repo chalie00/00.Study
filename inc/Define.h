@@ -285,11 +285,6 @@ BYTE1[0]		BYTE2[1]
 #define USART5_INDEX					0x05
 #define SYSTEM_INDEX					0xAA
 
-/****************************************************************************************************
-* Function Define
-*****************************************************************************************************/
-#define LED1_OFF						GPIO_SetBits(GPIOC, GPIO_Pin_3)
-#define LED1_ON							GPIO_ResetBits(GPIOC, GPIO_Pin_3)
 
 /****************************************************************************************************
 * Define : MDIN
@@ -656,11 +651,6 @@ BYTE1[0]		BYTE2[1]
 #define WIPER_SENS2_OFF				0x01
 #define WIPER_SENS2_ON					0x00
 
-#define WAT_SENS			  			GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_0)
-#define WIPER_SENSOR_1		  			GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_0)
-#define WIPER_SENSOR_2		  			GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_1)
-#define MOTOR_FG			  			GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_7)
-
 #define WIPER_INITIAL					0x00
 #define WIPER_SENSOR1_ON_CHECK		0x01
 #define WIPER_READY					0x02
@@ -908,49 +898,12 @@ BYTE1[0]		BYTE2[1]
 #define	IR_EN_OFF				GPIO_ResetBits(GPIOA, GPIO_Pin_8)
 #define	IR_EN_ON				GPIO_SetBits(GPIOA, GPIO_Pin_8)
 
-#define	MODULE_OFF				GPIO_ResetBits(GPIOC, GPIO_Pin_8)
-#define	MODULE_ON			GPIO_SetBits(GPIOC, GPIO_Pin_8)
-
-#define	LED_On					GPIO_ResetBits(GPIOC, GPIO_Pin_3)
-#define	LED_Off					GPIO_SetBits(GPIOC, GPIO_Pin_3)
-
-//#define	Heater_OFF			GPIO_ResetBits(GPIOC, GPIO_Pin_13)
-//#define	Heater_ON				GPIO_SetBits(GPIOC, GPIO_Pin_13)
-
-#define	Heater_ON			GPIO_SetBits(GPIOC, GPIO_Pin_13)
-#define	Heater_OFF				GPIO_ResetBits(GPIOC, GPIO_Pin_13)
-
-//#define	GHeater_OFF			GPIO_ResetBits(GPIOC, GPIO_Pin_14)
-//#define	GHeater_ON			GPIO_SetBits(GPIOC, GPIO_Pin_14)
-#define	WIPER_CW				GPIO_ResetBits(GPIOC, GPIO_Pin_8)
-#define	WIPER_CCW				GPIO_SetBits(GPIOC, GPIO_Pin_8)
-
-#define	WIPER_STOP				GPIO_ResetBits(GPIOC, GPIO_Pin_6)
-#define	WIPER_START			GPIO_SetBits(GPIOC, GPIO_Pin_6)
-
-#define	WAT_OFF				GPIO_ResetBits(GPIOC, GPIO_Pin_7)
-#define	WAT_ON					GPIO_SetBits(GPIOC, GPIO_Pin_7)
-
-#define	AUX_OFF					GPIO_ResetBits(GPIOB, GPIO_Pin_8)
-#define	AUX_ON					GPIO_SetBits(GPIOB, GPIO_Pin_8)
-
-#define	Fan_OFF					GPIO_ResetBits(GPIOC, GPIO_Pin_15)
-#define	Fan_ON					GPIO_SetBits(GPIOC, GPIO_Pin_15)
-
 #define	RS485_Tx				GPIO_ResetBits(GPIOB, GPIO_Pin_12)
 #define	RS485_Rx				GPIO_SetBits(GPIOB, GPIO_Pin_12)
 
 #define	OSD_Reset_low		GPIO_ResetBits(GPIOD, GPIO_Pin_2)
 #define	OSD_Reset_high	GPIO_SetBits(GPIOD, GPIO_Pin_2)
 
-#define	OSD_IN_low			GPIO_ResetBits(GPIOC, GPIO_Pin_12)
-#define	OSD_IN_high			GPIO_SetBits(GPIOC, GPIO_Pin_12)
-
-#define	OSD_CLK_low			GPIO_ResetBits(GPIOC, GPIO_Pin_11)
-#define	OSD_CLK_high		GPIO_SetBits(GPIOC, GPIO_Pin_11)
-
-#define	OSD_CS_low		  GPIO_ResetBits(GPIOC, GPIO_Pin_10)
-#define	OSD_CS_high			GPIO_SetBits(GPIOC, GPIO_Pin_10)
 
 #define	OSD_BUSY_low		GPIO_ResetBits(GPIOB, GPIO_Pin_3)
 #define	OSD_BUSY_high		GPIO_SetBits(GPIOB, GPIO_Pin_3)
@@ -969,8 +922,7 @@ BYTE1[0]		BYTE2[1]
 
 //#define UpKey 					GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_15)
 #define RightKey 					GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_15)
-//#define DnKey 					GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_6)
-#define LeftKey 					GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_6)
+
 //#define RightKey				GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_13)
 #define UpKey				GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_13)
 //#define LeftKey					GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_12)
@@ -981,8 +933,7 @@ BYTE1[0]		BYTE2[1]
 #define SW_ID2				  GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_5)
 #define SW_ID3				  GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6)
 #define SW_ID4				  GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_7)
-#define SW_ID5				  GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_4)
-#define SW_ID6				  GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_5)
+
 #define BAUD1 				  GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_0)
 #define BAUD2 				  GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1)
 #define PROTO 				  GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_2)

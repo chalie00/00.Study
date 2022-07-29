@@ -1,5 +1,17 @@
----- Run_Wiper Matches (4 in 2 files) ----
-Extern.h (c:\users\ttt\desktop\zz.stdfw\00.study\inc):extern void Run_Wiper(u8 u_Cmd, u8 u_Direction);
-Stm32f10x_it.c (c:\users\ttt\desktop\zz.stdfw\00.study\libraries\stm32f10x_stdperiph_driver\src):							Run_Wiper(WIPER_OFF, DIRECTION_CW);				// Wiper Off
-Stm32f10x_it.c (c:\users\ttt\desktop\zz.stdfw\00.study\libraries\stm32f10x_stdperiph_driver\src):								Run_Wiper(WIPER_OFF, DIRECTION_CW);				// Wiper off
-Stm32f10x_it.c (c:\users\ttt\desktop\zz.stdfw\00.study\libraries\stm32f10x_stdperiph_driver\src):						Run_Wiper(WIPER_ON, DIRECTION_CW);				// Wiper On
+---- GPIOC Matches (16 in 6 files) ----
+Dddstm32f10x.h (c:\users\ttt\desktop\zz.stdfw\00.study\libraries\cmsis\cm3\devicesupport\st\stm32f10x):#define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
+Device.c (c:\users\ttt\desktop\zz.stdfw\00.study\src):	//GPIOC SevenSeg
+Device.c (c:\users\ttt\desktop\zz.stdfw\00.study\src):    GPIO_Init(GPIOC, &GPIO_InitStructure);
+SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src):	GPIO_ResetBits(GPIOC, GPIO_Pin_8);
+SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src)://		GPIO_ResetBits(GPIOC, GPIO_Pin_8);
+SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src):	GPIO_SetBits(GPIOC, GPIO_Pin_0);
+SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src)://		GPIO_SetBits(GPIOC, GPIO_Pin_1);
+SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src)://		GPIO_SetBits(GPIOC, GPIO_Pin_2);
+SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src)://		GPIO_SetBits(GPIOC, GPIO_Pin_3);
+SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src)://		GPIO_SetBits(GPIOC, GPIO_Pin_4);
+SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src)://		GPIO_SetBits(GPIOC, GPIO_Pin_5);
+SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src)://		GPIO_SetBits(GPIOC, GPIO_Pin_6);
+SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src)://		GPIO_SetBits(GPIOC, GPIO_Pin_7);
+Stm32f10x.h (c:\users\ttt\desktop\zz.stdfw\00.study\libraries\cmsis\cm3\devicesupport\st\stm32f10x):#define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
+Stm32f10x_gpio.c (c:\users\ttt\desktop\zz.stdfw\00.study\libraries\stm32f10x_stdperiph_driver\src):  else if (GPIOx == GPIOC)
+Stm32f10x_gpio.h (c:\users\ttt\desktop\zz.stdfw\00.study\libraries\stm32f10x_stdperiph_driver\inc):                                    ((PERIPH) == GPIOC) || \

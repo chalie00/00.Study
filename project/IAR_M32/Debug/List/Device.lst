@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     27/Jul/2022  18:07:00 #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     28/Jul/2022  15:50:37 #
 # Copyright 1999-2011 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -68,8 +68,8 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
      31             GPIO_Configuration();
      32          
      33             //TIMER_Init();
-     34             NVIC_Configuration();
-     35             EXTI_Configuration();
+     34             //NVIC_Configuration();
+     35             //EXTI_Configuration();
      36          }
      37          
      38          
@@ -173,24 +173,31 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
     136             GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
     137             GPIO_Init(GPIOB, &GPIO_InitStructure);
     138          
-    139          }
-    140          
-    141          void EXTI_Configuration(void){
-    142          	EXTI_InitStructure.EXTI_Line = EXTI_Line0;
-    143          	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-    144          	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
-    145          	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-    146          	EXTI_Init(&EXTI_InitStructure);
+    139          	//GPIOC SevenSeg
+    140          	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 |
+    141          								  GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8;
+    142          	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    143          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    144              GPIO_Init(GPIOC, &GPIO_InitStructure);
+    145          
+    146          }
     147          
-    148          	EXTI_InitStructure.EXTI_Line = EXTI_Line1;
-    149              EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-    150          	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
-    151          	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-    152          	EXTI_Init(&EXTI_InitStructure);
-    153          
-    154          }
-    155          
-    156          
+    148          void EXTI_Configuration(void){
+    149          	EXTI_InitStructure.EXTI_Line = EXTI_Line0;
+    150          	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+    151          	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+    152          	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+    153          	EXTI_Init(&EXTI_InitStructure);
+    154          
+    155          	EXTI_InitStructure.EXTI_Line = EXTI_Line1;
+    156              EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+    157          	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+    158          	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+    159          	EXTI_Init(&EXTI_InitStructure);
+    160          
+    161          }
+    162          
+    163          
 
    Maximum stack usage in bytes:
 
@@ -201,9 +208,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
         8  GPIO_Configuration
              8 -> GPIO_Init
         8  Initial_Device
-             8 -> EXTI_Configuration
              8 -> GPIO_Configuration
-             8 -> NVIC_Configuration
              8 -> RCC_Configuration
              8 -> RCC_GetClocksFreq
         8  NVIC_Configuration
@@ -229,6 +234,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
        4  ??DataTable4_1
        4  ??DataTable4_10
        4  ??DataTable4_11
+       4  ??DataTable4_12
        4  ??DataTable4_2
        4  ??DataTable4_3
        4  ??DataTable4_4
@@ -241,10 +247,10 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
       44  DMA_InitStructure
       64  EXTI_Configuration
        8  EXTI_InitStructure
-      84  GPIO_Configuration
+     112  GPIO_Configuration
        4  GPIO_InitStructure
       16  I2C_InitStructure
-      26  Initial_Device
+      18  Initial_Device
       64  NVIC_Configuration
        4  NVIC_InitStructure
        2  PrescalerValue
@@ -257,9 +263,9 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\Device.c
 
  
  162 bytes in section .bss
- 482 bytes in section .text
+ 506 bytes in section .text
  
- 482 bytes of CODE memory
+ 506 bytes of CODE memory
  162 bytes of DATA memory
 
 Errors: none

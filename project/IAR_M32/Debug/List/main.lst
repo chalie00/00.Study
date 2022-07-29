@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     27/Jul/2022  18:00:38 #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     29/Jul/2022  16:48:35 #
 # Copyright 1999-2011 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -122,33 +122,38 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\main.c
      85             // =======================================
      86             Initial_Device();
      87          
-     88             while (1)
-     89             {
+     88             DisplayName();
+     89          
      90          
-     91          /* LED ON/OFF */
-     92          //	      LED_On_Red();
-     93          //	      Delay_1ms(500);
-     94          //	      LED_Off_Red();
-     95          //	      Delay_1ms(500);
-     96          //		  
-     97          //	      LED_On_Green();
-     98          //	      Delay_1ms(500);
-     99          //	      LED_Off_Green();
-    100          //	      Delay_1ms(500);
-    101          //		  
-    102          //	      LED_On_Yellow();
-    103          //	      Delay_1ms(500);
-    104          //	      LED_Off_Yellow();
-    105          //	      Delay_1ms(500);
-    106          
-    107          
-    108          /* SW + LED ON/OFF */
-    109          //	      User_SW_On_LED_Ren_On();
+     91          	
+     92             while (1)
+     93             {
+     94          
+     95          	/* LED ON/OFF */
+     96          	//	      LED_On_Red();
+     97          	//	      Delay_1ms(500);
+     98          	//	      LED_Off_Red();
+     99          	//	      Delay_1ms(500);
+    100          	//		  
+    101          	//	      LED_On_Green();
+    102          	//	      Delay_1ms(500);
+    103          	//	      LED_Off_Green();
+    104          	//	      Delay_1ms(500);
+    105          	//		  
+    106          	//	      LED_On_Yellow();
+    107          	//	      Delay_1ms(500);
+    108          	//	      LED_Off_Yellow();
+    109          	//	      Delay_1ms(500);
     110          
-    111             }
-    112          
-    113          } //End Main
+    111          
+    112          	/* SW + LED ON/OFF */
+    113          	//	      User_SW_On_LED_Ren_On();
     114          
+    115          	
+    116             }
+    117          
+    118          } //End Main
+    119          
 
    Maximum stack usage in bytes:
 
@@ -167,6 +172,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\main.c
              8 -> RCC_SYSCLKConfig
              8 -> RCC_WaitForHSEStartUp
         8  main
+             8 -> DisplayName
              8 -> Initial_Device
 
 
@@ -1133,7 +1139,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\main.c
       20  inHeaterOnMsg
        4  intFlag
        4  inter
-       8  main
+      12  main
        1  minusFlag
        4  msCount
        4  msIdleCnt
@@ -1150,11 +1156,11 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\main.c
   1 029 bytes in section .bss
     199 bytes in section .data
  17 744 bytes in section .rodata
-    102 bytes in section .text
+    106 bytes in section .text
  
-    102 bytes of CODE  memory
+    106 bytes of CODE  memory
  17 744 bytes of CONST memory
   1 228 bytes of DATA  memory
 
 Errors: none
-Warnings: 1
+Warnings: 2

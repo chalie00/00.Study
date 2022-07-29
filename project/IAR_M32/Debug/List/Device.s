@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    27/Jul/2022  18:07:00 /
+// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    28/Jul/2022  15:50:37 /
 // Copyright 1999-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Cpu mode     =  thumb                                                   /
@@ -123,8 +123,6 @@ Initial_Device:
         LDR.N    R0,??DataTable4
         BL       RCC_GetClocksFreq
         BL       GPIO_Configuration
-        BL       NVIC_Configuration
-        BL       EXTI_Configuration
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(1)
@@ -292,39 +290,51 @@ GPIO_Configuration:
         LDR.N    R1,??DataTable4_8
         LDR.N    R0,??DataTable4_10  ;; 0x40010c00
         BL       GPIO_Init
+        LDR.N    R0,??DataTable4_8
+        MOVW     R1,#+511
+        STRH     R1,[R0, #+0]
+        LDR.N    R0,??DataTable4_8
+        MOVS     R1,#+16
+        STRB     R1,[R0, #+3]
+        LDR.N    R0,??DataTable4_8
+        MOVS     R1,#+3
+        STRB     R1,[R0, #+2]
+        LDR.N    R1,??DataTable4_8
+        LDR.N    R0,??DataTable4_11  ;; 0x40011000
+        BL       GPIO_Init
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
 EXTI_Configuration:
         PUSH     {R7,LR}
-        LDR.N    R0,??DataTable4_11
+        LDR.N    R0,??DataTable4_12
         MOVS     R1,#+1
         STR      R1,[R0, #+0]
-        LDR.N    R0,??DataTable4_11
+        LDR.N    R0,??DataTable4_12
         MOVS     R1,#+0
         STRB     R1,[R0, #+4]
-        LDR.N    R0,??DataTable4_11
+        LDR.N    R0,??DataTable4_12
         MOVS     R1,#+12
         STRB     R1,[R0, #+5]
-        LDR.N    R0,??DataTable4_11
+        LDR.N    R0,??DataTable4_12
         MOVS     R1,#+1
         STRB     R1,[R0, #+6]
-        LDR.N    R0,??DataTable4_11
+        LDR.N    R0,??DataTable4_12
         BL       EXTI_Init
-        LDR.N    R0,??DataTable4_11
+        LDR.N    R0,??DataTable4_12
         MOVS     R1,#+2
         STR      R1,[R0, #+0]
-        LDR.N    R0,??DataTable4_11
+        LDR.N    R0,??DataTable4_12
         MOVS     R1,#+0
         STRB     R1,[R0, #+4]
-        LDR.N    R0,??DataTable4_11
+        LDR.N    R0,??DataTable4_12
         MOVS     R1,#+12
         STRB     R1,[R0, #+5]
-        LDR.N    R0,??DataTable4_11
+        LDR.N    R0,??DataTable4_12
         MOVS     R1,#+1
         STRB     R1,[R0, #+6]
-        LDR.N    R0,??DataTable4_11
+        LDR.N    R0,??DataTable4_12
         BL       EXTI_Init
         POP      {R0,PC}          ;; return
 
@@ -398,6 +408,12 @@ EXTI_Configuration:
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable4_11:
+        DC32     0x40011000
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable4_12:
         DC32     EXTI_InitStructure
 
         SECTION `.iar_vfe_header`:DATA:REORDER:NOALLOC:NOROOT(2)
@@ -414,9 +430,9 @@ EXTI_Configuration:
         END
 // 
 // 162 bytes in section .bss
-// 482 bytes in section .text
+// 506 bytes in section .text
 // 
-// 482 bytes of CODE memory
+// 506 bytes of CODE memory
 // 162 bytes of DATA memory
 //
 //Errors: none

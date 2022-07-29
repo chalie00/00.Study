@@ -85,29 +85,34 @@ int main(void)
    // =======================================
    Initial_Device();
 
+   DisplayName();
+
+
+	
    while (1)
    {
 
-/* LED ON/OFF */
-//	      LED_On_Red();
-//	      Delay_1ms(500);
-//	      LED_Off_Red();
-//	      Delay_1ms(500);
-//		  
-//	      LED_On_Green();
-//	      Delay_1ms(500);
-//	      LED_Off_Green();
-//	      Delay_1ms(500);
-//		  
-//	      LED_On_Yellow();
-//	      Delay_1ms(500);
-//	      LED_Off_Yellow();
-//	      Delay_1ms(500);
+	/* LED ON/OFF */
+	//	      LED_On_Red();
+	//	      Delay_1ms(500);
+	//	      LED_Off_Red();
+	//	      Delay_1ms(500);
+	//		  
+	//	      LED_On_Green();
+	//	      Delay_1ms(500);
+	//	      LED_Off_Green();
+	//	      Delay_1ms(500);
+	//		  
+	//	      LED_On_Yellow();
+	//	      Delay_1ms(500);
+	//	      LED_Off_Yellow();
+	//	      Delay_1ms(500);
 
 
-/* SW + LED ON/OFF */
-//	      User_SW_On_LED_Ren_On();
+	/* SW + LED ON/OFF */
+	//	      User_SW_On_LED_Ren_On();
 
+	
    }
 
 } //End Main

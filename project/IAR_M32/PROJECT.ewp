@@ -1937,6 +1937,9 @@
     <name>$PROJ_DIR$\..\..\..\comment.em</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\..\..\src\SevenSeg.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\..\..\..\Example\STM32F103-master\Example_SysTick\src\sysclk.h</name>
   </file>
 </project>
