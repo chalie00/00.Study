@@ -762,9 +762,8 @@ void TIM3_IRQHandler(void)
 	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
 	{
 
-				TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
-				LED_Off_Green();
-				LED_On_Green();
+		
+
 				
 
 		
@@ -1078,51 +1077,43 @@ void Boot_Status_Data_Trans(void)
 *******************************************************************************/
 void TIM4_IRQHandler(void)
 {
+	extern int counter;
+    
 	if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)
 	{
-		
 		TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
-		LED_On_Red();
-		LED_Off_Red();
-		
-
-
-
-//			if(stSYS.START == ACTIVE)
-//			{
-//				SYSTEM_Data_Parser(USART1_INDEX);
-//			}
-//			else
-//			{
-//				Boot_Status_Data_Trans();
-//			}
-	}
+		counter++;
+		if(counter >= 3) {
+			GPIOB-> ODR ^= GPIO_Pin_8;
+			counter = 0;
+		}
+	}	
 
 }//End Of The TIM4_IRQ_Handler
 
 
 
-void EXTI0_IRQHandler(void) {
-	if(EXTI_GetITStatus(EXTI_Line0) != RESET) {
-		EXTI_ClearITPendingBit(EXTI_Line0);
-		if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_9) == SET) {
-			LED_Off_Red();
-		} else {
-		  LED_On_Red();
-		}
-	}
-}
-
-void EXTI1_IRQHandler(void) {
-	if(EXTI_GetITStatus(EXTI_Line1) != RESET) {
-		EXTI_ClearITPendingBit(EXTI_Line1);
-		if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_8) == SET) {
-			LED_Off_Green();
-		} else {
-		  LED_On_Green();
-		}
-	}
-}
+//	void EXTI0_IRQHandler(void) {
+//		if(EXTI_GetITStatus(EXTI_Line0) != RESET) {
+//			EXTI_ClearITPendingBit(EXTI_Line0);
+//			if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_9) == SET) {
+//				LED_Off_Red();
+//			} else {
+//			  LED_On_Red();
+//			}
+//		}
+//	}
+//	
+//	void EXTI1_IRQHandler(void) {
+//		if(EXTI_GetITStatus(EXTI_Line1) != RESET) {
+//			EXTI_ClearITPendingBit(EXTI_Line1);
+//			if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_8) == SET) {
+//				LED_Off_Green();
+//			} else {
+//			  LED_On_Green();
+//			}
+//		}
+//	}
 
 
 

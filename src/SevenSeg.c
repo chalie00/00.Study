@@ -80,13 +80,13 @@ void DisplayName(void) {
 
    	/*SevenSeg */
 	SevenSegAllOff();
-	delay(1000);
+	Delay_ms(1000);
 
 	OutPutName(1);
-	delay(1000);
+	Delay_ms(1000);
 	
 	SevenSegAllOff();
-	delay(1000);
+	Delay_ms(1000);
 	
 	OutPutName(2);
 

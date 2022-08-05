@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     29/Jul/2022  16:48:35 #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     05/Aug/2022  17:46:08 #
 # Copyright 1999-2011 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -122,13 +122,13 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\main.c
      85             // =======================================
      86             Initial_Device();
      87          
-     88             DisplayName();
-     89          
+     88             
+     89             //DisplayName();
      90          
      91          	
      92             while (1)
      93             {
-     94          
+     94          	
      95          	/* LED ON/OFF */
      96          	//	      LED_On_Red();
      97          	//	      Delay_1ms(500);
@@ -144,11 +144,11 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\main.c
     107          	//	      Delay_1ms(500);
     108          	//	      LED_Off_Yellow();
     109          	//	      Delay_1ms(500);
-    110          
-    111          
+    110          	
+    111          	
     112          	/* SW + LED ON/OFF */
-    113          	//	      User_SW_On_LED_Ren_On();
-    114          
+    113          	//	      User_SW_On_LED_Ren_On();s
+    114          	
     115          	
     116             }
     117          
@@ -172,7 +172,6 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\main.c
              8 -> RCC_SYSCLKConfig
              8 -> RCC_WaitForHSEStartUp
         8  main
-             8 -> DisplayName
              8 -> Initial_Device
 
 
@@ -1139,7 +1138,7 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\main.c
       20  inHeaterOnMsg
        4  intFlag
        4  inter
-      12  main
+       8  main
        1  minusFlag
        4  msCount
        4  msIdleCnt
@@ -1156,11 +1155,11 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\main.c
   1 029 bytes in section .bss
     199 bytes in section .data
  17 744 bytes in section .rodata
-    106 bytes in section .text
+    102 bytes in section .text
  
-    106 bytes of CODE  memory
+    102 bytes of CODE  memory
  17 744 bytes of CONST memory
   1 228 bytes of DATA  memory
 
 Errors: none
-Warnings: 2
+Warnings: 1

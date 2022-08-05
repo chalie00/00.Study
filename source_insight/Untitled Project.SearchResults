@@ -1,17 +1,10 @@
----- GPIOC Matches (16 in 6 files) ----
-Dddstm32f10x.h (c:\users\ttt\desktop\zz.stdfw\00.study\libraries\cmsis\cm3\devicesupport\st\stm32f10x):#define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
-Device.c (c:\users\ttt\desktop\zz.stdfw\00.study\src):	//GPIOC SevenSeg
-Device.c (c:\users\ttt\desktop\zz.stdfw\00.study\src):    GPIO_Init(GPIOC, &GPIO_InitStructure);
-SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src):	GPIO_ResetBits(GPIOC, GPIO_Pin_8);
-SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src)://		GPIO_ResetBits(GPIOC, GPIO_Pin_8);
-SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src):	GPIO_SetBits(GPIOC, GPIO_Pin_0);
-SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src)://		GPIO_SetBits(GPIOC, GPIO_Pin_1);
-SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src)://		GPIO_SetBits(GPIOC, GPIO_Pin_2);
-SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src)://		GPIO_SetBits(GPIOC, GPIO_Pin_3);
-SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src)://		GPIO_SetBits(GPIOC, GPIO_Pin_4);
-SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src)://		GPIO_SetBits(GPIOC, GPIO_Pin_5);
-SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src)://		GPIO_SetBits(GPIOC, GPIO_Pin_6);
-SevenSeg.c (c:\users\ttt\desktop\zz.stdfw\00.study\src)://		GPIO_SetBits(GPIOC, GPIO_Pin_7);
-Stm32f10x.h (c:\users\ttt\desktop\zz.stdfw\00.study\libraries\cmsis\cm3\devicesupport\st\stm32f10x):#define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
-Stm32f10x_gpio.c (c:\users\ttt\desktop\zz.stdfw\00.study\libraries\stm32f10x_stdperiph_driver\src):  else if (GPIOx == GPIOC)
-Stm32f10x_gpio.h (c:\users\ttt\desktop\zz.stdfw\00.study\libraries\stm32f10x_stdperiph_driver\inc):                                    ((PERIPH) == GPIOC) || \
+---- 1200 Matches (9 in 6 files) ----
+Dddstm32f10x.h (c:\users\ttt\desktop\zz.stdfw\00.study\libraries\cmsis\cm3\devicesupport\st\stm32f10x):  #define ETH_DMABMR_RDP_4xPBL_64Beat  ((uint32_t)0x01200000)  /* maximum number of beats to be transferred in one RxDMA transaction is 64 */
+Device.c (c:\users\ttt\desktop\zz.stdfw\00.study\src):   period = (SystemCoreClock / 1200 ) - 1;
+Device.c (c:\users\ttt\desktop\zz.stdfw\00.study\src):   //PrescalerValue = (uint16_t) (SystemCoreClock / 120000);
+OSD_String.h (c:\users\ttt\desktop\zz.stdfw\00.study\inc):	                    					 "1/60000  ", "1/120000 " };
+OSD_String.h (c:\users\ttt\desktop\zz.stdfw\00.study\inc):	                    					 "1/60000  ", "1/120000 " };	
+Stm32f10x.h (c:\users\ttt\desktop\zz.stdfw\00.study\libraries\cmsis\cm3\devicesupport\st\stm32f10x):  #define HSE_VALUE    ((uint32_t)12000000) 
+Stm32f10x.h (c:\users\ttt\desktop\zz.stdfw\00.study\libraries\cmsis\cm3\devicesupport\st\stm32f10x):  #define ETH_DMABMR_RDP_4xPBL_64Beat  ((uint32_t)0x01200000)  /* maximum number of beats to be transferred in one RxDMA transaction is 64 */
+Stm32f10x_can.h (c:\users\ttt\desktop\zz.stdfw\00.study\libraries\stm32f10x_stdperiph_driver\inc):#define CAN_FLAG_FMP0              ((uint32_t)0x12000003) /*!< FIFO 0 Message Pending Flag */
+Stm32f10x_i2c.h (c:\users\ttt\desktop\zz.stdfw\00.study\libraries\stm32f10x_stdperiph_driver\inc):#define  I2C_EVENT_SLAVE_GENERALCALLADDRESS_MATCHED        ((uint32_t)0x00120000)  /* GENCALL and BUSY flags */

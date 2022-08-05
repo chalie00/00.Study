@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     29/Jul/2022  16:48:04 #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     05/Aug/2022  15:12:57 #
 # Copyright 1999-2011 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -117,13 +117,13 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\SevenSeg.c
      80          
      81             	/*SevenSeg */
      82          	SevenSegAllOff();
-     83          	delay(1000);
+     83          	Delay_ms(1000);
      84          
      85          	OutPutName(1);
-     86          	delay(1000);
+     86          	Delay_ms(1000);
      87          	
      88          	SevenSegAllOff();
-     89          	delay(1000);
+     89          	Delay_ms(1000);
      90          	
      91          	OutPutName(2);
      92          
@@ -147,9 +147,9 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\SevenSeg.c
    .cstack Function
    ------- --------
         8  DisplayName
+             8 -> Delay_ms
              8 -> OutPutName
              8 -> SevenSegAllOff
-             8 -> delay
         8  OutPutName
              8 -> GPIO_ResetBits
         8  SevenSegAllOff

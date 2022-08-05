@@ -85,13 +85,13 @@ int main(void)
    // =======================================
    Initial_Device();
 
-   DisplayName();
-
+   
+   //DisplayName();
 
 	
    while (1)
    {
-
+	
 	/* LED ON/OFF */
 	//	      LED_On_Red();
 	//	      Delay_1ms(500);
@@ -107,11 +107,11 @@ int main(void)
 	//	      Delay_1ms(500);
 	//	      LED_Off_Yellow();
 	//	      Delay_1ms(500);
-
-
+	
+	
 	/* SW + LED ON/OFF */
-	//	      User_SW_On_LED_Ren_On();
-
+	//	      User_SW_On_LED_Ren_On();s
+	
 	
    }
 

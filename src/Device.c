@@ -19,6 +19,7 @@ I2C_InitTypeDef	I2C_InitStructure;
 void I2C_Configuration(void);
 
 uint16_t PrescalerValue = 0;
+int counter = 0;
 
 
 /*******************************************************************************
@@ -30,8 +31,8 @@ void Initial_Device(void)
    RCC_GetClocksFreq(&rcc_clocks);
    GPIO_Configuration();
 
-   //TIMER_Init();
-   //NVIC_Configuration();
+   TIMER_Init();
+   NVIC_Configuration();
    //EXTI_Configuration();
 }
 
@@ -43,35 +44,42 @@ void TIMER_Init(void)
 {
    uint16_t	period;
    period = (SystemCoreClock / 1200 ) - 1;
-   PrescalerValue = (uint16_t) (SystemCoreClock / 120000);
+   //PrescalerValue = (uint16_t) (SystemCoreClock / 120000);
 
    //TIM4 (CH3): GPIOB 8 LED Green
    //TIM4 (CH4): GPIOB 9 LED Red
+   
 
-   TIM_TimeBaseStructure.TIM_Period = 3600 - 1;
-   TIM_TimeBaseStructure.TIM_Prescaler = 60000 - 1;
-   TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+   TIM_TimeBaseStructure.TIM_Period = 7200 - 1; // 1sec
+   TIM_TimeBaseStructure.TIM_Prescaler = 10000 - 1;
+   TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
    //TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
    TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
+	TIM_ARRPreloadConfig(TIM4, ENABLE);
+	TIM_Cmd(TIM4, ENABLE);	
+   	//TIM_PrescalerConfig(TIM4, PrescalerValue, TIM_PSCReloadMode_Immediate);
+	TIM_ClearFlag(TIM4, TIM_FLAG_Update);
+	TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE);
+	
 
-   TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Disable;
-   TIM_OC1Init(TIM4, &TIM_OCInitStructure);
-   TIM_OC2Init(TIM4, &TIM_OCInitStructure);
+//	   TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Disable;
+//	   TIM_OC1Init(TIM4, &TIM_OCInitStructure);
+//	   TIM_OC2Init(TIM4, &TIM_OCInitStructure);
 
-   TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-   TIM_OCInitStructure.TIM_Pulse = 1;
-   TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-   TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
-   TIM_OC3Init(TIM4, &TIM_OCInitStructure);
-   TIM_Cmd(TIM4, ENABLE);
+//	   TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+//	   TIM_OCInitStructure.TIM_Pulse = 1;
+//	   TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+//	   TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
+//	   TIM_OC3Init(TIM4, &TIM_OCInitStructure);
+//	   TIM_Cmd(TIM4, ENABLE);
 
-   TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-   TIM_OCInitStructure.TIM_Pulse = 1;
-   TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
-   TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
-   TIM_OC4Init(TIM4, &TIM_OCInitStructure);
-   TIM_Cmd(TIM4, ENABLE);
+//	   TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+//	   TIM_OCInitStructure.TIM_Pulse = 1;
+//	   TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
+//	   TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Toggle;
+//	   TIM_OC4Init(TIM4, &TIM_OCInitStructure);
+//	   TIM_Cmd(TIM4, ENABLE);
 
 
 }
@@ -98,17 +106,17 @@ void RCC_Configuration(void)
 void NVIC_Configuration(void)
 {
 
-   NVIC_InitStructure.NVIC_IRQChannel = EXTI0_IRQn;
+   NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;
    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
    NVIC_Init(&NVIC_InitStructure);
 
-   NVIC_InitStructure.NVIC_IRQChannel = EXTI1_IRQn;
-   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-   NVIC_Init(&NVIC_InitStructure);
+//	   NVIC_InitStructure.NVIC_IRQChannel = EXTI1_IRQn;
+//	   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+//	   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+//	   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//	   NVIC_Init(&NVIC_InitStructure);
 
 }
 
@@ -133,7 +141,7 @@ void GPIO_Configuration(void)
    //GPIOB Pin5: Yellow, Pin8: Green, Pin9: Red
    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_8 | GPIO_Pin_5;
    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
    GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	//GPIOC SevenSeg

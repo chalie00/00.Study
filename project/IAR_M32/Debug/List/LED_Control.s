@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    28/Jul/2022  15:47:24 /
+// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    05/Aug/2022  15:12:53 /
 // Copyright 1999-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Cpu mode     =  thumb                                                   /
@@ -41,6 +41,7 @@
         EXTERN GPIO_ResetBits
         EXTERN GPIO_SetBits
 
+        PUBLIC LED_Blink_Green
         PUBLIC LED_Off_Green
         PUBLIC LED_Off_Red
         PUBLIC LED_Off_Yellow
@@ -109,6 +110,14 @@ LED_Off_Yellow:
 ??DataTable5:
         DC32     0x40010c00
 
+        SECTION `.text`:CODE:NOROOT(1)
+        THUMB
+LED_Blink_Green:
+        PUSH     {R7,LR}
+        BL       LED_On_Green
+        BL       LED_Off_Green
+        POP      {R0,PC}          ;; return
+
         SECTION `.iar_vfe_header`:DATA:REORDER:NOALLOC:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
@@ -122,9 +131,9 @@ LED_Off_Yellow:
 
         END
 // 
-// 84 bytes in section .text
+// 96 bytes in section .text
 // 
-// 84 bytes of CODE memory
+// 96 bytes of CODE memory
 //
 //Errors: none
 //Warnings: none

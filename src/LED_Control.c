@@ -27,6 +27,7 @@ void LED_On_Green (void);
 void LED_Off_Green (void);
 void LED_On_Yellow (void);
 void LED_Off_Yellow (void);
+void LED_Blink_Green();
 
 
 
@@ -55,6 +56,12 @@ void LED_Off_Yellow (void) {
 	GPIO_ResetBits(GPIOB, GPIO_Pin_5);
 }
 
+void LED_Blink_Green() {
+	LED_On_Green();
+	
+	LED_Off_Green();
+	
+}
 
 
 

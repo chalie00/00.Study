@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    29/Jul/2022  16:48:04 /
+// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    05/Aug/2022  15:12:57 /
 // Copyright 1999-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Cpu mode     =  thumb                                                   /
@@ -37,9 +37,9 @@
 
         #define SHT_PROGBITS 0x1
 
+        EXTERN Delay_ms
         EXTERN GPIO_ResetBits
         EXTERN GPIO_SetBits
-        EXTERN delay
 
         PUBLIC DisplayName
         PUBLIC OutPutName
@@ -161,14 +161,14 @@ DisplayName:
         PUSH     {R7,LR}
         BL       SevenSegAllOff
         MOV      R0,#+1000
-        BL       delay
+        BL       Delay_ms
         MOVS     R0,#+1
         BL       OutPutName
         MOV      R0,#+1000
-        BL       delay
+        BL       Delay_ms
         BL       SevenSegAllOff
         MOV      R0,#+1000
-        BL       delay
+        BL       Delay_ms
         MOVS     R0,#+2
         BL       OutPutName
         POP      {R0,PC}          ;; return
