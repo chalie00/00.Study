@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    05/Aug/2022  17:46:08 /
+// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    19/Oct/2022  17:25:39 /
 // Copyright 1999-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Cpu mode     =  thumb                                                   /
@@ -37,6 +37,7 @@
 
         #define SHT_PROGBITS 0x1
 
+        EXTERN All_LED_Off
         EXTERN Initial_Device
         EXTERN RCC_DeInit
         EXTERN RCC_GetFlagStatus
@@ -7953,6 +7954,7 @@ SetSysClockTo72:
 main:
         PUSH     {R7,LR}
         BL       Initial_Device
+        BL       All_LED_Off
 ??main_0:
         B.N      ??main_0
 
@@ -7972,11 +7974,11 @@ main:
 //  1 029 bytes in section .bss
 //    199 bytes in section .data
 // 17 744 bytes in section .rodata
-//    102 bytes in section .text
+//    106 bytes in section .text
 // 
-//    102 bytes of CODE  memory
+//    106 bytes of CODE  memory
 // 17 744 bytes of CONST memory
 //  1 228 bytes of DATA  memory
 //
 //Errors: none
-//Warnings: 1
+//Warnings: 3

@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    05/Aug/2022  15:12:53 /
+// IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM    17/Oct/2022  17:08:21 /
 // Copyright 1999-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Cpu mode     =  thumb                                                   /
@@ -40,8 +40,10 @@
 
         EXTERN GPIO_ResetBits
         EXTERN GPIO_SetBits
+        EXTERN delay
 
-        PUBLIC LED_Blink_Green
+        PUBLIC ALL_LED_Blink
+        PUBLIC All_LED_Off
         PUBLIC LED_Off_Green
         PUBLIC LED_Off_Red
         PUBLIC LED_Off_Yellow
@@ -52,29 +54,20 @@
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-LED_On_Red:
-        PUSH     {R7,LR}
-        MOV      R1,#+512
-        LDR.N    R0,??DataTable5  ;; 0x40010c00
-        BL       GPIO_SetBits
-        POP      {R0,PC}          ;; return
-
-        SECTION `.text`:CODE:NOROOT(1)
-        THUMB
 LED_Off_Red:
         PUSH     {R7,LR}
         MOV      R1,#+512
         LDR.N    R0,??DataTable5  ;; 0x40010c00
-        BL       GPIO_ResetBits
+        BL       GPIO_SetBits
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-LED_On_Green:
+LED_On_Red:
         PUSH     {R7,LR}
-        MOV      R1,#+256
+        MOV      R1,#+512
         LDR.N    R0,??DataTable5  ;; 0x40010c00
-        BL       GPIO_SetBits
+        BL       GPIO_ResetBits
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(1)
@@ -83,12 +76,21 @@ LED_Off_Green:
         PUSH     {R7,LR}
         MOV      R1,#+256
         LDR.N    R0,??DataTable5  ;; 0x40010c00
+        BL       GPIO_SetBits
+        POP      {R0,PC}          ;; return
+
+        SECTION `.text`:CODE:NOROOT(1)
+        THUMB
+LED_On_Green:
+        PUSH     {R7,LR}
+        MOV      R1,#+256
+        LDR.N    R0,??DataTable5  ;; 0x40010c00
         BL       GPIO_ResetBits
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-LED_On_Yellow:
+LED_Off_Yellow:
         PUSH     {R7,LR}
         MOVS     R1,#+32
         LDR.N    R0,??DataTable5  ;; 0x40010c00
@@ -97,7 +99,7 @@ LED_On_Yellow:
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-LED_Off_Yellow:
+LED_On_Yellow:
         PUSH     {R7,LR}
         MOVS     R1,#+32
         LDR.N    R0,??DataTable5  ;; 0x40010c00
@@ -112,10 +114,35 @@ LED_Off_Yellow:
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-LED_Blink_Green:
+ALL_LED_Blink:
         PUSH     {R7,LR}
-        BL       LED_On_Green
         BL       LED_Off_Green
+        MOV      R0,#+1000
+        BL       delay
+        BL       LED_On_Green
+        MOV      R0,#+1000
+        BL       delay
+        BL       LED_Off_Red
+        MOV      R0,#+1000
+        BL       delay
+        BL       LED_On_Red
+        MOV      R0,#+1000
+        BL       delay
+        BL       LED_Off_Yellow
+        MOV      R0,#+1000
+        BL       delay
+        BL       LED_On_Yellow
+        MOV      R0,#+1000
+        BL       delay
+        POP      {R0,PC}          ;; return
+
+        SECTION `.text`:CODE:NOROOT(1)
+        THUMB
+All_LED_Off:
+        PUSH     {R7,LR}
+        BL       LED_Off_Green
+        BL       LED_Off_Red
+        BL       LED_Off_Yellow
         POP      {R0,PC}          ;; return
 
         SECTION `.iar_vfe_header`:DATA:REORDER:NOALLOC:NOROOT(2)
@@ -131,9 +158,9 @@ LED_Blink_Green:
 
         END
 // 
-// 96 bytes in section .text
+// 176 bytes in section .text
 // 
-// 96 bytes of CODE memory
+// 176 bytes of CODE memory
 //
 //Errors: none
 //Warnings: none

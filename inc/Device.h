@@ -27,7 +27,7 @@ void TIMER1_CH4_DutyPeriod(uint16_t val);	// TIM1_CH4
 void TIMER_Init(void);
 void USART1_Init(u16 BRate);
 void USART2_Init(u16 BRate);
-void USART3_Init(void);
+void USART3_Init(u32 BRate);
 void DMA_Configuration(void);
 void ADC_Configuration(void);
 void Initial_Device(void);

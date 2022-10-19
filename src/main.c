@@ -70,50 +70,29 @@ Calculated Baud Rate = 16000000/(16(25+1))
 /*******************************************************************************
 * INCLUDE
 *******************************************************************************/
-#include "main.h"
+#include "main.h"
 #include "Common.h"
 #include <stdio.h>
 #include "stm32f10x.h"
 #include "sysclk.h"
 #include "systickdelay.h"
+#include "LED_Control.h"
+#include "Switch_Control.h"
 
-  
-int main(void)
+ int main(void)
 {
    // =======================================
    // Initialization Device
    // =======================================
    Initial_Device();
-
-   
    //DisplayName();
 
-	
+   All_LED_Off();
+   
    while (1)
    {
-	
-	/* LED ON/OFF */
-	//	      LED_On_Red();
-	//	      Delay_1ms(500);
-	//	      LED_Off_Red();
-	//	      Delay_1ms(500);
-	//		  
-	//	      LED_On_Green();
-	//	      Delay_1ms(500);
-	//	      LED_Off_Green();
-	//	      Delay_1ms(500);
-	//		  
-	//	      LED_On_Yellow();
-	//	      Delay_1ms(500);
-	//	      LED_Off_Yellow();
-	//	      Delay_1ms(500);
-	
-	
-	/* SW + LED ON/OFF */
-	//	      User_SW_On_LED_Ren_On();s
-	
-	
+
+
    }
 
 } //End Main
-

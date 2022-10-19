@@ -8,6 +8,7 @@
 
 /* include */
 #include "stm32f10x.h"
+#include "Delay.h"
 //	#include "Extern.h"
 //	#include "stm32f10x_tim.h"
 //	#include "Define.h"
@@ -21,47 +22,56 @@
  * GPIOB Pin5 //Yellow
 */
 
-void LED_On_Red (void);
-void LED_Off_Red (void);
-void LED_On_Green (void);
-void LED_Off_Green (void);
-void LED_On_Yellow (void);
-void LED_Off_Yellow (void);
-void LED_Blink_Green();
 
 
 
 
-void LED_On_Red (void) {
+void LED_Off_Red () {
 	GPIO_SetBits(GPIOB, GPIO_Pin_9);
 }
 
-void LED_Off_Red (void) {
+void LED_On_Red () {
 	GPIO_ResetBits(GPIOB, GPIO_Pin_9);
 }
 
-void LED_On_Green (void) {
+void LED_Off_Green () {
 	GPIO_SetBits(GPIOB, GPIO_Pin_8);
 }
 
-void LED_Off_Green (void) {
+void LED_On_Green () {
 	GPIO_ResetBits(GPIOB, GPIO_Pin_8);
 }
 
-void LED_On_Yellow (void) {
+void LED_Off_Yellow () {
 	GPIO_SetBits(GPIOB, GPIO_Pin_5);
 }
 
-void LED_Off_Yellow (void) {
+void LED_On_Yellow () {
 	GPIO_ResetBits(GPIOB, GPIO_Pin_5);
 }
 
-void LED_Blink_Green() {
-	LED_On_Green();
-	
+void ALL_LED_Blink () {
 	LED_Off_Green();
-	
+	delay(1000);
+	LED_On_Green();
+	delay(1000);
+	LED_Off_Red();
+	delay(1000);
+	LED_On_Red();
+	delay(1000);
+	LED_Off_Yellow();
+	delay(1000);
+	LED_On_Yellow();
+	delay(1000);
 }
+
+void All_LED_Off() {
+	LED_Off_Green();
+	LED_Off_Red();
+	LED_Off_Yellow();
+}
+
+	
 
 
 

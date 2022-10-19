@@ -1077,20 +1077,33 @@ void Boot_Status_Data_Trans(void)
 *******************************************************************************/
 void TIM4_IRQHandler(void)
 {
-	extern int counter;
+	extern int counterFive;
+	extern int counterEight;
+	extern int counterNine;
     
 	if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
-		counter++;
-		if(counter >= 3) {
-			GPIOB-> ODR ^= GPIO_Pin_8;
-			counter = 0;
+		counterFive++;
+		if(counterFive>= 1) {
+			GPIOE-> ODR ^= GPIO_Pin_2;
+			counterFive = 0;
 		}
+	
+		counterEight++;
+		if(counterEight>= 2) {
+			GPIOE-> ODR ^= GPIO_Pin_3;
+			counterEight = 0;
+		}
+		counterNine++;
+		if(counterNine>= 6) {
+			GPIOE-> ODR ^= GPIO_Pin_4;
+			counterNine = 0;
+		}
+		
 	}	
 
 }//End Of The TIM4_IRQ_Handler
-
 
 
 //	void EXTI0_IRQHandler(void) {
@@ -1524,41 +1537,47 @@ void Sony_Data_Pasher(u8 u_buf)
 *******************************************************************************/
 void USART1_IRQHandler(void)
 {
-	u8 Rx_Buf = 0x00;
+	u8 Rx_Buf = 0x00, Tx_Buf = 0x00;	
 	
-  	// =======================================
-  	// USART1 TX Process : TILT -> MAIN Board
-  	// =======================================
-	if (USART_GetITStatus(USART1, USART_IT_TC) != RESET)
-	{
-		if (stUSART1.TX_CNT < stUSART1.TX_MAX) 
-		{
-			USART_SendData(USART1, stUSART1.TX_BUF[stUSART1.TX_CNT++]);
-		}
-		else 
-		{
-			stUSART1.TX_MAX = 0;
-			stUSART1.TX_CNT = 0;
-		}
-		
-		USART_ClearITPendingBit(USART1, USART_IT_TC);
-	}
+	// =======================================
+	// USART1 TX Process 
+	// =======================================
 
-  	// =======================================
-  	// USART1 RX Process : TILT <- MAIN Board
-  	// =======================================
-	if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
-	{
-		Rx_Buf = USART_ReceiveData(USART1);
-
-		Main_Protocol_Data_Pasher(Rx_Buf);
-		
-		//Sony_Data_Pasher(Rx_Buf);
-
-		//if(stUSART_ERROR.RX_CNT == UART4_RX_BUF_MAX) stUSART_ERROR.RX_CNT = 0;
-
-		//stUSART_ERROR.RX_BUF[stUSART_ERROR.RX_CNT++] = Rx_Buf;
-	}
+//		u8 Rx_Buf = 0x00;
+//		
+//	  	// =======================================
+//	  	// USART1 TX Process : TILT -> MAIN Board
+//	  	// =======================================
+//		if (USART_GetITStatus(USART1, USART_IT_TC) != RESET)
+//		{
+//			if (stUSART1.TX_CNT < stUSART1.TX_MAX) 
+//			{
+//				USART_SendData(USART1, stUSART1.TX_BUF[stUSART1.TX_CNT++]);
+//			}
+//			else 
+//			{
+//				stUSART1.TX_MAX = 0;
+//				stUSART1.TX_CNT = 0;
+//			}
+//			
+//			USART_ClearITPendingBit(USART1, USART_IT_TC);
+//		}
+//	
+//	  	// =======================================
+//	  	// USART1 RX Process : TILT <- MAIN Board
+//	  	// =======================================
+//		if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
+//		{
+//			Rx_Buf = USART_ReceiveData(USART1);
+//	
+//			Main_Protocol_Data_Pasher(Rx_Buf);
+//			
+//			//Sony_Data_Pasher(Rx_Buf);
+//	
+//			//if(stUSART_ERROR.RX_CNT == UART4_RX_BUF_MAX) stUSART_ERROR.RX_CNT = 0;
+//	
+//			//stUSART_ERROR.RX_BUF[stUSART_ERROR.RX_CNT++] = Rx_Buf;
+//		}
 }
 
 /*******************************************************************************
@@ -1675,66 +1694,68 @@ void USART2_IRQHandler(void)
 {
 	u8 Rx_Buf = 0x00, Tx_Buf = 0x00;	
 
-	// =======================================
-	// USART2 TX Process 
-	// =======================================
+  	// =======================================
+  	// USART2 TX Process 
+  	// =======================================
 	if (USART_GetITStatus(USART2, USART_IT_TC) != RESET)
-	{
-
-		if(stUSART2.TX_CNT < stUSART2.TX_MAX)
-		{
-			Tx_Buf = stUSART2.TX_BUF[stUSART2.TX_CNT];
-			stUSART2.TX_CNT++;				
-
-			USART_SendData(USART2, Tx_Buf);
-		}
-		else
-		{
-			stUSART2.TX_CNT = 0x00;
-			stUSART2.TX_MAX = 0x00;
-		}
-
+	{ 
+		USART_SendData(USART2, Tx_Buf);
+		if(Tx_Buf != 0x00) {
+					//RED
+		GPIOE-> ODR ^= GPIO_Pin_3;
 		USART_ClearITPendingBit(USART2, USART_IT_TC);
-
+		}
 	}
-
-	// =======================================
-	// USART2 RX Process
-	// =======================================
-	if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
+	
+  	// =======================================
+  	// USART2 RX Process
+  	// =======================================
+	if (USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)
 	{
 		Rx_Buf = USART_ReceiveData(USART2);
-	}     
+		if(Rx_Buf != 0x00) {
+			//Green
+			GPIOE -> ODR ^= GPIO_Pin_4;
+			Rx_Buf = 0x00;
+			
+		}
+		
+	}  
 }
 
 /*******************************************************************************
 * Function Name  : USART3_IRQHandler
 * Description    : This function handles USART1 interrupt request.
-* Input           : Camera - PB11 USART3_RX
+* Input           : Camera - PB11 USART3_RX[
 * Output         : Camera - PB10 USART3_TX
 *******************************************************************************/
 void USART3_IRQHandler(void)
 {
-	u8 Rx_Buf = 0x00, Tx_Buf = 0x00;	
-
+	
+	
   	// =======================================
   	// USART3 TX Process 
   	// =======================================
-	if (USART_GetITStatus(USART3, USART_IT_TC) != RESET)
-	{ 
-		USART_SendData(USART3, Tx_Buf);
-		
-		USART_ClearITPendingBit(USART3, USART_IT_TC);
+	if (USART_GetITStatus(USART3, USART_IT_TC) != RESET){
+		//RED
+		GPIOB -> ODR ^= GPIO_Pin_9;
 	}
+	USART_ClearITPendingBit(USART3, USART_IT_TC);
+	
 	
   	// =======================================
   	// USART3 RX Process
   	// =======================================
-	if (USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)
-	{
+	if (USART_GetITStatus(USART3, USART_IT_RXNE) != RESET){
+		u8 Rx_Buf = 0x00;
 		Rx_Buf = USART_ReceiveData(USART3);
+		USART_SendData(USART3, Rx_Buf);
+		if (RxBuf != 0x00) {
+			//Green
+			GPIOB -> ODR ^= GPIO_Pin_8;	
+		}
 	}
-
+	USART_ClearITPendingBit(USART3, USART_IT_RXNE);
 }
 
 /*******************************************************************************

@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     05/Aug/2022  15:12:53 #
+# IAR ANSI C/C++ Compiler V6.30.1.53127/W32 for ARM     17/Oct/2022  17:08:21 #
 # Copyright 1999-2011 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -45,89 +45,108 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\LED_Control.c
       8          
       9          /* include */
      10          #include "stm32f10x.h"
-     11          //	#include "Extern.h"
-     12          //	#include "stm32f10x_tim.h"
-     13          //	#include "Define.h"
-     14          //	#include "stm32f10x_adc.h"
-     15          //	#include "stm32f10x_dma.h"
-     16          
-     17          /* Functions */
-     18          /*
-     19           * GPIOB Pin9 // Red
-     20           * GIPOB Pin8 //Green
-     21           * GPIOB Pin5 //Yellow
-     22          */
-     23          
-     24          void LED_On_Red (void);
-     25          void LED_Off_Red (void);
-     26          void LED_On_Green (void);
-     27          void LED_Off_Green (void);
-     28          void LED_On_Yellow (void);
-     29          void LED_Off_Yellow (void);
-     30          void LED_Blink_Green();
-     31          
+     11          #include "Delay.h"
+     12          //	#include "Extern.h"
+     13          //	#include "stm32f10x_tim.h"
+     14          //	#include "Define.h"
+     15          //	#include "stm32f10x_adc.h"
+     16          //	#include "stm32f10x_dma.h"
+     17          
+     18          /* Functions */
+     19          /*
+     20           * GPIOB Pin9 // Red
+     21           * GIPOB Pin8 //Green
+     22           * GPIOB Pin5 //Yellow
+     23          */
+     24          
+     25          
+     26          
+     27          
+     28          
+     29          void LED_Off_Red () {
+     30          	GPIO_SetBits(GPIOB, GPIO_Pin_9);
+     31          }
      32          
-     33          
-     34          
-     35          void LED_On_Red (void) {
-     36          	GPIO_SetBits(GPIOB, GPIO_Pin_9);
-     37          }
-     38          
-     39          void LED_Off_Red (void) {
-     40          	GPIO_ResetBits(GPIOB, GPIO_Pin_9);
-     41          }
-     42          
-     43          void LED_On_Green (void) {
-     44          	GPIO_SetBits(GPIOB, GPIO_Pin_8);
-     45          }
-     46          
-     47          void LED_Off_Green (void) {
-     48          	GPIO_ResetBits(GPIOB, GPIO_Pin_8);
-     49          }
-     50          
-     51          void LED_On_Yellow (void) {
-     52          	GPIO_SetBits(GPIOB, GPIO_Pin_5);
-     53          }
-     54          
-     55          void LED_Off_Yellow (void) {
-     56          	GPIO_ResetBits(GPIOB, GPIO_Pin_5);
-     57          }
-     58          
-     59          void LED_Blink_Green() {
-     60          	LED_On_Green();
-     61          	
-     62          	LED_Off_Green();
-     63          	
-     64          }
-     65          
-     66          
+     33          void LED_On_Red () {
+     34          	GPIO_ResetBits(GPIOB, GPIO_Pin_9);
+     35          }
+     36          
+     37          void LED_Off_Green () {
+     38          	GPIO_SetBits(GPIOB, GPIO_Pin_8);
+     39          }
+     40          
+     41          void LED_On_Green () {
+     42          	GPIO_ResetBits(GPIOB, GPIO_Pin_8);
+     43          }
+     44          
+     45          void LED_Off_Yellow () {
+     46          	GPIO_SetBits(GPIOB, GPIO_Pin_5);
+     47          }
+     48          
+     49          void LED_On_Yellow () {
+     50          	GPIO_ResetBits(GPIOB, GPIO_Pin_5);
+     51          }
+     52          
+     53          void ALL_LED_Blink () {
+     54          	LED_Off_Green();
+     55          	delay(1000);
+     56          	LED_On_Green();
+     57          	delay(1000);
+     58          	LED_Off_Red();
+     59          	delay(1000);
+     60          	LED_On_Red();
+     61          	delay(1000);
+     62          	LED_Off_Yellow();
+     63          	delay(1000);
+     64          	LED_On_Yellow();
+     65          	delay(1000);
+     66          }
      67          
-     68          
-     69          
-     70          
-     71          
-     72          
+     68          void All_LED_Off() {
+     69          	LED_Off_Green();
+     70          	LED_Off_Red();
+     71          	LED_Off_Yellow();
+     72          }
      73          
+     74          	
+     75          
+     76          
+     77          
+     78          
+     79          
+     80          
+     81          
+     82          
+     83          
 
    Maximum stack usage in bytes:
 
    .cstack Function
    ------- --------
-        8  LED_Blink_Green
+        8  ALL_LED_Blink
              8 -> LED_Off_Green
+             8 -> LED_Off_Red
+             8 -> LED_Off_Yellow
              8 -> LED_On_Green
+             8 -> LED_On_Red
+             8 -> LED_On_Yellow
+             8 -> delay
+        8  All_LED_Off
+             8 -> LED_Off_Green
+             8 -> LED_Off_Red
+             8 -> LED_Off_Yellow
         8  LED_Off_Green
-             8 -> GPIO_ResetBits
+             8 -> GPIO_SetBits
         8  LED_Off_Red
-             8 -> GPIO_ResetBits
+             8 -> GPIO_SetBits
         8  LED_Off_Yellow
-             8 -> GPIO_ResetBits
+             8 -> GPIO_SetBits
         8  LED_On_Green
-             8 -> GPIO_SetBits
+             8 -> GPIO_ResetBits
         8  LED_On_Red
-             8 -> GPIO_SetBits
+             8 -> GPIO_ResetBits
         8  LED_On_Yellow
-             8 -> GPIO_SetBits
+             8 -> GPIO_ResetBits
 
 
    Section sizes:
@@ -135,7 +154,8 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\LED_Control.c
    Bytes  Function/Label
    -----  --------------
        4  ??DataTable5
-      12  LED_Blink_Green
+      76  ALL_LED_Blink
+      16  All_LED_Off
       14  LED_Off_Green
       14  LED_Off_Red
       12  LED_Off_Yellow
@@ -144,9 +164,9 @@ C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\LED_Control.c
       12  LED_On_Yellow
 
  
- 96 bytes in section .text
+ 176 bytes in section .text
  
- 96 bytes of CODE memory
+ 176 bytes of CODE memory
 
 Errors: none
 Warnings: none

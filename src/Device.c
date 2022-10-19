@@ -19,7 +19,9 @@ I2C_InitTypeDef	I2C_InitStructure;
 void I2C_Configuration(void);
 
 uint16_t PrescalerValue = 0;
-int counter = 0;
+int counterFive = 0;
+int counterEight = 0;
+int counterNine = 0;
 
 
 /*******************************************************************************
@@ -31,9 +33,12 @@ void Initial_Device(void)
    RCC_GetClocksFreq(&rcc_clocks);
    GPIO_Configuration();
 
-   TIMER_Init();
+
+   //TIMER_Init();
    NVIC_Configuration();
+   USART3_Init(115200);
    //EXTI_Configuration();
+
 }
 
 
@@ -58,7 +63,7 @@ void TIMER_Init(void)
    TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
 	TIM_ARRPreloadConfig(TIM4, ENABLE);
 	TIM_Cmd(TIM4, ENABLE);	
-   	//TIM_PrescalerConfig(TIM4, PrescalerValue, TIM_PSCReloadMode_Immediate);
+   	TIM_PrescalerConfig(TIM4, 10000, TIM_PSCReloadMode_Immediate);
 	TIM_ClearFlag(TIM4, TIM_FLAG_Update);
 	TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE);
 	
@@ -92,12 +97,15 @@ void RCC_Configuration(void)
    SystemInit();
 
    /* GPIOx clock enable */
-   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_AFIO, ENABLE);
+   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE| RCC_APB2Periph_AFIO, ENABLE);
 
    /* TIM clock enable */
    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
+   RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
 
-
+   //RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+   
+   
 }
 
 /*******************************************************************************
@@ -118,6 +126,15 @@ void NVIC_Configuration(void)
 //	   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 //	   NVIC_Init(&NVIC_InitStructure);
 
+//USART Interrupt
+	NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+
+
+
 }
 
 /*******************************************************************************
@@ -127,16 +144,16 @@ void GPIO_Configuration(void)
 {
 
    //GPIOA Pin 0: Set The WKUP SW Of Mango B'd
-   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
-   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
-   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-   GPIO_Init(GPIOA, &GPIO_InitStructure);
+//	   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+//	   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
+//	   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+//	   GPIO_Init(GPIOA, &GPIO_InitStructure);
 
    //GPIOA Pin 1: Set The UserKey SW Of Mango B'd
-   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
-   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
-   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-   GPIO_Init(GPIOA, &GPIO_InitStructure);
+//	   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
+//	   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
+//	   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+//	   GPIO_Init(GPIOA, &GPIO_InitStructure);
 
    //GPIOB Pin5: Yellow, Pin8: Green, Pin9: Red
    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_8 | GPIO_Pin_5;
@@ -144,12 +161,39 @@ void GPIO_Configuration(void)
    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
    GPIO_Init(GPIOB, &GPIO_InitStructure);
 
+   //PB10_I2C2_SCL_U3TX
+   //PB11_I2C2_SDA_U3RX
+
+
+   //GPIOA Input (PB11 RX)
+//	   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+//	   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+//	   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+//	   GPIO_Init(GPIOA, &GPIO_InitStructure);
+//	
+//	
+//	   //GPIOA Output (PB10 TX)
+//	   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
+//	   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+//	   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+//	   GPIO_Init(GPIOA, &GPIO_InitStructure);
+
 	//GPIOC SevenSeg
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 |
-								  GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOC, &GPIO_InitStructure);
+   
+   
+   
+//		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 |
+//									  GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8;
+//		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+//		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+//	    GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+	//GPIOE LED
+//		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4;
+//		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+//		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+//		GPIO_Init(GPIOE, &GPIO_InitStructure);
+
 
 }
 
@@ -166,6 +210,22 @@ void EXTI_Configuration(void){
 	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
 	EXTI_Init(&EXTI_InitStructure);
 
+}
+
+void USART3_Init(u32 BRate) {
+	USART_InitStructure.USART_BaudRate = BRate;
+	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+	USART_InitStructure.USART_Parity = USART_Parity_No;
+	USART_InitStructure.USART_StopBits = USART_StopBits_1;
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+
+	USART_Init(USART3, &USART_InitStructure);
+
+	USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);
+	USART_ITConfig(USART3, USART_IT_TC, ENABLE);
+
+	USART_Cmd(USART3, ENABLE);
 }
 
 

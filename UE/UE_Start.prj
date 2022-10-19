@@ -1,0 +1,48 @@
+[Project ID]
+Signature=UE Proj: v.1
+[Open Files]
+Open File0=C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\debug.c
+Active File Display Mode=1
+Open File Pos0=0
+Open File Line0=0
+Open File Window Pos0=0,1,-1,-1,-1,-1,814,0,1628,878
+Open File1=C:\Users\TTT\Desktop\zz.STDFW\00.Study\src\main.c
+Open File Pos1=2981
+Open File Line1=1980
+Active File Index=1
+Open File Window Pos1=0,1,-1,-1,-1,-1,0,0,814,878
+Open File2=
+[Project Information]
+Use Relative Directory=1
+Relative to Project File=1
+Project Start=E607090001001300110034001500000064
+Project Directory=C:\Users\TTT\Desktop\zz.STDFW\00.Study
+Include Sub Directories=1
+Project Tagfile=
+Project Wordfile=
+Filter=
+Create Tagfile=0
+Working Time=35
+[Files]
+0=UE\UE_Start.prj
+[Group]
+0=Code
+[Files - Code]
+0=src\Common.c
+1=src\debug.c
+2=src\Delay.c
+3=src\Device.c
+4=src\Function.c
+5=src\I2c.c
+6=src\LED_Control.c
+7=src\main.c
+8=src\SevenSeg.c
+9=src\Switch_Control.c
+10=src\syscalls.c
+11=src\sysclk.h
+12=src\system_stm32f10x.c
+13=src\systickdelay.c
+14=src\systickdelay.h
+15=src\Temperature.c
+[Folders]
+Code=1
